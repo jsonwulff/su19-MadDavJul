@@ -1,4 +1,4 @@
-﻿namespace SpaceTaxi_1 {
+﻿namespace SpaceTaxi {
     internal class Program {
         public static void Main(string[] args) {
             var game = new Game();

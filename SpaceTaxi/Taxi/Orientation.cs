@@ -1,4 +1,4 @@
-﻿namespace SpaceTaxi_1 {
+﻿namespace SpaceTaxi {
     public enum Orientation {
         Left,
         Right

@@ -1,4 +1,4 @@
-namespace SpaceTaxi_1.LevelParser {
+namespace SpaceTaxi.LevelParser {
     public class LevelParser {
         
     }
