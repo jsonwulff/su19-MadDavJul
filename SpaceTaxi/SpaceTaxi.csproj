@@ -6,9 +6,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6B6B73FE-D105-4F0E-9B51-069B6FD6328F}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>SpaceTaxi_1</RootNamespace>
+    <RootNamespace>SpaceTaxi</RootNamespace>
     <AssemblyName>SpaceTaxi</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
+    <Compile Include="LevelParser\ASCIIReader.cs" />
     <Compile Include="LevelParser\LevelParser.cs" />
+    <Compile Include="LevelParser\TranslateChar.cs" />
     <Compile Include="Taxi\Orientation.cs" />
     <Compile Include="Taxi\Player.cs" />
     <Compile Include="Program.cs" />
