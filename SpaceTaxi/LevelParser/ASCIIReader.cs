@@ -1,8 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SpaceTaxi.LevelParser {
     public class ASCIIReader {
+
+        public string[] MapContainer;
+        public string[] MetaContainer;
+        public string[] KeyContainer;
+        public string[] CustomerContainer;
+        
         
         /// <summary>
         /// Finds full directory path of the given level.
@@ -31,49 +40,49 @@ namespace SpaceTaxi.LevelParser {
             return path;
         }
 
-        public string[] FileContent() {
-            return File.ReadAllLines(GetLevelFilePath("the-beach.txt"));
+        public void ReadFile(string filename) {
+            var path = GetLevelFilePath(filename);
+            MapContainer = GetMapData(path);
+            MetaContainer = GetMetaData(path);
+            KeyContainer = GetKeyLegendData(path);
+            CustomerContainer = GetCustomerData(path);
         }
 
-        public void MapContent() {
-            for (int i = 0; i < 23; i++) {
-                Console.WriteLine(FileContent()[i]);
-            }
+
+        private string[] GetMapData(string path) {
+            return File.ReadLines(path).Take(23).ToArray();
         }
-        
-        
-        public void KeyLegendContent() {
-            string regexPattern = "\\S\\)\\s";
-            foreach (string s in FileContent()) {
-                if (System.Text.RegularExpressions.Regex.IsMatch(s, regexPattern)) {
-                    Console.WriteLine(s);
+
+        private string[] GetMetaData(string path) {
+            var metaContent = File.ReadLines(path).Skip(24).Where(line => line != "");
+            List<string> metaData = new List<string>(); 
+            Regex keyLegendRegex = new Regex(@"\S\)\s");
+            Regex customerRegex = new Regex(@"Customer");
+            foreach (var line in metaContent) {
+                if (!keyLegendRegex.IsMatch(line) && !customerRegex.IsMatch(line)) {
+                    metaData.Add(line);
+                }
+                
+                
+            }
+            return metaData.ToArray();
+        }
+
+        private string[] GetKeyLegendData(string path) {
+            var keyLegendContent = File.ReadLines(path).Skip(24);
+            List<string> keyLegendData = new List<string>(); 
+            Regex keyLegendRegex = new Regex(@"\S\)\s");
+            foreach (string line in keyLegendContent) {
+                if (keyLegendRegex.IsMatch(line)) {
+                    keyLegendData.Add(line);
                 }
             }
+            return keyLegendData.ToArray();
         }
         
-        public void FindKeyLegendImage(char character) {
-            string regexPattern = character + "\\)\\s";
-            foreach (string s in FileContent()) {
-                if (System.Text.RegularExpressions.Regex.IsMatch(s, regexPattern)) {
-                    Console.WriteLine(s.Substring(3));
-                }
-            }
+        private string[] GetCustomerData(string path) {
+            Regex keyLegendRegex = new Regex(@"Customer");
+            return File.ReadLines(path).Skip(24).Where(line => keyLegendRegex.IsMatch(line)).ToArray();
         }
-
-        public void PrintPos() {
-            int i = 0;
-            foreach (string line in FileContent()) {
-                int j = 0;
-                foreach (char c in line) {
-                    Console.Write(i+","+j+" ");
-                    j++;
-                }
-
-                i++;
-                Console.Write("\n");
-            }
-        }
-
-
     }
 }
