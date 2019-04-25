@@ -6,9 +6,9 @@ namespace SpaceTaxi.LevelParser {
         public EntityContainer<Entity> MapContainer;
         public string LevelName;
         public Vec2F PlayerPosition;
-        public string CustomerData;
+        public string[] CustomerData;
 
-        public Map(EntityContainer<Entity> mapContainer, string levelName, Vec2F playerPosition, string customerData) {
+        public Map(EntityContainer<Entity> mapContainer, string levelName, Vec2F playerPosition, string[] customerData) {
             MapContainer = mapContainer;
             LevelName = levelName;
             PlayerPosition = playerPosition;
