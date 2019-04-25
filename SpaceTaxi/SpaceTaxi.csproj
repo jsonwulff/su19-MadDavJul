@@ -44,7 +44,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="LevelParser\ASCIIReader.cs" />
     <Compile Include="LevelParser\LevelParser.cs" />
-    <Compile Include="LevelParser\TranslateChar.cs" />
+    <Compile Include="LevelParser\Map.cs" />
     <Compile Include="Taxi\Orientation.cs" />
     <Compile Include="Taxi\Player.cs" />
     <Compile Include="Program.cs" />
