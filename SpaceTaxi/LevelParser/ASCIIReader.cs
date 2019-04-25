@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using DIKUArcade.Math;
 
 namespace SpaceTaxi.LevelParser {
     public class ASCIIReader {
@@ -42,15 +43,16 @@ namespace SpaceTaxi.LevelParser {
 
         public void ReadFile(string filename) {
             var path = GetLevelFilePath(filename);
-            MapContainer = GetMapData(path);
-            MetaContainer = GetMetaData(path);
-            KeyContainer = GetKeyLegendData(path);
-            CustomerContainer = GetCustomerData(path);
+            GetMapData(path);
+            SplitMapData(path);
+//            MetaContainer = GetMetaData(path);
+//            KeyContainer = GetKeyLegendData(path);
+//            CustomerContainer = GetCustomerData(path);
         }
 
 
-        private string[] GetMapData(string path) {
-            return File.ReadLines(path).Take(23).ToArray();
+        private void GetMapData(string path) {
+            MapContainer = File.ReadLines(path).Take(23).ToArray();
         }
 
         private string[] GetMetaData(string path) {
@@ -81,8 +83,35 @@ namespace SpaceTaxi.LevelParser {
         }
         
         private string[] GetCustomerData(string path) {
-            Regex keyLegendRegex = new Regex(@"Customer");
-            return File.ReadLines(path).Skip(24).Where(line => keyLegendRegex.IsMatch(line)).ToArray();
+            Regex customerRegex = new Regex(@"Customer");
+            return File.ReadLines(path).Skip(24).Where(line => customerRegex.IsMatch(line)).ToArray();
+        }
+
+        private void SplitMapData(string path) {
+            List<string> metaData = new List<string>(); 
+            List<string> keyData = new List<string>();
+            List<string> customerData = new List<string>();
+            Regex keyLegendRegex = new Regex(@"\S\)\s");
+            Regex customerRegex = new Regex(@"Customer");
+            var fileContent = File.ReadLines(path).Skip(24).Where(line => line != "");
+            foreach (string line in fileContent) {
+                if (keyLegendRegex.IsMatch(line)) {
+                    keyData.Add(line);
+                } else if (customerRegex.IsMatch(line)) {
+                    customerData.Add(line.Substring(10));
+                } else {
+                    metaData.Add(line);
+                }
+            }
+            
+            MetaContainer = metaData.ToArray();
+            KeyContainer = keyData.ToArray();
+            CustomerContainer = customerData.ToArray();
+
+        }
+
+        private Vec2F TranslatePos(int x, int y) {
+            return new Vec2F((float)x*0.25f, 0.975f-(float)y*0.25f);
         }
     }
 }
