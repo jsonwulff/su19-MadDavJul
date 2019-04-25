@@ -11,7 +11,7 @@ namespace SpaceTaxi.LevelParser {
         public TranslatePos() {
             var asciiReader = new ASCIIReader();    
         }
-
+ 
         public Dictionary<char, List<Vec2F>> TranslatePosition(List<string> mapText) {
             var mapDictionary = new Dictionary<char, List<Vec2F>>();
             for (int i = 0; i < 23; i++)  {
