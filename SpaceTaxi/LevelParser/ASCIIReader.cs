@@ -42,7 +42,8 @@ namespace SpaceTaxi {
         }
 
         /// <summary>
-        /// Readfile initializes the parsing process.
+        /// Initializes the parsing process, by getting the file path and splitting the
+        /// data into MapContainer, MetaContainer, keyContainer and customerContainer
         /// </summary>
         /// <param name="filename"> filename is the name of the text file to parse</param>
         public void ReadFile(string filename) {
@@ -64,14 +65,15 @@ namespace SpaceTaxi {
         /// </summary>
         /// <param name="path">file path of the textfile</param>
         private void SplitMapData(string path) {
+            // meta data container
             List<string> metaData = new List<string>(); 
-            
+            // key legend container
             List<string> keyData = new List<string>();
             Regex keyLegendRegex = new Regex(@"\S\)\s");
-            
+            // customer data container
             List<string> customerData = new List<string>();
             Regex customerRegex = new Regex(@"Customer");
-            
+            // split files into container
             var fileContent = File.ReadLines(path).Skip(24).Where(line => line != "");
             foreach (string line in fileContent) {
                 if (keyLegendRegex.IsMatch(line)) {
