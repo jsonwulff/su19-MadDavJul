@@ -45,7 +45,7 @@ namespace SpaceTaxi {
         /// <param name="x"> x-value of integer coordinate.</param>
         /// <param name="y"> y-value of integer coordinate.</param>
         /// <param name="c"> Character that represents image in imageDictionary.</param>
-        /// <returns></returns>
+        /// <returns>A entity object</returns>
         private Entity TranslateToEntity(int x, int y, char c) {
             var entity = new Entity(
                 new StationaryShape(
