@@ -8,15 +8,11 @@ namespace SpaceTaxiTests {
     [TestFixture]
     public class TestLevelParser {
         
-        private MapCreator mapCreator;
         private ASCIIReader asciiReader;
-        private Translator translator;
         
         [SetUp]
         public void CreateObjects() {
-            mapCreator = new MapCreator();
             asciiReader = new ASCIIReader();
-            translator = new Translator();
         }
 
 
