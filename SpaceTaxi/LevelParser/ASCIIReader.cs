@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using DIKUArcade.Math;
 
-namespace SpaceTaxi.LevelParser {
+namespace SpaceTaxi {
     public class ASCIIReader {
 
         public string[] MapContainer;
@@ -55,7 +55,7 @@ namespace SpaceTaxi.LevelParser {
             MapContainer = File.ReadLines(path).Take(23).ToArray();
         }
 
-        private string[] GetMetaData(string path) {
+/*        private string[] GetMetaData(string path) {
             var metaContent = File.ReadLines(path).Skip(24).Where(line => line != "");
             List<string> metaData = new List<string>(); 
             Regex keyLegendRegex = new Regex(@"\S\)\s");
@@ -85,7 +85,7 @@ namespace SpaceTaxi.LevelParser {
         private string[] GetCustomerData(string path) {
             Regex customerRegex = new Regex(@"Customer");
             return File.ReadLines(path).Skip(24).Where(line => customerRegex.IsMatch(line)).ToArray();
-        }
+        }*/
 
         private void SplitMapData(string path) {
             List<string> metaData = new List<string>(); 
@@ -108,10 +108,6 @@ namespace SpaceTaxi.LevelParser {
             KeyContainer = keyData.ToArray();
             CustomerContainer = customerData.ToArray();
 
-        }
-
-        private Vec2F TranslatePos(int x, int y) {
-            return new Vec2F((float)x*0.25f, 0.975f-(float)y*0.25f);
         }
     }
 }

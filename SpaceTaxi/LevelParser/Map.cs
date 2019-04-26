@@ -1,14 +1,14 @@
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
 
-namespace SpaceTaxi.LevelParser {
+namespace SpaceTaxi {
     public class Map {
         public EntityContainer<Entity> MapContainer;
         public string LevelName;
-        public Vec2F PlayerPosition;
+        public (float x, float y) PlayerPosition;
         public string[] CustomerData;
 
-        public Map(EntityContainer<Entity> mapContainer, string levelName, Vec2F playerPosition, string[] customerData) {
+        public Map(EntityContainer<Entity> mapContainer, string levelName, (float x, float y) playerPosition, string[] customerData) {
             MapContainer = mapContainer;
             LevelName = levelName;
             PlayerPosition = playerPosition;

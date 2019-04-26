@@ -15,6 +15,8 @@ namespace SpaceTaxi {
         private GameTimer gameTimer;
         private Player player;
         private Window win;
+        private MapCreator mapCreator;
+        private Map map;
 
         public Game() {
             // window
@@ -39,11 +41,13 @@ namespace SpaceTaxi {
                 new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
             );
             backGroundImage.RenderEntity();
-
+            
+            mapCreator = new MapCreator();
+           
             // game entities
             player = new Player();
             player.SetPosition(0.45f, 0.6f);
-            player.SetExtent(0.1f, 0.1f);
+            player.SetExtent(0.0575f, 0.03f);
 
             // event delegation
             eventBus.Subscribe(GameEventType.InputEvent, this);
@@ -52,6 +56,8 @@ namespace SpaceTaxi {
         }
 
         public void GameLoop() {
+            map = mapCreator.CreateMap("short-n-sweet.txt");
+            player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
             while (win.IsRunning()) {
                 gameTimer.MeasureTime();
 
@@ -63,6 +69,7 @@ namespace SpaceTaxi {
                 if (gameTimer.ShouldRender()) {
                     win.Clear();
                     backGroundImage.RenderEntity();
+                    map.MapContainer.Iterate(entity => entity.RenderEntity());
                     player.RenderPlayer();
 
                     win.SwapBuffers();

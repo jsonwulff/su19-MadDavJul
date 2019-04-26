@@ -1,5 +1,4 @@
 ﻿using System;
-using SpaceTaxi.LevelParser;
 
 namespace SpaceTaxi {
     internal class Program {
