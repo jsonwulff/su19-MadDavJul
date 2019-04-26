@@ -41,58 +41,37 @@ namespace SpaceTaxi {
             return path;
         }
 
+        /// <summary>
+        /// Readfile initializes the parsing process.
+        /// </summary>
+        /// <param name="filename"> filename is the name of the text file to parse</param>
         public void ReadFile(string filename) {
             var path = GetLevelFilePath(filename);
             GetMapData(path);
             SplitMapData(path);
-//            MetaContainer = GetMetaData(path);
-//            KeyContainer = GetKeyLegendData(path);
-//            CustomerContainer = GetCustomerData(path);
         }
 
-
+        /// <summary>
+        /// Sets MapContainer to the text representation of the map
+        /// </summary>
+        /// <param name="path"> file path of the textfile</param>
         private void GetMapData(string path) {
             MapContainer = File.ReadLines(path).Take(23).ToArray();
         }
-
-/*        private string[] GetMetaData(string path) {
-            var metaContent = File.ReadLines(path).Skip(24).Where(line => line != "");
-            List<string> metaData = new List<string>(); 
-            Regex keyLegendRegex = new Regex(@"\S\)\s");
-            Regex customerRegex = new Regex(@"Customer");
-            foreach (var line in metaContent) {
-                if (!keyLegendRegex.IsMatch(line) && !customerRegex.IsMatch(line)) {
-                    metaData.Add(line);
-                }
-                
-                
-            }
-            return metaData.ToArray();
-        }
-
-        private string[] GetKeyLegendData(string path) {
-            var keyLegendContent = File.ReadLines(path).Skip(24);
-            List<string> keyLegendData = new List<string>(); 
-            Regex keyLegendRegex = new Regex(@"\S\)\s");
-            foreach (string line in keyLegendContent) {
-                if (keyLegendRegex.IsMatch(line)) {
-                    keyLegendData.Add(line);
-                }
-            }
-            return keyLegendData.ToArray();
-        }
         
-        private string[] GetCustomerData(string path) {
-            Regex customerRegex = new Regex(@"Customer");
-            return File.ReadLines(path).Skip(24).Where(line => customerRegex.IsMatch(line)).ToArray();
-        }*/
-
+        /// <summary>
+        /// Splits the data contained in the text file in, MetaContainer, KeyContainer and CustomerData
+        /// </summary>
+        /// <param name="path">file path of the textfile</param>
         private void SplitMapData(string path) {
             List<string> metaData = new List<string>(); 
+            
             List<string> keyData = new List<string>();
-            List<string> customerData = new List<string>();
             Regex keyLegendRegex = new Regex(@"\S\)\s");
+            
+            List<string> customerData = new List<string>();
             Regex customerRegex = new Regex(@"Customer");
+            
             var fileContent = File.ReadLines(path).Skip(24).Where(line => line != "");
             foreach (string line in fileContent) {
                 if (keyLegendRegex.IsMatch(line)) {
