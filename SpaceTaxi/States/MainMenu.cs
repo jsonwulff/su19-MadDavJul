@@ -5,6 +5,7 @@ using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.State;
+using SpaceTaxi;
 using SpaceTaxi.States;
 using Image = DIKUArcade.Graphics.Image;
 
