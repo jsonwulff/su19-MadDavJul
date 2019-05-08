@@ -53,6 +53,7 @@ namespace SpaceTaxi.States {
 
         public void UpdateGameLogic() {
             player.Move();
+            player.ManagePhysics();
 
         }
         
@@ -86,24 +87,18 @@ namespace SpaceTaxi.States {
             case "KEY_UP":
                 SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
-                        GameEventType.PlayerEvent, this,"MOVE_UP","",""));
+                        GameEventType.PlayerEvent, this,"BOOSTER_UPWARDS","",""));
                 break;
             case "KEY_RIGHT":
                 SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
-                        GameEventType.PlayerEvent, this, "MOVE_RIGHT", "", ""));
-                break;
-            case "KEY_DOWN":
-                SpaceTaxiBus.GetBus().RegisterEvent(
-                    GameEventFactory<object>.CreateGameEventForAllProcessors(
-                        GameEventType.PlayerEvent, this,"MOVE_DOWN","",""));
+                        GameEventType.PlayerEvent, this, "BOOSTER_TO_RIGHT", "", ""));
                 break;
             case "KEY_LEFT":
                 SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
-                        GameEventType.PlayerEvent, this, "MOVE_LEFT", "", ""));
+                        GameEventType.PlayerEvent, this, "BOOSTER_TO_LEFT", "", ""));
                 break;
-
             case "KEY_ESCAPE":
                 SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
@@ -115,12 +110,19 @@ namespace SpaceTaxi.States {
         public void KeyRelease(string key) {
             switch (key) {
             case "KEY_UP":
+                SpaceTaxiBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this, "STOP_ACCELERATE_UP", "", ""));
+                break;
             case "KEY_RIGHT":
-            case "KEY_DOWN":
+                SpaceTaxiBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this, "STOP_ACCELERATE_RIGHT", "", ""));
+                break;
             case "KEY_LEFT":
                 SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
-                        GameEventType.PlayerEvent, this, "MOVE_STOP", "", ""));
+                        GameEventType.PlayerEvent, this, "STOP_ACCELERATE_RIGHT", "", ""));
                 break;
             }
         }

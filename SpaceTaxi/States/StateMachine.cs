@@ -1,3 +1,4 @@
+using System;
 using DIKUArcade.EventBus;
 using DIKUArcade.State;
 using Galaga_Exercise_3.GalagaStates;
@@ -14,8 +15,6 @@ namespace SpaceTaxi {
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.InputEvent, this);
         }
 
-
-
         private void SwitchState(GameStateType stateType) {
             switch (stateType) {
             case (GameStateType.GameRunning):
@@ -26,6 +25,9 @@ namespace SpaceTaxi {
                 break;
             case (GameStateType.MainMenu):
                 ActiveState = MainMenu.GetInstance();
+                break;
+            case (GameStateType.LevelSelect):
+                ActiveState = LevelSelect.GetInstance();
                 break;
             }
         }
