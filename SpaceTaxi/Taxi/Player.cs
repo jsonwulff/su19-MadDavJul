@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq.Expressions;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
@@ -11,8 +12,16 @@ namespace SpaceTaxi {
     public class Player : IGameEventProcessor<object> {
         private readonly Image taxiBoosterOffImageLeft;
         private readonly Image taxiBoosterOffImageRight;
-        private readonly List<Image> taxiBosterOnBottomLeft;
-        private readonly List<Image> taxiBosterOnBottomRight;
+        private readonly ImageStride taxiBoosterOnLeft;
+        private readonly ImageStride taxiBoosterOnRight;
+        private readonly ImageStride taxiBoosterOnBottomLeft;
+        private readonly ImageStride taxiBoosterOnBottomOnLeft;
+        private readonly ImageStride taxiBoosterOnBottomOnRight;
+        private readonly ImageStride taxiBoosterOnBottomRight;
+        
+
+        
+        
         private readonly DynamicShape shape;
         private Orientation taxiOrientation;
 
@@ -28,9 +37,20 @@ namespace SpaceTaxi {
                 new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None.png"));
             taxiBoosterOffImageRight =
                 new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png"));
-            taxiBosterOnBottomLeft = ImageStride.CreateStrides(2,
-                Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png"));
+            taxiBoosterOnLeft = 
+                new ImageStride(4, ImageStride.CreateStrides(2,Path.Combine("Assets", "Images", "Taxi_Thrust_Back.png")));
+            taxiBoosterOnRight = 
+                new ImageStride(4, ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "Taxi_Thrust_Back_Right.png")));
+            taxiBoosterOnBottomLeft = 
+                new ImageStride(4, ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom.png")));
+            taxiBoosterOnBottomOnLeft = 
+                new ImageStride(4, ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom_Back.png")));
+            taxiBoosterOnBottomOnRight = 
+                new ImageStride(4, ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom_Back_Right.png")));
+            taxiBoosterOnBottomRight = 
+                new ImageStride(4, ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom_Right.png")));
 
+            
             Entity = new Entity(shape, taxiBoosterOffImageLeft);
             Velocity = new Vec2F(0,0);
             acceleration = new Vec2F(0,0);
@@ -56,14 +76,33 @@ namespace SpaceTaxi {
         }
 
         public void RenderPlayer() {
-            Entity.Image = taxiOrientation == Orientation.Left
-                ? taxiBoosterOffImageLeft
-                : taxiBoosterOffImageRight;
+            if (acceleration.Y > 0 && acceleration.X < 0) { //Flyver op og venstre
+                taxiOrientation = Orientation.Left;
+                Entity.Image = taxiBoosterOnBottomOnLeft; 
+            } else if (acceleration.Y > 0 && acceleration.X > 0) { //Flyver op og højre
+                taxiOrientation = Orientation.Right;
+                Entity.Image = taxiBoosterOnBottomOnRight;
+            } else if (acceleration.X < 0) { //Flyver venstre
+                taxiOrientation = Orientation.Left;
+                Entity.Image = taxiBoosterOnLeft;
+            } else if (acceleration.Y > 0) { //Flyver op
+                Entity.Image = taxiOrientation == Orientation.Left
+                    ? taxiBoosterOnBottomLeft
+                    : taxiBoosterOnBottomRight;
+            }  else if (acceleration.X > 0) { //Flyver højre
+                taxiOrientation = Orientation.Right;
+                Entity.Image = taxiBoosterOnRight;
+            }  else { // Flyver ikke
+                Entity.Image = taxiOrientation == Orientation.Left
+                    ? taxiBoosterOffImageLeft
+                    : taxiBoosterOffImageRight; 
+            }
             Entity.RenderEntity();
+            
         }
         
         public void ManagePhysics() {
-
+            Console.WriteLine(acceleration);
             Speed = Math.Abs(Velocity.Length());
             Vec2F gravity = new Vec2F(0f,-0.004f);
             
