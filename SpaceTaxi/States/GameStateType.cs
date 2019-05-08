@@ -4,7 +4,8 @@ namespace SpaceTaxi {
     public enum GameStateType {
         GameRunning,
         GamePaused, 
-        MainMenu
+        MainMenu,
+        LevelSelect
     }
     
     public class StateTransformer {
@@ -17,6 +18,8 @@ namespace SpaceTaxi {
                 return GameStateType.GamePaused;
             case "MAIN_MENU":
                 return GameStateType.MainMenu;
+            case "LEVEL_SELECT":
+                return GameStateType.LevelSelect;
             }
 
             throw new ArgumentException("String not recognized");
@@ -30,6 +33,8 @@ namespace SpaceTaxi {
                 return "GAME_PAUSED";
             case GameStateType.MainMenu:
                 return "MAIN_MENU";
+            case GameStateType.LevelSelect:
+                return "LEVEL_SELECT";
             }
             
             throw new ArgumentException("GameStateType not recognized");

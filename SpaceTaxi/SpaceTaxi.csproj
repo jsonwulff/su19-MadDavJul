@@ -51,6 +51,7 @@
     <Compile Include="States\GamePaused.cs" />
     <Compile Include="States\GameRunning.cs" />
     <Compile Include="States\GameStateType.cs" />
+    <Compile Include="States\LevelSelect.cs" />
     <Compile Include="States\MainMenu.cs" />
     <Compile Include="States\StateMachine.cs" />
     <Compile Include="Taxi\Orientation.cs" />
