@@ -18,10 +18,6 @@ namespace SpaceTaxi {
         private readonly ImageStride taxiBoosterOnBottomOnLeft;
         private readonly ImageStride taxiBoosterOnBottomOnRight;
         private readonly ImageStride taxiBoosterOnBottomRight;
-        
-
-        
-        
         private readonly DynamicShape shape;
         private Orientation taxiOrientation;
 
@@ -59,20 +55,10 @@ namespace SpaceTaxi {
         }
 
         public Entity Entity { get; }
-        
-        private void Direction(Vec2F direction) {
-            var shape = Entity.Shape.AsDynamicShape();
-            shape.ChangeDirection(direction);
-        }
 
         public void SetPosition(float x, float y) {
             shape.Position.X = x;
             shape.Position.Y = y;
-        }
-
-        public void SetExtent(float width, float height) {
-            shape.Extent.X = width;
-            shape.Extent.Y = height;
         }
 
         public void RenderPlayer() {
@@ -102,7 +88,6 @@ namespace SpaceTaxi {
         }
         
         public void ManagePhysics() {
-            Console.WriteLine(Velocity);
             Speed = Math.Abs(Velocity.Length());
             Vec2F gravity = new Vec2F(0f,-0.004f);
             

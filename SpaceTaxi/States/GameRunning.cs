@@ -90,6 +90,9 @@ namespace SpaceTaxi.States {
 
         public void SetMap(string levelFileName) {
             map = MapCreator.GetInstance().mapDictionary[levelFileName];
+            foreach (var line in map.Platforms) {
+                Console.WriteLine(line);
+            }
             player.Velocity = new Vec2F(0,0);
             player.acceleration = new Vec2F(0,0);
             player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
