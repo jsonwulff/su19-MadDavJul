@@ -25,7 +25,7 @@ namespace SpaceTaxi {
         private readonly DynamicShape shape;
         private Orientation taxiOrientation;
 
-        private Vec2F acceleration;
+        public Vec2F acceleration;
         public Vec2F Velocity;
         double time = 0;
         public double Speed;
@@ -102,7 +102,7 @@ namespace SpaceTaxi {
         }
         
         public void ManagePhysics() {
-            Console.WriteLine(acceleration);
+            Console.WriteLine(Velocity);
             Speed = Math.Abs(Velocity.Length());
             Vec2F gravity = new Vec2F(0f,-0.004f);
             

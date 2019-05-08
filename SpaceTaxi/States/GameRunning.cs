@@ -30,6 +30,10 @@ namespace SpaceTaxi.States {
             player = new Player();
             mapCreator = new MapCreator();
             
+            explosionStrides = ImageStride.CreateStrides(8,
+                Path.Combine("Assets", "Images", "Explosion.png"));
+            explosions = new AnimationContainer(4);
+            
             InitializeGameState();   
         }
 
@@ -53,18 +57,20 @@ namespace SpaceTaxi.States {
 
         public void UpdateGameLogic() {
             player.Move();
-            player.ManagePhysics();
-
-        }
-        
-        public void RenderState() {
-            backGroundImage.RenderEntity();
-            map.MapContainer.Iterate(entity => entity.RenderEntity());
-            player.RenderPlayer();
-            map.MapContainer.Iterate(entity => {
+            map.MapContainer.Iterate(entity => 
+            {
                 var collsion =
                     CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
+                if (!collsion.Collision) {
+                    player.ManagePhysics();
+
+                }
                 if (collsion.Collision) {
+                    AddExplosion(player.Entity.Shape.Position.X, player.Entity.Shape.Position.Y,
+                        player.Entity.Shape.Extent.X, player.Entity.Shape.Extent.X);
+                    player.acceleration = new Vec2F(0,0);
+                    player.Velocity = new Vec2F(0,0);
+                    
                     Console.Write("Colision detected");
                     if (collsion.CollisionDir == CollisionDirection.CollisionDirDown) {
                         Console.WriteLine(" from above");
@@ -75,11 +81,29 @@ namespace SpaceTaxi.States {
                     }
                 }
             });
+        }
+        
+        public void RenderState() {
+            backGroundImage.RenderEntity();
+            map.MapContainer.Iterate(entity => entity.RenderEntity());
+            player.RenderPlayer();
+            explosions.RenderAnimations();
+
             
         }
 
         public void SetMap(string levelFileName) {
             map = mapCreator.CreateMap(levelFileName);
+            player.Velocity = new Vec2F(0,0);
+            player.acceleration = new Vec2F(0,0);
+            player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
+        }
+        
+        public void AddExplosion(float posX, float posY,
+            float extentX, float extentY) {
+            explosions.AddAnimation(
+                new StationaryShape(posX, posY, extentX, extentY), explosionLength,
+                new ImageStride(explosionLength / 8, explosionStrides));
         }
 
         public void KeyPress(string key) {
