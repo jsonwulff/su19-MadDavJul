@@ -69,7 +69,7 @@ namespace SpaceTaxi {
             
             Velocity += (gravity + acceleration) * (float) (StaticTimer.GetElapsedSeconds() - time);
             time = StaticTimer.GetElapsedSeconds();
-            Console.WriteLine(Velocity);
+            
             shape.Direction = Velocity;
         }
 
