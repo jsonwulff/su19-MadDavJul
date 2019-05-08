@@ -14,11 +14,9 @@ namespace SpaceTaxi.States {
         
         private Entity backGroundImage;
         private Text[] menuButtons;
-        private List<Text> menuItemsList; 
         private int activeMenuButton;
         private Vec3I activeColor;
         private Vec3I inactiveColor;
-        private string[] levels;
 
         
         private string[] GetLevels() {
@@ -32,7 +30,7 @@ namespace SpaceTaxi.States {
             dir = dir.Parent;
 
             // Find level file.
-            string path = Path.Combine(dir.FullName.ToString(), "Levels/");
+            string path = Path.Combine(dir.FullName, "Levels");
 
             return Directory.GetFiles(path, "*.txt").Select(f => Path.GetFileName(f)).ToArray();
         }
@@ -43,7 +41,6 @@ namespace SpaceTaxi.States {
                 new Image(Path.Combine( "Assets",  "Images", "spaceBackground.png")));
             activeColor = new Vec3I(255,255,255);
             inactiveColor = new Vec3I(100,100,100);
-            menuItemsList = new List<Text>();
             
             InitializeGameState();
         }
@@ -58,16 +55,29 @@ namespace SpaceTaxi.States {
         }
 
         public void InitializeGameState() {
-            // This method should initialize all the GameState's variables and called at the end of the constructor.
-            levels = GetLevels();
+
+            var retval = new List<Text>();
+            
             var i = 0;
-            foreach (var level in levels) {
-                menuItemsList.Add(new Text(level,
+            foreach(KeyValuePair<string, Map> entry in MapCreator.GetInstance().mapDictionary)
+            {
+                retval.Add(new Text(entry.Value.LevelName,
                     new Vec2F(0.35f, 0.4f - i * 0.1f), 
                     new Vec2F(0.5f, 0.5f)));
-                i++;
+                    i++;
             }
-            menuButtons = menuItemsList.ToArray();
+
+            menuButtons = retval.ToArray();
+            
+//            levels = GetLevels();
+//            var i = 0;
+//            foreach (var level in levels) {
+//                menuItemsList.Add(new Text(level,
+//                    new Vec2F(0.35f, 0.4f - i * 0.1f), 
+//                    new Vec2F(0.5f, 0.5f)));
+//                i++;
+//            }
+//            menuButtons = menuItemsList.ToArray();
             
             HandleButtons();
 
@@ -95,7 +105,8 @@ namespace SpaceTaxi.States {
         public void ActivateButton() {
             SpaceTaxiBus.GetBus().RegisterEvent(
                 GameEventFactory<object>.CreateGameEventForAllProcessors(
-                    GameEventType.GameStateEvent, this, "CHANGE_LEVEL", levels[Math.Abs(activeMenuButton % menuButtons.Length)], ""));
+                    GameEventType.GameStateEvent, this, "CHANGE_LEVEL",
+                    MapCreator.GetInstance().levelsInFolder[Math.Abs(activeMenuButton % menuButtons.Length)], ""));
         }
         
         public void KeyPress(string key) {

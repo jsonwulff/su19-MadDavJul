@@ -16,7 +16,6 @@ namespace SpaceTaxi.States {
         
         private Player player;
         
-        private MapCreator mapCreator;
         private Map map;
         
         private List<Image> explosionStrides;
@@ -28,7 +27,6 @@ namespace SpaceTaxi.States {
                 new StationaryShape(new Vec2F(0,0), new Vec2F(1,1) ), 
                 new Image(Path.Combine( "Assets",  "Images", "SpaceBackground.png")));
             player = new Player();
-            mapCreator = new MapCreator();
             
             explosionStrides = ImageStride.CreateStrides(8,
                 Path.Combine("Assets", "Images", "Explosion.png"));
@@ -50,7 +48,7 @@ namespace SpaceTaxi.States {
         }
 
         public void InitializeGameState() {       
-            map = mapCreator.CreateMap("the-beach.txt");
+            map = MapCreator.GetInstance().mapDictionary["the-beach.txt"];
             player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
         }
         
@@ -88,12 +86,10 @@ namespace SpaceTaxi.States {
             map.MapContainer.Iterate(entity => entity.RenderEntity());
             player.RenderPlayer();
             explosions.RenderAnimations();
-
-            
         }
 
         public void SetMap(string levelFileName) {
-            map = mapCreator.CreateMap(levelFileName);
+            map = MapCreator.GetInstance().mapDictionary[levelFileName];
             player.Velocity = new Vec2F(0,0);
             player.acceleration = new Vec2F(0,0);
             player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
