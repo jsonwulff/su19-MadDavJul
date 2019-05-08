@@ -1,13 +1,36 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using DIKUArcade.Entities;
+using DIKUArcade.EventBus;
+using DIKUArcade.Graphics;
+using DIKUArcade.Math;
+using DIKUArcade.Physics;
 using DIKUArcade.State;
 
 namespace SpaceTaxi.States {
     public class GameRunning : IGameState {
         private static GameRunning instance = null;
         
+        private Entity backGroundImage;
+        
+        private Player player;
+        
+        private MapCreator mapCreator;
+        private Map map;
+        
+        private List<Image> explosionStrides;
+        private AnimationContainer explosions;
+        private int explosionLength = 500;
         
         private GameRunning() {
-            InitializeGameState();
+            backGroundImage = new Entity(
+                new StationaryShape(new Vec2F(0,0), new Vec2F(1,1) ), 
+                new Image(Path.Combine( "Assets",  "Images", "SpaceBackground.png")));
+            player = new Player();
+            mapCreator = new MapCreator();
             
+            InitializeGameState();   
         }
 
         public static GameRunning GetInstance() {
@@ -22,40 +45,83 @@ namespace SpaceTaxi.States {
             throw new System.NotImplementedException();
         }
 
-        public void InitializeGameState() {
+        public void InitializeGameState() {       
+            map = mapCreator.CreateMap("the-beach.txt");
+            player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
         }
+        
 
         public void UpdateGameLogic() {
+            player.Move();
 
         }
         
         public void RenderState() {
-
-
+            backGroundImage.RenderEntity();
+            map.MapContainer.Iterate(entity => entity.RenderEntity());
+            player.RenderPlayer();
+            map.MapContainer.Iterate(entity => {
+                var collsion =
+                    CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
+                if (collsion.Collision) {
+                    Console.Write("Colision detected");
+                    if (collsion.CollisionDir == CollisionDirection.CollisionDirDown) {
+                        Console.WriteLine(" from above");
+                    } else if (collsion.CollisionDir == CollisionDirection.CollisionDirUp) {
+                        Console.WriteLine(" from below");
+                    } else {
+                        Console.WriteLine("");
+                    }
+                }
+            });
+            
         }
-        
-        
-        
-        
+
+        public void SetMap(string levelFileName) {
+            map = mapCreator.CreateMap(levelFileName);
+        }
+
         public void KeyPress(string key) {
             switch (key) {
+            case "KEY_UP":
+                SpaceTaxiBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this,"MOVE_UP","",""));
+                break;
             case "KEY_RIGHT":
+                SpaceTaxiBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this, "MOVE_RIGHT", "", ""));
+                break;
+            case "KEY_DOWN":
+                SpaceTaxiBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this,"MOVE_DOWN","",""));
                 break;
             case "KEY_LEFT":
+                SpaceTaxiBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this, "MOVE_LEFT", "", ""));
                 break;
-            case "KEY_SPACE":
-                break;
+
             case "KEY_ESCAPE":
+                SpaceTaxiBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_PAUSED", ""));
                 break;
             }
         }
 
         public void KeyRelease(string key) {
             switch (key) {
+            case "KEY_UP":
             case "KEY_RIGHT":
+            case "KEY_DOWN":
             case "KEY_LEFT":
+                SpaceTaxiBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this, "MOVE_STOP", "", ""));
                 break;
-                
             }
         }
 
