@@ -31,7 +31,20 @@ namespace SpaceTaxi {
         }
         
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
-            throw new System.NotImplementedException();
+            if (eventType == GameEventType.GameStateEvent) {
+                switch (gameEvent.Message) {
+                case "CHANGE_STATE":
+                    SwitchState(StateTransformer.TransformStringToState(gameEvent.Parameter1));
+                    break;
+                case "CHANGE_LEVEL":
+                    var gameRunning = GameRunning.GetInstance();
+                    gameRunning.SetMap(gameEvent.Parameter1);
+                    ActiveState = gameRunning;
+                    break;
+                }
+            } else if (eventType == GameEventType.InputEvent) {
+                ActiveState.HandleKeyEvent(gameEvent.Message, gameEvent.Parameter1);
+            }
         }
     }
 }
