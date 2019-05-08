@@ -50,7 +50,8 @@ namespace SpaceTaxi {
                 retval.Add(levelFile, new Map(translator.CreateEntities(asciiReader.MapContainer),
                     GetMapName(asciiReader.MetaContainer),
                     translator.PlayerPostiotion,
-                    asciiReader.CustomerContainer));
+                    asciiReader.CustomerContainer,
+                    asciiReader.Platforms));
             }
 
             return retval;
@@ -72,22 +73,5 @@ namespace SpaceTaxi {
             return "No level name found";
         }
         
-        /// <summary>
-        /// Runs all of the necessary methods for retuning a map object. First by
-        /// reading the txt file, splitting the data and translating the data into
-        /// a map object
-        /// </summary>
-        /// <param name="filename">
-        /// String with the name of the level file, including .txt extension.
-        /// </param>
-        /// <returns>A Map object</returns>
-//        public Map CreateMap(string filename) {
-//            asciiReader.ReadFile(filename);
-//            translator.CreateImageDictionary(asciiReader.KeyContainer);
-//            return new Map(translator.CreateEntities(asciiReader.MapContainer),
-//                GetMapName(asciiReader.MetaContainer),
-//                translator.PlayerPostiotion,
-//                asciiReader.CustomerContainer);
-//        }
     }
 }

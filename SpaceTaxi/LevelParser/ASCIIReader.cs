@@ -12,6 +12,7 @@ namespace SpaceTaxi {
         public string[] MetaContainer;
         public string[] KeyContainer;
         public string[] CustomerContainer;
+        public string[] Platforms;
         
         
         /// <summary>
@@ -50,6 +51,7 @@ namespace SpaceTaxi {
             var path = GetLevelFilePath(filename);
             GetMapData(path);
             SplitMapData(path);
+            GetPlatform(MetaContainer);
         }
 
         /// <summary>
@@ -88,6 +90,23 @@ namespace SpaceTaxi {
             MetaContainer = metaData.ToArray();
             KeyContainer = keyData.ToArray();
             CustomerContainer = customerData.ToArray();
+
+        }
+
+        private void GetPlatform(string[] metaContent) {
+            var retval = new List<string>();
+            var platformRegx = new Regex(@"Platforms:");
+            var platformsRegx = new Regex(@"[^, ]");
+            foreach (var line in metaContent) {
+                if (platformRegx.IsMatch(line)) {
+                    foreach (Match match in platformsRegx.Matches(line.Substring(11))) {
+                        retval.Add(match.Value);
+                    }
+                    
+                }
+            }
+
+            Platforms = retval.ToArray();
 
         }
     }
