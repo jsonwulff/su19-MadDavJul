@@ -16,9 +16,10 @@ namespace Galaga_Exercise_3.GalagaStates {
         private Entity backGroundImage;
         private Text[] menuButtons;
         private Text newGame;
+        private Text levelSelect;
         private Text quit;
         private int activeMenuButton;
-        private int maxMenuButtons = 2;
+        private int maxMenuButtons = 3;
         private Vec3I activeColor;
         private Vec3I inactiveColor;
 
@@ -36,19 +37,23 @@ namespace Galaga_Exercise_3.GalagaStates {
 
         public void InitializeGameState() {
             
-            /*backGroundImage = new Entity(
+            backGroundImage = new Entity(
                 new StationaryShape(new Vec2F(0,0), new Vec2F(1,1) ), 
-                new Image(Path.Combine( "Assets",  "Images", "TitleImage.png"))); */
+                new Image(Path.Combine( "Assets",  "Images", "SpaceBackground.png")));
             menuButtons = new Text[maxMenuButtons];
             activeMenuButton = 0;
             newGame = new Text("New Game",
                 new Vec2F(0.25f, 0.4f), 
                 new Vec2F(0.5f, 0.5f));
-            quit = new Text(
-                "Quit", new Vec2F(0.25f, 0.2f), 
+            levelSelect = new Text("Select level",
+                new Vec2F(0.25f, 0.3f), 
+                new Vec2F(0.5f, 0.5f));
+            quit = new Text("Quit",
+                new Vec2F(0.25f, 0.2f), 
                 new Vec2F(0.5f, 0.5f));
             menuButtons[0] = newGame;
-            menuButtons[1] = quit;
+            menuButtons[1] = levelSelect;
+            menuButtons[2] = quit;
             
             activeColor = new Vec3I(255,255,255);
             inactiveColor = new Vec3I(100,100,100);
@@ -85,9 +90,15 @@ namespace Galaga_Exercise_3.GalagaStates {
             case 1:
                 SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.GameStateEvent, this, "CHANGE_STATE", "LEVEL_SELECT", ""));
+                break;
+            case 2:
+                SpaceTaxiBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.WindowEvent, this, "CLOSE_WINDOW", "", ""));
                 break;
             }
+            
         }
 
         public void KeyPress(string key) {
