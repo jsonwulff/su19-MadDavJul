@@ -60,9 +60,10 @@ namespace SpaceTaxi.States {
             player.Move();
 
             if (player.onPlatform) {
-                player.acceleration = new Vec2F(0,0);
-                player.Velocity = new Vec2F(0,0.0f);
+                //player.acceleration = new Vec2F(0,0);
+                //player.Velocity = new Vec2F(0,0.0f);
                 player.Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
+                StaticTimer.PauseTimer();
             } else {
                 player.ManagePhysics();
             }

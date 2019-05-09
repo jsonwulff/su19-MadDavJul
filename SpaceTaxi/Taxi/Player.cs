@@ -130,6 +130,7 @@ namespace SpaceTaxi {
                     onPlatform = false;
                     Velocity = new Vec2F(0,0.0f);
                     acceleration = new Vec2F(0,0);
+                    StaticTimer.ResumeTimer();
                 }
                 acceleration = acceleration + new Vec2F(0, 0.015f);
                 break;
