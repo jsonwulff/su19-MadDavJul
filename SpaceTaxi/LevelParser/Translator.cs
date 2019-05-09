@@ -62,7 +62,7 @@ namespace SpaceTaxi {
         /// </summary>
         /// <param name="mapContainer"> string array of the map-text</param>
         /// <returns>EntityContainer of all the 'blocks' on the map.</returns>
-        public EntityContainer<Entity> CreateEntities(string[] mapContainer, char[] platforms) {
+        public EntityContainer<Entity> CreateMapEntities(string[] mapContainer, char[] platforms) {
             var mapEntities = new EntityContainer<Entity>();
             for (int y = 0; y < 23; y++) {
                 var line = mapContainer[y];
@@ -77,5 +77,20 @@ namespace SpaceTaxi {
 
             return mapEntities;
         }
+        
+        public EntityContainer<Entity> CreatePlatformEntities(string[] mapContainer, char[] platforms) {
+            var platformEntities = new EntityContainer<Entity>();
+            for (int y = 0; y < 23; y++) {
+                var line = mapContainer[y];
+                for (int x = 0; x < 40; x++) {
+                    if (platforms.Contains(line[x])) {
+                        platformEntities.AddStationaryEntity(TranslateToEntity(x,y,line[x]));    
+                    }
+                }
+            }
+
+            return platformEntities;
+        }
+        
     }
 }

@@ -47,11 +47,11 @@ namespace SpaceTaxi {
             foreach (var levelFile in levelsInFolder) {
                 asciiReader.ReadFile(levelFile);
                 translator.CreateImageDictionary(asciiReader.KeyContainer);
-                retval.Add(levelFile, new Map(translator.CreateEntities(asciiReader.MapContainer, asciiReader.Platforms),
+                retval.Add(levelFile, new Map(translator.CreateMapEntities(asciiReader.MapContainer, asciiReader.Platforms),
                     GetMapName(asciiReader.MetaContainer),
                     translator.PlayerPostiotion,
                     asciiReader.CustomerContainer,
-                    asciiReader.Platforms));
+                    translator.CreatePlatformEntities(asciiReader.MapContainer, asciiReader.Platforms)));
             }
 
             return retval;
