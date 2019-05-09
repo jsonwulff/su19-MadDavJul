@@ -58,30 +58,25 @@ namespace SpaceTaxi.States {
 
         public void UpdateGameLogic() {
             player.Move();
-            
+
+            if (player.onPlatform) {
+                player.acceleration = new Vec2F(0,0);
+                player.Velocity = new Vec2F(0,0.0f);
+                player.Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
+            } else {
+                player.ManagePhysics();
+            }
+
             map.PlatformContainer.Iterate(entity => 
             {
                 var collsion =
                     CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
-                if (!collsion.Collision) {
-                    player.ManagePhysics();
-
-                }
                 if (collsion.Collision) {
+                    player.onPlatform = true;
                     if (player.Speed > 0.005) {
                         Console.WriteLine("kill player");
                     }
-                    player.acceleration = new Vec2F(0,0);
-                    player.Velocity = new Vec2F(0,0.0005f);
                     
-                    Console.Write("Colision detected");
-                    if (collsion.CollisionDir == CollisionDirection.CollisionDirDown) {
-                        Console.WriteLine(" from above");
-                    } else if (collsion.CollisionDir == CollisionDirection.CollisionDirUp) {
-                        Console.WriteLine(" from below");
-                    } else {
-                        Console.WriteLine("");
-                    }
                 }
             });
             
@@ -89,10 +84,7 @@ namespace SpaceTaxi.States {
             {
                 var collsion =
                     CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
-                if (!collsion.Collision) {
-                    player.ManagePhysics();
-
-                }
+  
                 if (collsion.Collision) {
                     AddExplosion(player.Entity.Shape.Position.X, player.Entity.Shape.Position.Y,
                         player.Entity.Shape.Extent.X, player.Entity.Shape.Extent.X);
@@ -102,8 +94,6 @@ namespace SpaceTaxi.States {
                     Console.Write("Colision detected");
                     if (collsion.CollisionDir == CollisionDirection.CollisionDirDown) {
                         Console.WriteLine(" from above");
-                    } else if (collsion.CollisionDir == CollisionDirection.CollisionDirUp) {
-                        Console.WriteLine(" from below");
                     } else {
                         Console.WriteLine("");
                     }

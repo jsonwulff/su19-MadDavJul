@@ -24,6 +24,9 @@ namespace SpaceTaxi {
         private readonly DynamicShape shape;
         private Orientation taxiOrientation;
 
+        public bool onPlatform = false;
+        public bool alive = true;
+        
         public Vec2F acceleration;
         public Vec2F Velocity;
         private double time = 0;
@@ -123,6 +126,11 @@ namespace SpaceTaxi {
             }
             switch (gameEvent.Message) {
             case "BOOSTER_UPWARDS":
+                if (onPlatform) {
+                    onPlatform = false;
+                    Velocity = new Vec2F(0,0.0f);
+                    acceleration = new Vec2F(0,0);
+                }
                 acceleration = acceleration + new Vec2F(0, 0.015f);
                 break;
             case "BOOSTER_TO_RIGHT":
