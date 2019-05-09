@@ -5,6 +5,7 @@ using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.State;
+using DIKUArcade.Timers;
 
 namespace SpaceTaxi.States {
     public class GamePaused : IGameState {
@@ -69,6 +70,7 @@ namespace SpaceTaxi.States {
         public void ActivateButton() {
             switch (Math.Abs(activeMenuButton % maxMenuButtons)) {
             case 0:
+                StaticTimer.ResumeTimer();
                 SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_RUNNING", ""));

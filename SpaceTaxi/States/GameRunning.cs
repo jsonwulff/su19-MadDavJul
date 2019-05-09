@@ -7,6 +7,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using DIKUArcade.State;
+using DIKUArcade.Timers;
 
 namespace SpaceTaxi.States {
     public class GameRunning : IGameState {
@@ -17,6 +18,8 @@ namespace SpaceTaxi.States {
         private Player player;
         
         private Map map;
+
+        private bool playerAlive;
         
         private List<Image> explosionStrides;
         private AnimationContainer explosions;
@@ -55,6 +58,8 @@ namespace SpaceTaxi.States {
 
         public void UpdateGameLogic() {
             player.Move();
+            
+            
             map.MapContainer.Iterate(entity => 
             {
                 var collsion =
@@ -89,6 +94,7 @@ namespace SpaceTaxi.States {
         }
 
         public void SetMap(string levelFileName) {
+            StaticTimer.RestartTimer();
             map = MapCreator.GetInstance().mapDictionary[levelFileName];
             foreach (var line in map.Platforms) {
                 Console.WriteLine(line);
@@ -123,10 +129,12 @@ namespace SpaceTaxi.States {
                         GameEventType.PlayerEvent, this, "BOOSTER_TO_LEFT", "", ""));
                 break;
             case "KEY_ESCAPE":
+                StaticTimer.PauseTimer();
                 SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_PAUSED", ""));
                 break;
+            
             }
         }
 

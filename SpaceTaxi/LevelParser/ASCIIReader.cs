@@ -7,6 +7,7 @@ using DIKUArcade.Math;
 
 namespace SpaceTaxi {
     public class ASCIIReader {
+        private string[] levelData;
 
         public string[] MapContainer;
         public string[] MetaContainer;
@@ -49,19 +50,26 @@ namespace SpaceTaxi {
         /// <param name="filename"> filename is the name of the text file to parse</param>
         public void ReadFile(string filename) {
             var path = GetLevelFilePath(filename);
-            GetMapData(path);
-            SplitMapData(path);
-            GetPlatform(MetaContainer);
+            MapContainer = GetMap(path);
+            levelData = GetLevelData(path);
+            MetaContainer = GetMetaData(levelData);
+            KeyContainer = GetKeyLegendData(levelData);
+            CustomerContainer = GetCustomerData(levelData);
+            Platforms = GetPlatform(MetaContainer);
         }
 
         /// <summary>
         /// Sets MapContainer to the text representation of the map
         /// </summary>
         /// <param name="path"> file path of the textfile</param>
-        private void GetMapData(string path) {
-            MapContainer = File.ReadLines(path).Take(23).ToArray();
+        private string[] GetMap(string path) {
+            return File.ReadLines(path).Take(23).ToArray();
         }
-        
+
+        private string[] GetLevelData(string path) {
+            return File.ReadLines(path).Skip(24).Where(line => line != "").ToArray();
+        }
+
         /// <summary>
         /// Splits the data contained in the text file in, MetaContainer, KeyContainer and CustomerData
         /// </summary>
@@ -93,7 +101,42 @@ namespace SpaceTaxi {
 
         }
 
-        private void GetPlatform(string[] metaContent) {
+        private string[] GetKeyLegendData(string[] leveldata) {
+            var retval = new List<string>();
+            Regex keyLegendRegex = new Regex(@"\S\)\s");
+            foreach (var line in leveldata) {
+                if (keyLegendRegex.IsMatch(line)) {
+                    retval.Add(line);
+                }
+            }
+            return retval.ToArray();
+        }
+
+        private string[] GetCustomerData(string[] leveldata) {
+            var retval = new List<string>();
+            Regex customerRegex = new Regex(@"Customer");
+            foreach (var line in leveldata) {
+                if (customerRegex.IsMatch(line)) {
+                    retval.Add(line.Substring(10));
+                }
+            }
+            return retval.ToArray();
+        }
+        
+        private string[] GetMetaData(string[] leveldata) {
+            var retval = new List<string>();
+            Regex keyLegendRegex = new Regex(@"\S\)\s");
+            Regex customerRegex = new Regex(@"Customer");
+            foreach (var line in leveldata) {
+                if (!keyLegendRegex.IsMatch(line) && !customerRegex.IsMatch(line)) {
+                    retval.Add(line);
+                }
+            }
+            return retval.ToArray();
+        }
+
+        
+        private string[] GetPlatform(string[] metaContent) {
             var retval = new List<string>();
             var platformRegx = new Regex(@"Platforms:");
             var platformsRegx = new Regex(@"[^, ]");
@@ -102,12 +145,10 @@ namespace SpaceTaxi {
                     foreach (Match match in platformsRegx.Matches(line.Substring(11))) {
                         retval.Add(match.Value);
                     }
-                    
                 }
             }
 
-            Platforms = retval.ToArray();
-
+            return retval.ToArray();
         }
     }
 }

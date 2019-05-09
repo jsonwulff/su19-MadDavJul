@@ -23,7 +23,7 @@ namespace SpaceTaxi {
 
         public Vec2F acceleration;
         public Vec2F Velocity;
-        double time = 0;
+        private double time = 0;
         public double Speed;
         
 
