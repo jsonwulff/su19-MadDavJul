@@ -136,21 +136,6 @@ namespace SpaceTaxi {
         }
 
         
-/*        private string[] GetPlatform(string[] metaContent) {
-            var retval = new List<string>();
-            var platformRegx = new Regex(@"Platforms:");
-            var platformsRegx = new Regex(@"[^, ]");
-            foreach (var line in metaContent) {
-                if (platformRegx.IsMatch(line)) {
-                    foreach (Match match in platformsRegx.Matches(line.Substring(11))) {
-                        retval.Add(match.Value);
-                    }
-                }
-            }
-
-            return retval.ToArray();
-        }*/
-        
         private char[] GetPlatform(string[] metaContent) {
             var retval = "";
             var platformRegx = new Regex(@"Platforms:");

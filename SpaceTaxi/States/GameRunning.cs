@@ -58,44 +58,6 @@ namespace SpaceTaxi.States {
             player.Move();
             map.CollisionLogic();
 
-            /*if (player.onPlatform) {
-                player.Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
-                StaticTimer.PauseTimer();
-            } else {
-                player.ManagePhysics();
-            }
-
-            map.PlatformContainer.Iterate(entity => 
-            {
-                var collsion =
-                    CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
-                if (collsion.Collision) {
-                    player.onPlatform = true;
-                    if (player.Speed > 0.005) {
-                        Console.WriteLine("kill player");
-                    }
-                    
-                }
-            });
-
-            if (player.Entity.Shape.Position.Y > 1.0f) {
-                Console.WriteLine("Move to next level");
-            }
-            
-            map.MapContainer.Iterate(entity => 
-            {
-                var collsion =
-                    CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
-  
-                if (collsion.Collision) {
-                    AddExplosion(player.Entity.Shape.Position.X, player.Entity.Shape.Position.Y,
-                        player.Entity.Shape.Extent.X, player.Entity.Shape.Extent.X);
-                    player.acceleration = new Vec2F(0,0);
-                    player.Velocity = new Vec2F(0,0);
-                    
-                    Console.Write("Player dead");
-                }
-            });*/
         }
         
         public void RenderState() {
@@ -103,7 +65,7 @@ namespace SpaceTaxi.States {
             map.PlatformContainer.Iterate(entity => entity.RenderEntity());
             map.MapContainer.Iterate(entity => entity.RenderEntity());
             player.RenderPlayer();
-            explosions.RenderAnimations();
+            map.explosions.RenderAnimations();
         }
 
         public void SetMap(string levelFileName) {
@@ -114,13 +76,7 @@ namespace SpaceTaxi.States {
             player.Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
             player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
         }
-        
-        public void AddExplosion(float posX, float posY,
-            float extentX, float extentY) {
-            explosions.AddAnimation(
-                new StationaryShape(posX, posY, extentX, extentY), explosionLength,
-                new ImageStride(explosionLength / 8, explosionStrides));
-        }
+
 
         public void KeyPress(string key) {
             switch (key) {

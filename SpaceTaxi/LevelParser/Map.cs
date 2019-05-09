@@ -14,10 +14,11 @@ namespace SpaceTaxi {
         public string LevelName;
         public (float x, float y) PlayerPosition;
         public string[] CustomerData;
+        public AnimationContainer explosions;
         private Player player;
         //public char[] Platforms;
         private List<Image> explosionStrides;
-        private AnimationContainer explosions;
+
         private int explosionLength = 500;
 
         public Map(EntityContainer<Entity> mapContainer, string levelName,
@@ -48,6 +49,7 @@ namespace SpaceTaxi {
                 if (collsion.Collision) {
                     player.onPlatform = true;
                     if (player.Speed > 0.005) {
+                        player.alive = false;
                         Console.WriteLine("kill player");
                     }
                     
@@ -68,7 +70,7 @@ namespace SpaceTaxi {
                         player.Entity.Shape.Extent.X, player.Entity.Shape.Extent.X);
                     player.acceleration = new Vec2F(0,0);
                     player.Velocity = new Vec2F(0,0);
-                    
+                    player.alive = false;
                     Console.Write("Player dead");
                 }
             });
