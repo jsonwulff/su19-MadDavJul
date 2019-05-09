@@ -13,27 +13,11 @@ namespace SpaceTaxi.States {
         private static LevelSelect instance = null;
         
         private Entity backGroundImage;
+        private Text testText;
         private Text[] menuButtons;
         private int activeMenuButton;
         private Vec3I activeColor;
         private Vec3I inactiveColor;
-
-        
-        private string[] GetLevels() {
-            // Find base path.
-            DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(
-                System.Reflection.Assembly.GetExecutingAssembly().Location));
-
-            while (dir.Name != "bin") {
-                dir = dir.Parent;
-            }
-            dir = dir.Parent;
-
-            // Find level file.
-            string path = Path.Combine(dir.FullName, "Levels");
-
-            return Directory.GetFiles(path, "*.txt").Select(f => Path.GetFileName(f)).ToArray();
-        }
         
         public LevelSelect() {
             backGroundImage = new Entity(
@@ -55,9 +39,7 @@ namespace SpaceTaxi.States {
         }
 
         public void InitializeGameState() {
-
-            var retval = new List<Text>();
-            
+            var retval = new List<Text>();           
             var i = 0;
             foreach(KeyValuePair<string, Map> entry in MapCreator.GetInstance().mapDictionary)
             {
@@ -66,18 +48,12 @@ namespace SpaceTaxi.States {
                     new Vec2F(0.5f, 0.5f)));
                     i++;
             }
-
+            testText = new Text("TESTSETSTESTETASET",
+                new Vec2F(0.0f,-0.5f),
+                new Vec2F(1.0f,1.0f));
+            testText.SetColor(inactiveColor);
+            testText.SetFontSize(20);
             menuButtons = retval.ToArray();
-            
-//            levels = GetLevels();
-//            var i = 0;
-//            foreach (var level in levels) {
-//                menuItemsList.Add(new Text(level,
-//                    new Vec2F(0.35f, 0.4f - i * 0.1f), 
-//                    new Vec2F(0.5f, 0.5f)));
-//                i++;
-//            }
-//            menuButtons = menuItemsList.ToArray();
             
             HandleButtons();
 
@@ -92,6 +68,8 @@ namespace SpaceTaxi.States {
             foreach (var button in menuButtons) {
                 button.RenderText();
             }
+
+            testText.RenderText();
         }
         
         public void HandleButtons() {

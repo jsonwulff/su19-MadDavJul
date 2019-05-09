@@ -18,8 +18,6 @@ namespace SpaceTaxi.States {
         private Player player;
         
         private Map map;
-
-        private bool playerAlive;
         
         private List<Image> explosionStrides;
         private AnimationContainer explosions;
@@ -29,7 +27,7 @@ namespace SpaceTaxi.States {
             backGroundImage = new Entity(
                 new StationaryShape(new Vec2F(0,0), new Vec2F(1,1) ), 
                 new Image(Path.Combine( "Assets",  "Images", "SpaceBackground.png")));
-            player = new Player();
+            player = Player.GetInstance();
             
             explosionStrides = ImageStride.CreateStrides(8,
                 Path.Combine("Assets", "Images", "Explosion.png"));
@@ -58,10 +56,9 @@ namespace SpaceTaxi.States {
 
         public void UpdateGameLogic() {
             player.Move();
+            map.CollisionLogic();
 
-            if (player.onPlatform) {
-                //player.acceleration = new Vec2F(0,0);
-                //player.Velocity = new Vec2F(0,0.0f);
+            /*if (player.onPlatform) {
                 player.Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
                 StaticTimer.PauseTimer();
             } else {
@@ -80,6 +77,10 @@ namespace SpaceTaxi.States {
                     
                 }
             });
+
+            if (player.Entity.Shape.Position.Y > 1.0f) {
+                Console.WriteLine("Move to next level");
+            }
             
             map.MapContainer.Iterate(entity => 
             {
@@ -92,14 +93,9 @@ namespace SpaceTaxi.States {
                     player.acceleration = new Vec2F(0,0);
                     player.Velocity = new Vec2F(0,0);
                     
-                    Console.Write("Colision detected");
-                    if (collsion.CollisionDir == CollisionDirection.CollisionDirDown) {
-                        Console.WriteLine(" from above");
-                    } else {
-                        Console.WriteLine("");
-                    }
+                    Console.Write("Player dead");
                 }
-            });
+            });*/
         }
         
         public void RenderState() {
@@ -113,11 +109,9 @@ namespace SpaceTaxi.States {
         public void SetMap(string levelFileName) {
             StaticTimer.RestartTimer();
             map = MapCreator.GetInstance().mapDictionary[levelFileName];
-            foreach (var line in map.Platforms) {
-                Console.WriteLine(line);
-            }
             player.Velocity = new Vec2F(0,0);
             player.acceleration = new Vec2F(0,0);
+            player.Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
             player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
         }
         

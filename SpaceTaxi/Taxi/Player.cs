@@ -111,13 +111,13 @@ namespace SpaceTaxi {
         /// Updates the movement of player object.
         /// </summary>
         public void Move() {
-            Vec2F newPos = Entity.Shape.AsDynamicShape().Direction + Entity.Shape.Position;
-            if (!(newPos.X < 0.0f ||
-                  newPos.X + Entity.Shape.Extent.X > 1.0f ||
-                  newPos.Y + Entity.Shape.Extent.Y < 0.0f ||
-                  newPos.Y > 1.0f)) {
-                Entity.Shape.Move();
-            }
+//            Vec2F newPos = Entity.Shape.AsDynamicShape().Direction + Entity.Shape.Position;
+//            if (!(newPos.X < 0.0f ||
+//                  newPos.X + Entity.Shape.Extent.X > 1.0f ||
+//                  newPos.Y + Entity.Shape.Extent.Y < 0.0f ||
+//                  newPos.Y > 1.0f)) {
+//            }
+            Entity.Shape.Move();
         }
 
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
