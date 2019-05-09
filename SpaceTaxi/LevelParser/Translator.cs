@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
@@ -61,14 +62,14 @@ namespace SpaceTaxi {
         /// </summary>
         /// <param name="mapContainer"> string array of the map-text</param>
         /// <returns>EntityContainer of all the 'blocks' on the map.</returns>
-        public EntityContainer<Entity> CreateEntities(string[] mapContainer) {
+        public EntityContainer<Entity> CreateEntities(string[] mapContainer, char[] platforms) {
             var mapEntities = new EntityContainer<Entity>();
             for (int y = 0; y < 23; y++) {
                 var line = mapContainer[y];
                 for (int x = 0; x < 40; x++) {
                     if (line[x] == '>') {
                         PlayerPostiotion = (x * 0.025f, 0.975f - y * 0.025f);
-                    } else if (imageDictionary.ContainsKey(line[x])) {
+                    } else if (imageDictionary.ContainsKey(line[x]) && !platforms.Contains(line[x])) {
                         mapEntities.AddStationaryEntity(TranslateToEntity(x,y,line[x]));    
                     }
                 }
