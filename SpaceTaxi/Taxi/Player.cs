@@ -10,6 +10,8 @@ using DIKUArcade.Timers;
 
 namespace SpaceTaxi {
     public class Player : IGameEventProcessor<object> {
+        private static Player instance = null;
+        
         private readonly Image taxiBoosterOffImageLeft;
         private readonly Image taxiBoosterOffImageRight;
         private readonly ImageStride taxiBoosterOnLeft;
@@ -18,6 +20,7 @@ namespace SpaceTaxi {
         private readonly ImageStride taxiBoosterOnBottomOnLeft;
         private readonly ImageStride taxiBoosterOnBottomOnRight;
         private readonly ImageStride taxiBoosterOnBottomRight;
+        
         private readonly DynamicShape shape;
         private Orientation taxiOrientation;
 
@@ -55,6 +58,10 @@ namespace SpaceTaxi {
         }
 
         public Entity Entity { get; }
+        
+        public static Player GetInstance() {
+            return Player.instance ?? (Player.instance = new Player());
+        }
 
         public void SetPosition(float x, float y) {
             shape.Position.X = x;
