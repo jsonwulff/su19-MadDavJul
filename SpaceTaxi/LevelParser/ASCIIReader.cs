@@ -13,7 +13,7 @@ namespace SpaceTaxi {
         public string[] MetaContainer;
         public string[] KeyContainer;
         public string[] CustomerContainer;
-        public string[] Platforms;
+        public char[] Platforms;
         
         
         /// <summary>
@@ -136,7 +136,7 @@ namespace SpaceTaxi {
         }
 
         
-        private string[] GetPlatform(string[] metaContent) {
+/*        private string[] GetPlatform(string[] metaContent) {
             var retval = new List<string>();
             var platformRegx = new Regex(@"Platforms:");
             var platformsRegx = new Regex(@"[^, ]");
@@ -149,6 +149,20 @@ namespace SpaceTaxi {
             }
 
             return retval.ToArray();
+        }*/
+        
+        private char[] GetPlatform(string[] metaContent) {
+            var retval = "";
+            var platformRegx = new Regex(@"Platforms:");
+            char[] charsToTrim = { ',', ' ', 'J'};
+            foreach (var line in metaContent) {
+                if (platformRegx.IsMatch(line)) {
+                    retval = Regex.Replace(line.Substring(11), @"[, ]", "");
+                    //retval = line.Substring(11).Trim(charsToTrim);
+                }
+            }
+
+            return retval.ToCharArray();
         }
     }
 }

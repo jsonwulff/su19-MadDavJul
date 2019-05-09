@@ -7,9 +7,9 @@ namespace SpaceTaxi {
         public string LevelName;
         public (float x, float y) PlayerPosition;
         public string[] CustomerData;
-        public string[] Platforms;
+        public char[] Platforms;
 
-        public Map(EntityContainer<Entity> mapContainer, string levelName, (float x, float y) playerPosition, string[] customerData, string[] platforms) {
+        public Map(EntityContainer<Entity> mapContainer, string levelName, (float x, float y) playerPosition, string[] customerData, char[] platforms) {
             MapContainer = mapContainer;
             LevelName = levelName;
             PlayerPosition = playerPosition;
