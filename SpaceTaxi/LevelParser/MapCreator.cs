@@ -21,10 +21,17 @@ namespace SpaceTaxi {
             mapDictionary = makeLevels();         
         }
 
+        /// <summary>
+        /// Singleton pattern
+        /// </summary>
+        /// <returns>Instance of MapCreator</returns>
         public static MapCreator GetInstance() {
             return MapCreator.instance ?? (MapCreator.instance = new MapCreator());
         }
-
+        /// <summary>
+        /// Get all levels in the Levels folder
+        /// </summary>
+        /// <returns>An array of filenames in the Levels folder</returns>
         private string[] GetLevels() {
             // Find base path.
             DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(
@@ -40,7 +47,10 @@ namespace SpaceTaxi {
 
             return Directory.GetFiles(path, "*.txt").Select(f => Path.GetFileName(f)).ToArray();
         }
-
+        /// <summary>
+        /// Populates the mapDictionary, for all the maps.
+        /// </summary>
+        /// <returns>Dictionary of all map objects.</returns>
         private Dictionary<string, Map> makeLevels() {
             var retval =  new Dictionary<string, Map>();
             int levelNumber = 0;

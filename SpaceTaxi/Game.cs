@@ -66,16 +66,6 @@ namespace SpaceTaxi {
             }
         }
 
-//        public void KeyPress(string key) {
-//            switch (key) {
-//            case "KEY_F12":
-//                Console.WriteLine("Saving screenshot");
-//                win.SaveScreenShot();
-//                break;
-//            }
-//        }
-
-
 
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
             if (eventType == GameEventType.WindowEvent) {

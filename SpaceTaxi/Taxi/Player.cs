@@ -61,16 +61,26 @@ namespace SpaceTaxi {
         }
 
         public Entity Entity { get; }
-        
+        /// <summary>
+        /// Singleton pattern
+        /// </summary>
+        /// <returns>Instance of Player</returns>
         public static Player GetInstance() {
             return Player.instance ?? (Player.instance = new Player());
         }
-
+        /// <summary>
+        /// Set the players position
+        /// </summary>
+        /// <param name="x">X Position</param>
+        /// <param name="y">Y Position</param>
         public void SetPosition(float x, float y) {
             shape.Position.X = x;
             shape.Position.Y = y;
         }
-
+        
+        /// <summary>
+        /// Render the player according to the acceleration/velocity
+        /// </summary>
         public void RenderPlayer() {
             if (acceleration.Y > 0 && acceleration.X < 0) { //Flyver op og venstre
                 taxiOrientation = Orientation.Left;
@@ -97,6 +107,9 @@ namespace SpaceTaxi {
             
         }
         
+        /// <summary>
+        /// Simulates pseudo-physics for the Player object
+        /// </summary>
         public void ManagePhysics() {
             Speed = Math.Abs(Velocity.Length());
             Vec2F gravity = new Vec2F(0f,-0.004f);
@@ -114,6 +127,11 @@ namespace SpaceTaxi {
             Entity.Shape.Move();
         }
 
+        /// <summary>
+        /// Listens to events from the gameBus
+        /// </summary>
+        /// <param name="eventType">Type of event received</param>
+        /// <param name="gameEvent">The Event</param>
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
             if (eventType != GameEventType.PlayerEvent) {
                 return;

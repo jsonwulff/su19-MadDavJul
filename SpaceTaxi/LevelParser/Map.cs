@@ -41,7 +41,10 @@ namespace SpaceTaxi {
                 Path.Combine("Assets", "Images", "Explosion.png"));
             explosions = new AnimationContainer(4);
         }
-
+        /// <summary>
+        /// CollisionLogic checks for collisions with MapContainer and PlatformContainer. Kills if obstacle
+        /// collision, sets player.onPlatform false if platform collision.
+        /// </summary>
         public void CollisionLogic() {
             if (player.onPlatform) {
                 player.Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
@@ -65,7 +68,7 @@ namespace SpaceTaxi {
                 }
             }
             
-            // Logic for collision with obstacals
+            // Logic for collision with obstacles
             foreach (Entity entity in MapContainer) {
                 var collsion =
                     CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
@@ -87,7 +90,13 @@ namespace SpaceTaxi {
                 GameRunning.GetInstance().SetMap(MapCreator.GetInstance().levelsInFolder[LevelNumber + 1]);
             }
         }
-        
+        /// <summary>
+        /// Plays an animation on the given position.
+        /// </summary>
+        /// <param name="posX">Position x</param>
+        /// <param name="posY">Position y</param>
+        /// <param name="extentX">Extent x</param>
+        /// <param name="extentY">Extent y</param>
         public void AddExplosion(float posX, float posY,
             float extentX, float extentY) {
             explosions.AddAnimation(

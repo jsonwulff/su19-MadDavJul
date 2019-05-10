@@ -77,7 +77,12 @@ namespace SpaceTaxi {
 
             return mapEntities;
         }
-        
+        /// <summary>
+        /// Creates the seperate Platform container, for making seperate collisions
+        /// </summary>
+        /// <param name="mapContainer"> Container of all characters in the map</param>
+        /// <param name="platforms">Container of platform characters in the legend</param>
+        /// <returns></returns>
         public EntityContainer<Entity> CreatePlatformEntities(string[] mapContainer, char[] platforms) {
             var platformEntities = new EntityContainer<Entity>();
             for (int y = 0; y < 23; y++) {
