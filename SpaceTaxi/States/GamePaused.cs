@@ -48,7 +48,7 @@ namespace SpaceTaxi.States {
         }
 
         public void UpdateGameLogic() {
-            GamePaused.GetInstance();
+            //GamePaused.GetInstance();
         }
 
         public void RenderState() {

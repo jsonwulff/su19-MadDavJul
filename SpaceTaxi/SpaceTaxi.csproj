@@ -48,6 +48,7 @@
     <Compile Include="LevelParser\Map.cs" />
     <Compile Include="LevelParser\Translator.cs" />
     <Compile Include="SpaceTaxiBus.cs" />
+    <Compile Include="States\GameOver.cs" />
     <Compile Include="States\GamePaused.cs" />
     <Compile Include="States\GameRunning.cs" />
     <Compile Include="States\GameStateType.cs" />
