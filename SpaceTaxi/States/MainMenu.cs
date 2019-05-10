@@ -86,7 +86,10 @@ namespace Galaga_Exercise_3.GalagaStates {
                 SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_RUNNING", ""));
+                Player.GetInstance().onPlatform = false;
+                GameRunning.GetInstance().ResetPlayer();
                 break;
+                
             case 1:
                 SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(

@@ -17,7 +17,7 @@ namespace SpaceTaxi.States {
         public GameOver() {
             backGroundImage = new Entity(
                 new StationaryShape(new Vec2F(0,0), new Vec2F(1,1) ), 
-                new Image(Path.Combine( "Assets",  "Images", "spaceBackground.png")));
+                new Image(Path.Combine( "Assets",  "Images", "SpaceBackground.png")));
             textColor = new Vec3I(255,255,255);
             gameOver = new Text("Game Over", new Vec2F(0.0f, -0.3f), new Vec2F(1.0f, 1.0f) );
             gameOver.SetColor(textColor);
@@ -40,7 +40,7 @@ namespace SpaceTaxi.States {
         }
 
         public void UpdateGameLogic() {
-            throw new System.NotImplementedException();
+            
         }
 
         public void RenderState() {

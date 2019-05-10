@@ -43,16 +43,18 @@ namespace SpaceTaxi {
 
         private Dictionary<string, Map> makeLevels() {
             var retval =  new Dictionary<string, Map>();
-            
+            int levelNumber = 0;
             foreach (var levelFile in levelsInFolder) {
                 asciiReader.ReadFile(levelFile);
                 translator.CreateImageDictionary(asciiReader.KeyContainer);
                 retval.Add(levelFile, new Map(translator.CreateMapEntities(asciiReader.MapContainer, asciiReader.Platforms),
-                    GetMapName(asciiReader.MetaContainer),
+                    GetMapName(asciiReader.MetaContainer), levelFile, levelNumber,
                     translator.PlayerPostiotion,
                     asciiReader.CustomerContainer,
                     translator.CreatePlatformEntities(asciiReader.MapContainer, asciiReader.Platforms)));
             }
+
+            levelNumber++;
 
             return retval;
         }

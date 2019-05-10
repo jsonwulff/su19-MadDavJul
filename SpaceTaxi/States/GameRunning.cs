@@ -49,7 +49,7 @@ namespace SpaceTaxi.States {
         }
 
         public void InitializeGameState() {       
-            map = MapCreator.GetInstance().mapDictionary["the-beach.txt"];
+            map = MapCreator.GetInstance().mapDictionary["short-n-sweet.txt"];
             player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
         }
         
@@ -78,6 +78,15 @@ namespace SpaceTaxi.States {
             player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
         }
 
+        public void ResetPlayer() {
+            player.Velocity = new Vec2F(0,0);
+            player.acceleration = new Vec2F(0,0);
+            player.time = 0;
+            player.Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
+            player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
+            StaticTimer.RestartTimer();
+        }
+        
 
         public void KeyPress(string key) {
             switch (key) {

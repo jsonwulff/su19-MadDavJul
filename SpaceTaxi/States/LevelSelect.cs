@@ -22,7 +22,7 @@ namespace SpaceTaxi.States {
         public LevelSelect() {
             backGroundImage = new Entity(
                 new StationaryShape(new Vec2F(0,0), new Vec2F(1,1) ), 
-                new Image(Path.Combine( "Assets",  "Images", "spaceBackground.png")));
+                new Image(Path.Combine( "Assets",  "Images", "SpaceBackground.png")));
             activeColor = new Vec3I(255,255,255);
             inactiveColor = new Vec3I(100,100,100);
             
@@ -48,11 +48,6 @@ namespace SpaceTaxi.States {
                     new Vec2F(0.5f, 0.5f)));
                     i++;
             }
-            testText = new Text("TESTSETSTESTETASET",
-                new Vec2F(0.0f,-0.5f),
-                new Vec2F(1.0f,1.0f));
-            testText.SetColor(inactiveColor);
-            testText.SetFontSize(20);
             menuButtons = retval.ToArray();
             
             HandleButtons();
@@ -69,7 +64,6 @@ namespace SpaceTaxi.States {
                 button.RenderText();
             }
 
-            testText.RenderText();
         }
         
         public void HandleButtons() {
@@ -85,6 +79,7 @@ namespace SpaceTaxi.States {
                 GameEventFactory<object>.CreateGameEventForAllProcessors(
                     GameEventType.GameStateEvent, this, "CHANGE_LEVEL",
                     MapCreator.GetInstance().levelsInFolder[Math.Abs(activeMenuButton % menuButtons.Length)], ""));
+            Player.GetInstance().onPlatform = false;
         }
         
         public void KeyPress(string key) {

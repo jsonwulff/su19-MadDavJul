@@ -30,7 +30,7 @@ namespace SpaceTaxi {
                 ActiveState = LevelSelect.GetInstance();
                 break;
             case (GameStateType.GameOver):
-                ActiveState = LevelSelect.GetInstance();
+                ActiveState = GameOver.GetInstance();
                 break;
             }
             
