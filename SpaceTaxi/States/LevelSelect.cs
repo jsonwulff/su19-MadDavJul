@@ -13,7 +13,6 @@ namespace SpaceTaxi.States {
         private static LevelSelect instance = null;
         
         private Entity backGroundImage;
-        private Text testText;
         private Text[] menuButtons;
         private int activeMenuButton;
         private Vec3I activeColor;
