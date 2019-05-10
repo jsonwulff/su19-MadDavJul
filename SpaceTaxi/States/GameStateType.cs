@@ -5,7 +5,8 @@ namespace SpaceTaxi {
         GameRunning,
         GamePaused, 
         MainMenu,
-        LevelSelect
+        LevelSelect,
+        GameOver
     }
     
     public class StateTransformer {
@@ -20,6 +21,8 @@ namespace SpaceTaxi {
                 return GameStateType.MainMenu;
             case "LEVEL_SELECT":
                 return GameStateType.LevelSelect;
+            case "GAME_OVER":
+                return GameStateType.GameOver;
             }
 
             throw new ArgumentException("String not recognized");
@@ -35,6 +38,8 @@ namespace SpaceTaxi {
                 return "MAIN_MENU";
             case GameStateType.LevelSelect:
                 return "LEVEL_SELECT";
+            case GameStateType.GameOver:
+                return "GAME_OVER";
             }
             
             throw new ArgumentException("GameStateType not recognized");

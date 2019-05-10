@@ -29,7 +29,11 @@ namespace SpaceTaxi {
             case (GameStateType.LevelSelect):
                 ActiveState = LevelSelect.GetInstance();
                 break;
+            case (GameStateType.GameOver):
+                ActiveState = LevelSelect.GetInstance();
+                break;
             }
+            
         }
         
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
