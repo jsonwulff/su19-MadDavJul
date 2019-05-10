@@ -19,19 +19,12 @@ namespace SpaceTaxi.States {
         
         private Map map;
         
-        private List<Image> explosionStrides;
-        private AnimationContainer explosions;
-        private int explosionLength = 500;
         
         private GameRunning() {
             backGroundImage = new Entity(
                 new StationaryShape(new Vec2F(0,0), new Vec2F(1,1) ), 
                 new Image(Path.Combine( "Assets",  "Images", "SpaceBackground.png")));
             player = Player.GetInstance();
-            
-            explosionStrides = ImageStride.CreateStrides(8,
-                Path.Combine("Assets", "Images", "Explosion.png"));
-            explosions = new AnimationContainer(4);
             
             InitializeGameState();   
         }
