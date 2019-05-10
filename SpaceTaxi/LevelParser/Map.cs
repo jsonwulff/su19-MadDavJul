@@ -38,12 +38,12 @@ namespace SpaceTaxi {
         public void CollisionLogic() {
             if (player.onPlatform) {
                 player.Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
-                StaticTimer.PauseTimer();
             } else {
                 player.ManagePhysics();
             }
-            PlatformContainer.Iterate(entity => 
-            {
+
+            // Logic for collision with platforms
+            foreach (Entity entity in PlatformContainer) {
                 var collsion =
                     CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
                 if (collsion.Collision) {
@@ -54,14 +54,10 @@ namespace SpaceTaxi {
                     }
                     
                 }
-            });
-
-            if (player.Entity.Shape.Position.Y > 1.0f) {
-                Console.WriteLine("Move to next level");
             }
             
-            MapContainer.Iterate(entity => 
-            {
+            // Logic for collision with obstacals
+            foreach (Entity entity in MapContainer) {
                 var collsion =
                     CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
   
@@ -73,7 +69,11 @@ namespace SpaceTaxi {
                     player.alive = false;
                     Console.Write("Player dead");
                 }
-            });
+            }
+
+            if (player.Entity.Shape.Position.Y > 1.0f) {
+                Console.WriteLine("Move to next level");
+            }
         }
         
         public void AddExplosion(float posX, float posY,

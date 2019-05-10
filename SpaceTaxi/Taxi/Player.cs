@@ -29,7 +29,7 @@ namespace SpaceTaxi {
         
         public Vec2F acceleration;
         public Vec2F Velocity;
-        private double time = 0;
+        public double time = 0;
         public double Speed;
         
 
@@ -111,12 +111,6 @@ namespace SpaceTaxi {
         /// Updates the movement of player object.
         /// </summary>
         public void Move() {
-//            Vec2F newPos = Entity.Shape.AsDynamicShape().Direction + Entity.Shape.Position;
-//            if (!(newPos.X < 0.0f ||
-//                  newPos.X + Entity.Shape.Extent.X > 1.0f ||
-//                  newPos.Y + Entity.Shape.Extent.Y < 0.0f ||
-//                  newPos.Y > 1.0f)) {
-//            }
             Entity.Shape.Move();
         }
 
@@ -128,9 +122,10 @@ namespace SpaceTaxi {
             case "BOOSTER_UPWARDS":
                 if (onPlatform) {
                     onPlatform = false;
-                    Velocity = new Vec2F(0,0.0f);
+                    time = 0;
+                    Velocity = new Vec2F(0.0f,0.0f);
                     acceleration = new Vec2F(0,0);
-                    StaticTimer.ResumeTimer();
+                    StaticTimer.RestartTimer();
                 }
                 acceleration = acceleration + new Vec2F(0, 0.015f);
                 break;

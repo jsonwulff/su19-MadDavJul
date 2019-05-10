@@ -73,6 +73,7 @@ namespace SpaceTaxi.States {
             map = MapCreator.GetInstance().mapDictionary[levelFileName];
             player.Velocity = new Vec2F(0,0);
             player.acceleration = new Vec2F(0,0);
+            player.time = 0;
             player.Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
             player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
         }
