@@ -18,7 +18,7 @@ namespace SpaceTaxi {
         public string[] CustomerData;
         public AnimationContainer explosions;
         private Player player;
-        //public char[] Platforms;
+        public char[] Platforms;
         private List<Image> explosionStrides;
         private string FileName;
         private int LevelNumber;
@@ -78,7 +78,6 @@ namespace SpaceTaxi {
                         player.Entity.Shape.Extent.X, player.Entity.Shape.Extent.X);
                     player.acceleration = new Vec2F(0,0);
                     player.Velocity = new Vec2F(0,0);
-                    player.alive = false;
                     SpaceTaxiBus.GetBus().RegisterEvent(
                         GameEventFactory<object>.CreateGameEventForAllProcessors(
                             GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_OVER", ""));
@@ -86,10 +85,15 @@ namespace SpaceTaxi {
             }
 
             if (player.Entity.Shape.Position.Y > 1.0f) {
-                Console.WriteLine("Move to next level");
-                GameRunning.GetInstance().SetMap(MapCreator.GetInstance().levelsInFolder[LevelNumber + 1]);
+                if (LevelNumber == MapCreator.GetInstance().levelsInFolder.Length - 1) {
+                    GameRunning.GetInstance().SetMap(MapCreator.GetInstance().levelsInFolder[0]);
+                } else {
+                    GameRunning.GetInstance()
+                        .SetMap(MapCreator.GetInstance().levelsInFolder[LevelNumber + 1]);
+                }
             }
         }
+        
         /// <summary>
         /// Plays an animation on the given position.
         /// </summary>
