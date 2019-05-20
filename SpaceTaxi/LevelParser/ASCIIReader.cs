@@ -69,38 +69,7 @@ namespace SpaceTaxi {
         private string[] GetLevelData(string path) {
             return File.ReadLines(path).Skip(24).Where(line => line != "").ToArray();
         }
-
-/*        /// <summary>
-        /// Splits the data contained in the text file in, MetaContainer, KeyContainer and CustomerData
-        /// </summary>
-        /// <param name="path">file path of the textfile</param>
-        private void SplitMapData(string path) {
-            // meta data container
-            List<string> metaData = new List<string>(); 
-            // key legend container
-            List<string> keyData = new List<string>();
-            Regex keyLegendRegex = new Regex(@"\S\)\s");
-            // customer data container
-            List<string> customerData = new List<string>();
-            Regex customerRegex = new Regex(@"Customer");
-            // split files into container
-            var fileContent = File.ReadLines(path).Skip(24).Where(line => line != "");
-            foreach (string line in fileContent) {
-                if (keyLegendRegex.IsMatch(line)) {
-                    keyData.Add(line);
-                } else if (customerRegex.IsMatch(line)) {
-                    customerData.Add(line.Substring(10));
-                } else {
-                    metaData.Add(line);
-                }
-            }
-            
-            MetaContainer = metaData.ToArray();
-            KeyContainer = keyData.ToArray();
-            CustomerContainer = customerData.ToArray();
-
-        }*/
-
+        
         private string[] GetKeyLegendData(string[] leveldata) {
             var retval = new List<string>();
             Regex keyLegendRegex = new Regex(@"\S\)\s");
@@ -139,14 +108,11 @@ namespace SpaceTaxi {
         private char[] GetPlatform(string[] metaContent) {
             var retval = "";
             var platformRegx = new Regex(@"Platforms:");
-            char[] charsToTrim = { ',', ' ', 'J'};
             foreach (var line in metaContent) {
                 if (platformRegx.IsMatch(line)) {
                     retval = Regex.Replace(line.Substring(11), @"[, ]", "");
-                    //retval = line.Substring(11).Trim(charsToTrim);
                 }
             }
-
             return retval.ToCharArray();
         }
     }
