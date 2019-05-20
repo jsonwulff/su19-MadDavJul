@@ -42,11 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Customers\Customer.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="LevelParser\ASCIIReader.cs" />
     <Compile Include="LevelParser\MapCreator.cs" />
     <Compile Include="LevelParser\Map.cs" />
     <Compile Include="LevelParser\Translator.cs" />
+    <Compile Include="Score.cs" />
     <Compile Include="SpaceTaxiBus.cs" />
     <Compile Include="States\GameOver.cs" />
     <Compile Include="States\GamePaused.cs" />
