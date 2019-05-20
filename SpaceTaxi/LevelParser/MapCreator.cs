@@ -17,7 +17,7 @@ namespace SpaceTaxi {
         public MapCreator() {
             asciiReader = new ASCIIReader();
             translator = new Translator();
-            levelsInFolder = GetLevels();
+            levelsInFolder = GetLevels(); // Levels as filenames
             mapDictionary = makeLevels();         
         }
 
@@ -47,28 +47,7 @@ namespace SpaceTaxi {
 
             return Directory.GetFiles(path, "*.txt").Select(f => Path.GetFileName(f)).ToArray();
         }
-        /// <summary>
-        /// Populates the mapDictionary, for all the maps.
-        /// </summary>
-        /// <returns>Dictionary of all map objects.</returns>
-        private Dictionary<string, Map> makeLevels() {
-            var retval =  new Dictionary<string, Map>();
-            int levelNumber = 0;
-            foreach (var levelFile in levelsInFolder) {
-                asciiReader.ReadFile(levelFile);
-                translator.CreateImageDictionary(asciiReader.KeyContainer);
-                retval.Add(levelFile, new Map(translator.CreateMapEntities(asciiReader.MapContainer, asciiReader.Platforms),
-                    GetMapName(asciiReader.MetaContainer), levelFile, levelNumber,
-                    translator.PlayerPostiotion,
-                    asciiReader.CustomerContainer,
-                    translator.CreatePlatformEntities(asciiReader.MapContainer, asciiReader.Platforms)));
-            }
-
-            levelNumber++;
-
-            return retval;
-        }
-
+        
         /// <summary>
         /// Extracts the level name from the meta data
         /// </summary>
@@ -85,5 +64,29 @@ namespace SpaceTaxi {
             return "No level name found";
         }
         
+        /// <summary>
+        /// Populates the mapDictionary, for all the maps.
+        /// </summary>
+        /// <returns>Dictionary of all map objects.</returns>
+        private Dictionary<string, Map> makeLevels() {
+            var retval =  new Dictionary<string, Map>();
+            int levelNumber = 0;
+            foreach (var levelFile in levelsInFolder) {
+                asciiReader.ReadFile(levelFile);
+                translator.CreateImageDictionary(asciiReader.KeyContainer);
+                retval.Add(levelFile, new Map(
+                    translator.CreateMapEntities(asciiReader.MapContainer, asciiReader.Platforms),
+                    GetMapName(asciiReader.MetaContainer), 
+                    levelFile, 
+                    levelNumber,
+                    translator.PlayerPostiotion,
+                    asciiReader.CustomerContainer,
+                    translator.CreatePlatformEntities(asciiReader.MapContainer, asciiReader.Platforms)));
+                levelNumber++;
+            }
+
+
+            return retval;
+        }
     }
 }
