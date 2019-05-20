@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq.Expressions;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
@@ -23,6 +21,8 @@ namespace SpaceTaxi {
         
         private readonly DynamicShape shape;
         private Orientation taxiOrientation;
+        
+        public Entity Entity { get; }
 
         public bool onPlatform = false;
         public bool alive = true;
@@ -60,7 +60,7 @@ namespace SpaceTaxi {
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
         }
 
-        public Entity Entity { get; }
+
         /// <summary>
         /// Singleton pattern
         /// </summary>
@@ -104,7 +104,6 @@ namespace SpaceTaxi {
                     : taxiBoosterOffImageRight; 
             }
             Entity.RenderEntity();
-            
         }
         
         /// <summary>
@@ -127,6 +126,34 @@ namespace SpaceTaxi {
             Entity.Shape.Move();
         }
 
+        private void boosterUp() {
+            if (onPlatform) {
+                onPlatform = false;
+                time = 0;
+                Velocity = new Vec2F(0.0f,0.0f);
+                acceleration = new Vec2F(0,0);
+                StaticTimer.RestartTimer();
+            }
+            acceleration = acceleration + new Vec2F(0, 0.015f);
+        }
+        
+        private void bosterLeft() {
+            acceleration = acceleration + new Vec2F(-0.01f, 0);
+        }
+ 
+        private void boosterRight() {
+            acceleration = acceleration + new Vec2F(0.01f, 0);
+        }
+
+        private void stopAccelerateUp() {
+            acceleration = new Vec2F(acceleration.X, 0);
+        }
+        
+        private void stopAccelerateSideways() {
+            acceleration = new Vec2F(0, acceleration.Y);
+        }
+
+
         /// <summary>
         /// Listens to events from the gameBus
         /// </summary>
@@ -138,29 +165,20 @@ namespace SpaceTaxi {
             }
             switch (gameEvent.Message) {
             case "BOOSTER_UPWARDS":
-                if (onPlatform) {
-                    onPlatform = false;
-                    time = 0;
-                    Velocity = new Vec2F(0.0f,0.0f);
-                    acceleration = new Vec2F(0,0);
-                    StaticTimer.RestartTimer();
-                }
-                acceleration = acceleration + new Vec2F(0, 0.015f);
+                boosterUp();
                 break;
             case "BOOSTER_TO_RIGHT":
-                acceleration = acceleration + new Vec2F(0.01f, 0);
+                boosterRight();
                 break;
             case "BOOSTER_TO_LEFT":
-                acceleration = acceleration + new Vec2F(-0.01f, 0);
+                bosterLeft();
                 break;
             case "STOP_ACCELERATE_LEFT":
-                acceleration = new Vec2F(0, acceleration.Y);
-                break;
             case "STOP_ACCELERATE_RIGHT":
-                acceleration = new Vec2F(0, acceleration.Y);
+                stopAccelerateSideways();
                 break;
             case "STOP_ACCELERATE_UP":
-                acceleration = new Vec2F(acceleration.X, 0);
+                stopAccelerateUp();
                 break;
             }
         }
