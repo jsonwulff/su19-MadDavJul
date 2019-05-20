@@ -8,15 +8,15 @@ using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using DIKUArcade.State;
 using DIKUArcade.Timers;
+using SpaceTaxi.Customers;
 
 namespace SpaceTaxi.States {
     public class GameRunning : IGameState {
         private static GameRunning instance = null;
-        
         private Entity backGroundImage;
-        
         private Player player;
-        
+        private Score score;
+        private Customer customer;
         private Map map;
         
         
@@ -25,6 +25,8 @@ namespace SpaceTaxi.States {
                 new StationaryShape(new Vec2F(0,0), new Vec2F(1,1) ), 
                 new Image(Path.Combine( "Assets",  "Images", "SpaceBackground.png")));
             player = Player.GetInstance();
+            score = new Score();
+            customer = new Customer();
             
             InitializeGameState();   
         }
@@ -58,7 +60,6 @@ namespace SpaceTaxi.States {
         public void UpdateGameLogic() {
             player.Move();
             map.CollisionLogic();
-
         }
         
         /// <summary>
@@ -69,7 +70,10 @@ namespace SpaceTaxi.States {
             map.PlatformContainer.Iterate(entity => entity.RenderEntity());
             map.MapContainer.Iterate(entity => entity.RenderEntity());
             player.RenderPlayer();
+            score.RenderScore();
             map.explosions.RenderAnimations();
+            customer.RenderCustomer();
+            
         }
 
         /// <summary>
