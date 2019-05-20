@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="StateTypeTests.cs" />
     <Compile Include="TestLevelParser.cs" />
-    <Compile Include="Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
