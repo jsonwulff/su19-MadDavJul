@@ -78,7 +78,7 @@ namespace SpaceTaxi.States {
                 GameEventFactory<object>.CreateGameEventForAllProcessors(
                     GameEventType.GameStateEvent, this, "CHANGE_LEVEL",
                     MapCreator.GetInstance().levelsInFolder[Math.Abs(activeMenuButton % menuButtons.Length)], ""));
-            Player.GetInstance().onPlatform = false;
+            Player.GetInstance().ResetPlayer();
         }
         
         public void KeyPress(string key) {
