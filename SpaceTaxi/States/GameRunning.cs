@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
-using DIKUArcade.Physics;
 using DIKUArcade.State;
 using DIKUArcade.Timers;
 using SpaceTaxi.Customers;
@@ -50,8 +47,7 @@ namespace SpaceTaxi.States {
         /// Initialize the state of GameRunning
         /// </summary>
         public void InitializeGameState() {       
-            map = MapCreator.GetInstance().mapDictionary["short-n-sweet.txt"];
-            player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
+
         }
         
         /// <summary>
@@ -81,25 +77,9 @@ namespace SpaceTaxi.States {
         /// </summary>
         /// <param name="levelFileName">Filename of the map</param>
         public void SetMap(string levelFileName) {
-            StaticTimer.RestartTimer();
             map = MapCreator.GetInstance().mapDictionary[levelFileName];
-            player.Velocity = new Vec2F(0,0);
-            player.acceleration = new Vec2F(0,0);
-            player.time = 0;
-            player.Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
+            player.ResetPlayer();
             player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
-        }
-        
-        /// <summary>
-        /// Resets players properties
-        /// </summary>
-        public void ResetPlayer() {
-            player.Velocity = new Vec2F(0,0);
-            player.acceleration = new Vec2F(0,0);
-            player.time = 0;
-            player.Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
-            player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
-            StaticTimer.RestartTimer();
         }
         
         /// <summary>

@@ -24,12 +24,12 @@ namespace SpaceTaxi {
         
         public Entity Entity { get; }
 
-        public bool onPlatform = false;
+        public bool onPlatform;
         public bool alive = true;
         
         public Vec2F acceleration;
         public Vec2F Velocity;
-        public double time = 0;
+        public double time;
         public double Speed;
         
 
@@ -117,6 +117,17 @@ namespace SpaceTaxi {
             time = StaticTimer.GetElapsedSeconds();
             
             shape.Direction = Velocity;
+        }
+        
+        /// <summary>
+        /// Resets players properties
+        /// </summary>
+        public void ResetPlayer() {
+            Velocity = new Vec2F(0,0);
+            acceleration = new Vec2F(0,0);
+            time = 0;
+            Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
+            StaticTimer.RestartTimer();
         }
         
         /// <summary>
