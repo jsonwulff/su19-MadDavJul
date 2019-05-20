@@ -70,7 +70,7 @@ namespace SpaceTaxi {
             return File.ReadLines(path).Skip(24).Where(line => line != "").ToArray();
         }
 
-        /// <summary>
+/*        /// <summary>
         /// Splits the data contained in the text file in, MetaContainer, KeyContainer and CustomerData
         /// </summary>
         /// <param name="path">file path of the textfile</param>
@@ -99,7 +99,7 @@ namespace SpaceTaxi {
             KeyContainer = keyData.ToArray();
             CustomerContainer = customerData.ToArray();
 
-        }
+        }*/
 
         private string[] GetKeyLegendData(string[] leveldata) {
             var retval = new List<string>();
