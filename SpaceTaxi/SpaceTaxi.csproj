@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Customers\Customer.cs" />
+    <Compile Include="Customers\CustomerCreator.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="LevelParser\ASCIIReader.cs" />
     <Compile Include="LevelParser\MapCreator.cs" />
