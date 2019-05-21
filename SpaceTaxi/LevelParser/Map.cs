@@ -16,10 +16,8 @@ namespace SpaceTaxi {
         public string LevelName;
         public (float x, float y) PlayerPosition;
         public string[] CustomerData;
-        public AnimationContainer explosions;
         private Player player;
         public char[] Platforms;
-        private List<Image> explosionStrides;
         private string FileName;
         private int LevelNumber;
         
@@ -36,11 +34,8 @@ namespace SpaceTaxi {
             player = Player.GetInstance();
             FileName = fileName;
             LevelNumber = levelNumber;
-            
-            explosionStrides = ImageStride.CreateStrides(8,
-                Path.Combine("Assets", "Images", "Explosion.png"));
-            explosions = new AnimationContainer(4);
         }
+        
         /// <summary>
         /// CollisionLogic checks for collisions with MapContainer and PlatformContainer. Kills if obstacle
         /// collision, sets player.onPlatform false if platform collision.
@@ -62,9 +57,7 @@ namespace SpaceTaxi {
                     CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
   
                 if (collsion.Collision) {
-                    AddExplosion(player.Entity.Shape.Position.X, player.Entity.Shape.Position.Y,
-                        player.Entity.Shape.Extent.X, player.Entity.Shape.Extent.X);
-                    
+                    player.AddExplosion();
                     SpaceTaxiBus.GetBus().RegisterEvent(
                         GameEventFactory<object>.CreateGameEventForAllProcessors(
                             GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_OVER", ""));
@@ -86,20 +79,6 @@ namespace SpaceTaxi {
             foreach (var elem in PlatformContainer) {
                 elem.Value.RenderPlatform();
             }
-        }
-        
-        /// <summary>
-        /// Plays an animation on the given position.
-        /// </summary>
-        /// <param name="posX">Position x</param>
-        /// <param name="posY">Position y</param>
-        /// <param name="extentX">Extent x</param>
-        /// <param name="extentY">Extent y</param>
-        public void AddExplosion(float posX, float posY,
-            float extentX, float extentY) {
-            explosions.AddAnimation(
-                new StationaryShape(posX, posY, extentX, extentY), explosionLength,
-                new ImageStride(explosionLength / 8, explosionStrides));
         }
     }
 }
