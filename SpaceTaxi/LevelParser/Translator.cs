@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
@@ -83,18 +84,25 @@ namespace SpaceTaxi {
         /// <param name="mapContainer"> Container of all characters in the map</param>
         /// <param name="platforms">Container of platform characters in the legend</param>
         /// <returns></returns>
-        public EntityContainer<Entity> CreatePlatformEntities(string[] mapContainer, char[] platforms) {
-            var platformEntities = new EntityContainer<Entity>();
+        public Dictionary<char, Platform> CreatePlatformEntities(string[] mapContainer, char[] platforms) {
+            var platformDictionary = new Dictionary<char, Platform>();
+            
+            foreach (var character in platforms) {
+                platformDictionary.Add(character, new Platform(character));
+            }
+                            
             for (int y = 0; y < 23; y++) {
                 var line = mapContainer[y];
                 for (int x = 0; x < 40; x++) {
                     if (platforms.Contains(line[x])) {
-                        platformEntities.AddStationaryEntity(TranslateToEntity(x,y,line[x]));    
+                        
+                        platformDictionary[line[x]].AddEntity(TranslateToEntity(x,y,line[x]));
+
                     }
                 }
             }
 
-            return platformEntities;
+            return platformDictionary;
         }
         
     }

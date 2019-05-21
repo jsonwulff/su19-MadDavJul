@@ -12,7 +12,7 @@ using SpaceTaxi.States;
 namespace SpaceTaxi {
     public class Map {
         public EntityContainer<Entity> MapContainer;
-        public EntityContainer<Entity> PlatformContainer;
+        public Dictionary<char, Platform> PlatformContainer;
         public string LevelName;
         public (float x, float y) PlayerPosition;
         public string[] CustomerData;
@@ -27,7 +27,7 @@ namespace SpaceTaxi {
         private int explosionLength = 500;
 
         public Map(EntityContainer<Entity> mapContainer, string levelName, String fileName, int levelNumber,
-            (float x, float y) playerPosition, string[] customerData, EntityContainer<Entity> platformContainer) {
+            (float x, float y) playerPosition, string[] customerData, Dictionary<char, Platform> platformContainer) {
             MapContainer = mapContainer;
             LevelName = levelName;
             PlayerPosition = playerPosition;
@@ -52,10 +52,10 @@ namespace SpaceTaxi {
                 player.ManagePhysics();
             }
 
-            // Logic for collision with platforms
-            foreach (Entity entity in PlatformContainer) {
+           /* // Logic for collision with platforms
+            foreach (var entity in PlatformContainer) {
                 var collsion =
-                    CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
+                    CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Value.Shape);
                 if (collsion.Collision) {
                     player.onPlatform = true;
                     if (player.Speed > 0.005) {
@@ -66,7 +66,7 @@ namespace SpaceTaxi {
                     }
                     
                 }
-            }
+            }*/
             
             // Logic for collision with obstacles
             foreach (Entity entity in MapContainer) {
@@ -91,6 +91,13 @@ namespace SpaceTaxi {
                     GameRunning.GetInstance()
                         .SetMap(MapCreator.GetInstance().levelsInFolder[LevelNumber + 1]);
                 }
+            }
+        }
+
+        public void RenderMap() {
+            MapContainer.Iterate(entity => entity.RenderEntity());
+            foreach (var elem in PlatformContainer) {
+                elem.Value.RenderPlatform();
             }
         }
         

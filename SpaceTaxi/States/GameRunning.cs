@@ -63,8 +63,7 @@ namespace SpaceTaxi.States {
         /// </summary>
         public void RenderState() {
             backGroundImage.RenderEntity();
-            map.PlatformContainer.Iterate(entity => entity.RenderEntity());
-            map.MapContainer.Iterate(entity => entity.RenderEntity());
+            map.RenderMap();
             player.RenderPlayer();
             score.RenderScore();
             map.explosions.RenderAnimations();
