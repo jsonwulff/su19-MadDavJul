@@ -15,15 +15,33 @@ namespace SpaceTaxi.Customers {
         private Orientation customerOrientation;
 
         private string customerName;
-        private int spawnTime;
-        private char spawnPlatform;
+        private string spawnTime;
+        private string spawnPlatform;
         private string destinationPlatform;
-        private int deliveryTime;
-        private int dropOffPoints;
+        private string deliveryTime;
+        private string dropOffPoints;
         
         public Entity Entity { get; }
 
         public Customer() {
+            shape = new DynamicShape(new Vec2F(0.0f,0.0f), new Vec2F(0.018f,0.03f));
+            customerStandRight = 
+                new Image(Path.Combine("Assets", "Images","CustomerStandRight.png"));
+            customerStandLeft = 
+                new Image(Path.Combine("Assets", "Images","CustomerStandLeft.png"));
+            
+            Entity = new Entity(shape, customerStandRight);
+        }
+
+        public Customer(string customername, string spawntime, string spawnplatform, 
+            string destinationplatform, string deliverytime, string dropoffpoints) {
+            customerName = customername;
+            spawnTime = spawntime;
+            spawnPlatform = spawnplatform;
+            destinationPlatform = destinationplatform;
+            deliveryTime = deliverytime;
+            dropOffPoints = dropoffpoints;
+            
             shape = new DynamicShape(new Vec2F(0.0f,0.0f), new Vec2F(0.018f,0.03f));
             customerStandRight = 
                 new Image(Path.Combine("Assets", "Images","CustomerStandRight.png"));
