@@ -10,7 +10,7 @@ namespace SpaceTaxi {
         
         private ASCIIReader asciiReader;
         private Translator translator;
-        public string[] levelsInFolder;
+        public string[] levelsInFolder; // As filenames
         public Dictionary<string, Map> mapDictionary;
         private string[] levelNames;
 

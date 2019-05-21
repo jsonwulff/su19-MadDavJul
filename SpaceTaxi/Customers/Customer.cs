@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
@@ -39,6 +40,10 @@ namespace SpaceTaxi.Customers {
 
         public void RenderCustomer() {
             Entity.RenderEntity();
+        }
+
+        public void AddPointToScores() {
+            throw new NotImplementedException();
         }
     }
 }
