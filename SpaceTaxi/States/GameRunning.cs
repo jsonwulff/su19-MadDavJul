@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
@@ -16,6 +17,10 @@ namespace SpaceTaxi.States {
         private Customer customer;
         private Map map;
         
+        // Added for customerCreator
+        private CustomerCreator customerCreator;
+        private List<Customer> customerList;
+        
         
         private GameRunning() {
             backGroundImage = new Entity(
@@ -25,6 +30,9 @@ namespace SpaceTaxi.States {
             score = new Score();
             customer = new Customer();
             
+            // Added for customerCreator
+            customerCreator = new CustomerCreator();
+
             InitializeGameState();   
         }
         /// <summary>
@@ -66,7 +74,7 @@ namespace SpaceTaxi.States {
             map.RenderMap();
             player.RenderPlayer();
             score.RenderScore();
-            map.explosions.RenderAnimations();
+            player.explosion.RenderAnimations();
             customer.RenderCustomer();
             
         }
@@ -79,6 +87,7 @@ namespace SpaceTaxi.States {
             map = MapCreator.GetInstance().mapDictionary[levelFileName];
             player.ResetPlayer();
             player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
+            customerList = customerCreator.CreateCustomers(map.CustomerData);
         }
         
         /// <summary>
