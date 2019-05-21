@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
@@ -18,10 +19,13 @@ namespace SpaceTaxi {
         private readonly ImageStride taxiBoosterOnBottomOnLeft;
         private readonly ImageStride taxiBoosterOnBottomOnRight;
         private readonly ImageStride taxiBoosterOnBottomRight;
+
+        private readonly ImageStride explsionStrides;
+        private int explosionLength = 500;
+        public AnimationContainer explosion;
         
         private readonly DynamicShape shape;
         private Orientation taxiOrientation;
-        
         public Entity Entity { get; }
 
         public bool onPlatform;
@@ -52,6 +56,9 @@ namespace SpaceTaxi {
             taxiBoosterOnBottomRight = 
                 new ImageStride(4, ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom_Right.png")));
 
+            explsionStrides = 
+                new ImageStride(explosionLength / 8,ImageStride.CreateStrides(8,Path.Combine("Assets", "Images", "Explosion.png")));
+            explosion = new AnimationContainer(4);
             
             Entity = new Entity(shape, taxiBoosterOffImageLeft);
             Velocity = new Vec2F(0,0);
@@ -105,6 +112,15 @@ namespace SpaceTaxi {
             }
             Entity.RenderEntity();
         }
+
+        /// <summary>
+        /// Plays an animation on the player position.
+        /// </summary>
+        public void AddExplosion() {
+            explosion.AddAnimation(
+                new StationaryShape(shape.Position, 
+                    new Vec2F(shape.Extent.X, shape.Extent.X)), explosionLength, explsionStrides);
+        }
         
         /// <summary>
         /// Simulates pseudo-physics for the Player object
@@ -126,7 +142,7 @@ namespace SpaceTaxi {
             Velocity = new Vec2F(0,0);
             acceleration = new Vec2F(0,0);
             time = 0;
-            Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
+            shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
             StaticTimer.RestartTimer();
         }
         
@@ -134,7 +150,7 @@ namespace SpaceTaxi {
         /// Updates the movement of player object.
         /// </summary>
         public void Move() {
-            Entity.Shape.Move();
+            shape.Move();
         }
 
         private void boosterUp() {
