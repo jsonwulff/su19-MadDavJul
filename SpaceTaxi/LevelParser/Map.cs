@@ -52,21 +52,9 @@ namespace SpaceTaxi {
                 player.ManagePhysics();
             }
 
-           /* // Logic for collision with platforms
-            foreach (var entity in PlatformContainer) {
-                var collsion =
-                    CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Value.Shape);
-                if (collsion.Collision) {
-                    player.onPlatform = true;
-                    if (player.Speed > 0.005) {
-                        player.alive = false;
-                        SpaceTaxiBus.GetBus().RegisterEvent(
-                            GameEventFactory<object>.CreateGameEventForAllProcessors(
-                                GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_OVER", ""));
-                    }
-                    
-                }
-            }*/
+            foreach (var platform in PlatformContainer) {
+                platform.Value.PlatformCollision();
+            }
             
             // Logic for collision with obstacles
             foreach (Entity entity in MapContainer) {
@@ -76,8 +64,7 @@ namespace SpaceTaxi {
                 if (collsion.Collision) {
                     AddExplosion(player.Entity.Shape.Position.X, player.Entity.Shape.Position.Y,
                         player.Entity.Shape.Extent.X, player.Entity.Shape.Extent.X);
-                    player.acceleration = new Vec2F(0,0);
-                    player.Velocity = new Vec2F(0,0);
+                    
                     SpaceTaxiBus.GetBus().RegisterEvent(
                         GameEventFactory<object>.CreateGameEventForAllProcessors(
                             GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_OVER", ""));

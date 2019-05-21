@@ -27,9 +27,9 @@ namespace SpaceTaxi {
         public bool onPlatform;
         public bool alive = true;
         
-        public Vec2F acceleration;
-        public Vec2F Velocity;
-        public double time;
+        private Vec2F acceleration;
+        private Vec2F Velocity;
+        private double time;
         public double Speed;
         
 
