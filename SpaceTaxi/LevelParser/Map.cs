@@ -20,9 +20,6 @@ namespace SpaceTaxi {
         public char[] Platforms;
         private string FileName;
         private int LevelNumber;
-        
-
-        private int explosionLength = 500;
 
         public Map(EntityContainer<Entity> mapContainer, string levelName, String fileName, int levelNumber,
             (float x, float y) playerPosition, string[] customerData, Dictionary<char, Platform> platformContainer) {
@@ -34,8 +31,18 @@ namespace SpaceTaxi {
             player = Player.GetInstance();
             FileName = fileName;
             LevelNumber = levelNumber;
+            
         }
-        
+
+        public void isGameOver() {
+            if (!player.alive && StaticTimer.GetElapsedSeconds() > 1.0) {
+                SpaceTaxiBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_OVER", ""));
+            }
+            
+        }
+
         /// <summary>
         /// CollisionLogic checks for collisions with MapContainer and PlatformContainer. Kills if obstacle
         /// collision, sets player.onPlatform false if platform collision.
@@ -52,10 +59,7 @@ namespace SpaceTaxi {
                 var collsion =
                     CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
                 if (collsion.Collision) {
-                    player.AddExplosion();
-                    SpaceTaxiBus.GetBus().RegisterEvent(
-                        GameEventFactory<object>.CreateGameEventForAllProcessors(
-                            GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_OVER", ""));
+                    player.KillPlayer();
                 }
             }
         }
