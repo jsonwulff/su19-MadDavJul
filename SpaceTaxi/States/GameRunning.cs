@@ -64,6 +64,7 @@ namespace SpaceTaxi.States {
         public void UpdateGameLogic() {
             player.Move();
             map.CollisionLogic();
+            map.MoveToNextLevel();
         }
         
         /// <summary>
