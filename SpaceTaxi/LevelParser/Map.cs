@@ -41,12 +41,7 @@ namespace SpaceTaxi {
         /// collision, sets player.onPlatform false if platform collision.
         /// </summary>
         public void CollisionLogic() {
-            if (player.onPlatform) {
-                player.Entity.Shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
-            } else {
-                player.ManagePhysics();
-            }
-
+            
             foreach (var platform in PlatformContainer) {
                 platform.Value.PlatformCollision();
             }

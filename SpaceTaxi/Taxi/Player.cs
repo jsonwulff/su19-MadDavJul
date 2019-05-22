@@ -36,7 +36,6 @@ namespace SpaceTaxi {
         private double time;
         public double Speed;
         
-
         public Player() {
             shape = new DynamicShape(new Vec2F(), new Vec2F(0.0575f, 0.03f));
             taxiBoosterOffImageLeft =
@@ -67,7 +66,6 @@ namespace SpaceTaxi {
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
         }
 
-
         /// <summary>
         /// Singleton pattern
         /// </summary>
@@ -75,6 +73,7 @@ namespace SpaceTaxi {
         public static Player GetInstance() {
             return Player.instance ?? (Player.instance = new Player());
         }
+        
         /// <summary>
         /// Set the players position
         /// </summary>
@@ -152,6 +151,11 @@ namespace SpaceTaxi {
         /// </summary>
         public void Move() {
             shape.Move();
+            if (onPlatform) {
+                shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
+            } else {
+                ManagePhysics();
+            }
         }
 
         private void boosterUp() {
