@@ -6,6 +6,7 @@ using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Timers;
+using SpaceTaxi.Customers;
 
 namespace SpaceTaxi {
     public class Player : IGameEventProcessor<object> {
@@ -31,6 +32,8 @@ namespace SpaceTaxi {
         public bool onPlatform;
         public bool alive = true;
         public double deathTime { get; private set; }
+
+        public Customer pickedUpCustomer;
 
         private Vec2F acceleration;
         private Vec2F velocity;
