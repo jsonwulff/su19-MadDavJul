@@ -1,6 +1,8 @@
 using System;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using DIKUArcade.Entities;
+using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
@@ -17,11 +19,13 @@ namespace SpaceTaxi.Customers {
         private Orientation customerOrientation;
 
         private string customerName;
-        private string spawnTime;
+        private double spawnTime;
+        private int originLevel;
         public char spawnPlatform;
-        private string destinationPlatform;
-        private string deliveryTime;
-        private string dropOffPoints;
+        public int destinationLevel;
+        public char destinationPlatform;
+        private int deliveryTime;
+        public int dropOffPoints;
 
         private bool pickedUp = false;
         
@@ -38,13 +42,14 @@ namespace SpaceTaxi.Customers {
         }
 
         public Customer(string customername, string spawntime, char spawnplatform, 
-            string destinationplatform, string deliverytime, string dropoffpoints) {
+            string destinationcode, string deliverytime, string dropoffpoints, int originlevel) {
             customerName = customername;
-            spawnTime = spawntime;
+            spawnTime = Convert.ToDouble(spawntime);
             spawnPlatform = spawnplatform;
-            destinationPlatform = destinationplatform;
-            deliveryTime = deliverytime;
-            dropOffPoints = dropoffpoints;
+            deliveryTime = Convert.ToInt32(deliverytime);
+            dropOffPoints = Convert.ToInt32(dropoffpoints);
+            originLevel = originlevel;
+            setDestination(destinationcode);
             
             shape = new DynamicShape(new Vec2F(0.0f,0.0f), new Vec2F(0.018f,0.03f));
             customerStandRight = 
@@ -61,20 +66,34 @@ namespace SpaceTaxi.Customers {
         }
 
         public void RenderCustomer() {
-            if (StaticTimer.GetElapsedSeconds() > Convert.ToDouble(spawnTime)  ) {
-               Entity.RenderEntity();
+            // TODO: Move Render entity and other stuff when spawn time is met
+            Entity.RenderEntity();
+            if (StaticTimer.GetElapsedSeconds() > spawnTime) {
             }
+        }
+
+        private void setDestination(string destinationCode) {
+            if (destinationCode == "^") {
+                destinationLevel = originLevel + 1;
+            } else if (destinationCode.Length == 1) {
+                destinationLevel = originLevel;
+                destinationPlatform = destinationCode[0];
+            } else {
+                destinationLevel = originLevel + 1;
+                destinationPlatform = destinationCode[1];
+            }
+        }
+
+        private void pickUpCustomer() {
+            Player.GetInstance().pickedUpCustomer = this;
         }
 
         public void pickUpCollision() {
             var collision = CollisionDetection.Aabb(Player.GetInstance().Entity.Shape.AsDynamicShape(), shape);
             if (collision.Collision) {
                 Console.WriteLine("{0} has been picked up",customerName);
+                pickUpCustomer();
             }
-        }
-
-        public void AddPointToScores() {
-            throw new NotImplementedException();
         }
     }
 }

@@ -84,11 +84,12 @@ namespace SpaceTaxi {
         /// <param name="mapContainer"> Container of all characters in the map</param>
         /// <param name="platforms">Container of platform characters in the legend</param>
         /// <returns></returns>
-        public Dictionary<char, Platform> CreatePlatformEntities(string[] mapContainer, char[] platforms) {
+        public Dictionary<char, Platform> CreatePlatformEntities(string[] mapContainer, char[] platforms, int levelNumber) {
             var platformDictionary = new Dictionary<char, Platform>();
             
             foreach (var character in platforms) {
                 platformDictionary.Add(character, new Platform(character));
+                platformDictionary[character].AddLevelNumber(levelNumber);
             }
                             
             for (int y = 0; y < 23; y++) {

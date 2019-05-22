@@ -84,7 +84,7 @@ namespace SpaceTaxi {
                     levelNumber,
                     translator.PlayerPostiotion,
                     asciiReader.CustomerContainer,
-                    translator.CreatePlatformEntities(asciiReader.MapContainer, asciiReader.Platforms),
+                    translator.CreatePlatformEntities(asciiReader.MapContainer, asciiReader.Platforms, levelNumber),
                     customerCreator));
                 levelNumber++;
             }
