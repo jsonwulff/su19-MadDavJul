@@ -109,13 +109,18 @@ namespace SpaceTaxi {
                     ? taxiBoosterOffImageLeft
                     : taxiBoosterOffImageRight; 
             }
-            Entity.RenderEntity();
+
+            if (alive) {
+                Entity.RenderEntity();
+            }
         }
 
         /// <summary>
         /// Plays an animation on the player position.
         /// </summary>
+        /// TODO Change this to killPlayer
         public void AddExplosion() {
+            alive = false;
             explosion.AddAnimation(
                 new StationaryShape(shape.Position, 
                     new Vec2F(shape.Extent.X, shape.Extent.X)), explosionLength, explsionStrides);
@@ -138,6 +143,7 @@ namespace SpaceTaxi {
         /// Resets players properties
         /// </summary>
         public void ResetPlayer() {
+            alive = true;
             Velocity = new Vec2F(0,0);
             acceleration = new Vec2F(0,0);
             time = 0;
