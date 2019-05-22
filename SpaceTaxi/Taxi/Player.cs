@@ -142,6 +142,7 @@ namespace SpaceTaxi {
             Velocity = new Vec2F(0,0);
             acceleration = new Vec2F(0,0);
             time = 0;
+            onPlatform = false;
             shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
             StaticTimer.RestartTimer();
         }
