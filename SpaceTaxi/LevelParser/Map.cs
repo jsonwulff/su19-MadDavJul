@@ -42,6 +42,7 @@ namespace SpaceTaxi {
         /// </summary>
         public void CollisionLogic() {
             
+            // Logic for collision with platforms
             foreach (var platform in PlatformContainer) {
                 platform.Value.PlatformCollision();
             }
@@ -50,7 +51,6 @@ namespace SpaceTaxi {
             foreach (Entity entity in MapContainer) {
                 var collsion =
                     CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
-  
                 if (collsion.Collision) {
                     player.AddExplosion();
                     SpaceTaxiBus.GetBus().RegisterEvent(
@@ -58,7 +58,9 @@ namespace SpaceTaxi {
                             GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_OVER", ""));
                 }
             }
+        }
 
+        public void MoveToNextLevel() {
             if (player.Entity.Shape.Position.Y > 1.0f) {
                 if (LevelNumber == MapCreator.GetInstance().levelsInFolder.Length - 1) {
                     GameRunning.GetInstance().SetMap(MapCreator.GetInstance().levelsInFolder[0]);
