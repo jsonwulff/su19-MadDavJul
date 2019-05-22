@@ -31,7 +31,8 @@ namespace SpaceTaxi {
                 GameEventType.InputEvent, // key press / key release
                 GameEventType.WindowEvent, // messages to the window, e.g. CloseWindow()
                 GameEventType.PlayerEvent, // commands issued to the player object, e.g. move,
-                GameEventType.GameStateEvent                            
+                GameEventType.GameStateEvent,
+                GameEventType.StatusEvent
             });
             win.RegisterEventBus(eventBus);
 
