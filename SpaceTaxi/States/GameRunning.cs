@@ -93,6 +93,7 @@ namespace SpaceTaxi.States {
             map = MapCreator.GetInstance().mapDictionary[levelFileName];
             player.ResetPlayer();
             player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
+            // TODO Create customers in map
             customerList = customerCreator.CreateCustomers(map.CustomerData);
         }
         
@@ -138,14 +139,10 @@ namespace SpaceTaxi.States {
                         GameEventType.PlayerEvent, this, "STOP_ACCELERATE_UP", "", ""));
                 break;
             case "KEY_RIGHT":
-                SpaceTaxiBus.GetBus().RegisterEvent(
-                    GameEventFactory<object>.CreateGameEventForAllProcessors(
-                        GameEventType.PlayerEvent, this, "STOP_ACCELERATE_RIGHT", "", ""));
-                break;
             case "KEY_LEFT":
                 SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
-                        GameEventType.PlayerEvent, this, "STOP_ACCELERATE_RIGHT", "", ""));
+                        GameEventType.PlayerEvent, this, "STOP_ACCELERATE_SIDEWAYS", "", ""));
                 break;
             }
         }

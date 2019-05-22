@@ -211,8 +211,7 @@ namespace SpaceTaxi {
             case "BOOSTER_TO_LEFT":
                 bosterLeft();
                 break;
-            case "STOP_ACCELERATE_LEFT":
-            case "STOP_ACCELERATE_RIGHT":
+            case "STOP_ACCELERATE_SIDEWAYS":
                 stopAccelerateSideways();
                 break;
             case "STOP_ACCELERATE_UP":
