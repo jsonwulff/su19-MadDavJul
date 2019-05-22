@@ -16,7 +16,7 @@ namespace SpaceTaxi.Customers {
 
         private string customerName;
         private string spawnTime;
-        private string spawnPlatform;
+        public char spawnPlatform;
         private string destinationPlatform;
         private string deliveryTime;
         private string dropOffPoints;
@@ -33,7 +33,7 @@ namespace SpaceTaxi.Customers {
             Entity = new Entity(shape, customerStandRight);
         }
 
-        public Customer(string customername, string spawntime, string spawnplatform, 
+        public Customer(string customername, string spawntime, char spawnplatform, 
             string destinationplatform, string deliverytime, string dropoffpoints) {
             customerName = customername;
             spawnTime = spawntime;

@@ -17,11 +17,6 @@ namespace SpaceTaxi.States {
         private Customer customer;
         private Map map;
         
-        // Added for customerCreator
-        private CustomerCreator customerCreator;
-        private List<Customer> customerList;
-        
-        
         private GameRunning() {
             backGroundImage = new Entity(
                 new StationaryShape(new Vec2F(0,0), new Vec2F(1,1) ), 
@@ -30,9 +25,6 @@ namespace SpaceTaxi.States {
             score = new Score();
             customer = new Customer();
             
-            // Added for customerCreator
-            customerCreator = new CustomerCreator();
-
             InitializeGameState();   
         }
         /// <summary>
@@ -93,8 +85,7 @@ namespace SpaceTaxi.States {
             map = MapCreator.GetInstance().mapDictionary[levelFileName];
             player.ResetPlayer();
             player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
-            // TODO Create customers in map
-            customerList = customerCreator.CreateCustomers(map.CustomerData);
+            map.GetCustomers();
         }
         
         /// <summary>

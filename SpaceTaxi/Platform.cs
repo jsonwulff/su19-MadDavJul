@@ -6,6 +6,7 @@ using DIKUArcade.Physics;
 
 namespace SpaceTaxi {
     public class Platform {
+        public (float x1, float x2, float y) PlatformExtent;
         private Player player;
         private EntityContainer<Entity> PlatformEntities;
         private char PlatformChar;
@@ -14,6 +15,25 @@ namespace SpaceTaxi {
             PlatformChar = platformChar;
             PlatformEntities = new EntityContainer<Entity>();
             player = Player.GetInstance();
+            
+        }
+
+        public (float x1, float x2, float y) platformExtent() {
+            var left = -1.0f;
+            var right = -1.0f;
+            var top = -1.0f;
+            foreach (Entity platformEntity in PlatformEntities) {
+                if (left < 0.0 && right < 0.0) {
+                    left = platformEntity.Shape.Position.X;
+                    right = platformEntity.Shape.Position.X + 0.025f;
+                    top = platformEntity.Shape.Position.Y + 0.025f;
+                } else {
+                    left = Math.Min(platformEntity.Shape.Position.X, left);
+                    right = Math.Max(platformEntity.Shape.Position.X, right);
+
+                }
+            }
+            return (left, right, top);
         }
 
         public void RenderPlatform() {
@@ -31,11 +51,8 @@ namespace SpaceTaxi {
                     CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
                 if (collsion.Collision) {
                     player.onPlatform = true;
-                    if (player.Speed > 0.005) {
-                        player.alive = false;
-                        SpaceTaxiBus.GetBus().RegisterEvent(
-                            GameEventFactory<object>.CreateGameEventForAllProcessors(
-                                GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_OVER", ""));
+                    if (player.Speed > 0.0035) {
+                        player.KillPlayer();
                     }
                     
                 }

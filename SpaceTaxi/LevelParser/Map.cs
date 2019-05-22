@@ -7,6 +7,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using DIKUArcade.Timers;
+using SpaceTaxi.Customers;
 using SpaceTaxi.States;
 
 namespace SpaceTaxi {
@@ -20,9 +21,11 @@ namespace SpaceTaxi {
         public char[] Platforms;
         private string FileName;
         private int LevelNumber;
+        private List<Customer> customers;
+        private CustomerCreator customerCreator;
 
         public Map(EntityContainer<Entity> mapContainer, string levelName, String fileName, int levelNumber,
-            (float x, float y) playerPosition, string[] customerData, Dictionary<char, Platform> platformContainer) {
+            (float x, float y) playerPosition, string[] customerData, Dictionary<char, Platform> platformContainer, CustomerCreator customercreator) {
             MapContainer = mapContainer;
             LevelName = levelName;
             PlayerPosition = playerPosition;
@@ -31,7 +34,8 @@ namespace SpaceTaxi {
             player = Player.GetInstance();
             FileName = fileName;
             LevelNumber = levelNumber;
-            
+            customers = new List<Customer>();
+            customerCreator = customercreator;
         }
 
         public void isGameOver() {
@@ -79,6 +83,19 @@ namespace SpaceTaxi {
             MapContainer.Iterate(entity => entity.RenderEntity());
             foreach (var elem in PlatformContainer) {
                 elem.Value.RenderPlatform();
+            }
+
+            foreach (var customer in customers) {
+                customer.RenderCustomer();
+            }
+        }
+
+        public void GetCustomers() {
+            customers = customerCreator.CreateCustomers(CustomerData);
+            foreach (var customer in customers) {
+                var spawnPlatform = customer.spawnPlatform;
+                var platoformExtent = PlatformContainer[spawnPlatform].platformExtent();
+                customer.SetPosition((platoformExtent.x1 + platoformExtent.x2) / 2, platoformExtent.y);
             }
         }
     }

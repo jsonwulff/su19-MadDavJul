@@ -2,21 +2,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-
+using SpaceTaxi.Customers;
 
 namespace SpaceTaxi {
     public class MapCreator {
         private static MapCreator instance = null;
         
-        private ASCIIReader asciiReader;
-        private Translator translator;
         public string[] levelsInFolder; // As filenames
         public Dictionary<string, Map> mapDictionary;
+
+        private ASCIIReader asciiReader;
+        private Translator translator;
         private string[] levelNames;
+        private CustomerCreator customerCreator;
 
         public MapCreator() {
             asciiReader = new ASCIIReader();
             translator = new Translator();
+            customerCreator = new CustomerCreator();
             levelsInFolder = GetLevels(); // Levels as filenames
             mapDictionary = makeLevels();         
         }
@@ -81,11 +84,10 @@ namespace SpaceTaxi {
                     levelNumber,
                     translator.PlayerPostiotion,
                     asciiReader.CustomerContainer,
-                    translator.CreatePlatformEntities(asciiReader.MapContainer, asciiReader.Platforms)));
+                    translator.CreatePlatformEntities(asciiReader.MapContainer, asciiReader.Platforms),
+                    customerCreator));
                 levelNumber++;
             }
-
-
             return retval;
         }
     }
