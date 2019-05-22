@@ -30,9 +30,10 @@ namespace SpaceTaxi {
 
         public bool onPlatform;
         public bool alive = true;
-        
+        public double deathTime { get; private set; }
+
         private Vec2F acceleration;
-        private Vec2F Velocity;
+        private Vec2F velocity;
         private double time;
         public double Speed;
         
@@ -59,7 +60,7 @@ namespace SpaceTaxi {
             explosion = new AnimationContainer(1);
             
             Entity = new Entity(shape, taxiBoosterOffImageLeft);
-            Velocity = new Vec2F(0,0);
+            velocity = new Vec2F(0,0);
             acceleration = new Vec2F(0,0);
             
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
@@ -119,7 +120,7 @@ namespace SpaceTaxi {
         /// </summary>
         public void KillPlayer() {
             alive = false;
-            StaticTimer.RestartTimer();
+            deathTime = StaticTimer.GetElapsedSeconds() + 1.0;
             explosion.AddAnimation(
                 new StationaryShape(shape.Position, 
                     new Vec2F(shape.Extent.X, shape.Extent.X)), explosionLength, 
@@ -130,13 +131,13 @@ namespace SpaceTaxi {
         /// Simulates pseudo-physics for the Player object
         /// </summary>
         public void ManagePhysics() {
-            Speed = Math.Abs(Velocity.Length());
+            Speed = Math.Abs(velocity.Length());
             Vec2F gravity = new Vec2F(0f,-0.004f);
             
-            Velocity += (gravity + acceleration) * (float) (StaticTimer.GetElapsedSeconds() - time);
+            velocity += (gravity + acceleration) * (float) (StaticTimer.GetElapsedSeconds() - time);
             time = StaticTimer.GetElapsedSeconds();
             
-            shape.Direction = Velocity;
+            shape.Direction = velocity;
         }
         
         /// <summary>
@@ -144,7 +145,7 @@ namespace SpaceTaxi {
         /// </summary>
         public void ResetPlayer() {
             alive = true;
-            Velocity = new Vec2F(0,0);
+            velocity = new Vec2F(0,0);
             acceleration = new Vec2F(0,0);
             time = 0;
             onPlatform = false;
@@ -168,7 +169,7 @@ namespace SpaceTaxi {
             if (onPlatform) {
                 onPlatform = false;
                 time = 0;
-                Velocity = new Vec2F(0.0f,0.0f);
+                velocity = new Vec2F(0.0f,0.0f);
                 acceleration = new Vec2F(0,0);
                 StaticTimer.RestartTimer();
             }

@@ -39,7 +39,7 @@ namespace SpaceTaxi {
         }
 
         public void isGameOver() {
-            if (!player.alive && StaticTimer.GetElapsedSeconds() > 1.0) {
+            if (!player.alive && StaticTimer.GetElapsedSeconds() > player.deathTime) {
                 SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_OVER", ""));
@@ -56,6 +56,10 @@ namespace SpaceTaxi {
             // Logic for collision with platforms
             foreach (var platform in PlatformContainer) {
                 platform.Value.PlatformCollision();
+            }
+
+            foreach (var customer in customers) {
+                customer.pickUpCollision();
             }
             
             // Logic for collision with obstacles

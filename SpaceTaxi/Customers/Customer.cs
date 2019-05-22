@@ -3,6 +3,8 @@ using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
+using DIKUArcade.Physics;
+using DIKUArcade.Timers;
 
 namespace SpaceTaxi.Customers {
     public class Customer {
@@ -20,6 +22,8 @@ namespace SpaceTaxi.Customers {
         private string destinationPlatform;
         private string deliveryTime;
         private string dropOffPoints;
+
+        private bool pickedUp = false;
         
         public Entity Entity { get; }
 
@@ -57,7 +61,16 @@ namespace SpaceTaxi.Customers {
         }
 
         public void RenderCustomer() {
-            Entity.RenderEntity();
+            if (StaticTimer.GetElapsedSeconds() > Convert.ToDouble(spawnTime)  ) {
+               Entity.RenderEntity();
+            }
+        }
+
+        public void pickUpCollision() {
+            var collision = CollisionDetection.Aabb(Player.GetInstance().Entity.Shape.AsDynamicShape(), shape);
+            if (collision.Collision) {
+                Console.WriteLine("{0} has been picked up",customerName);
+            }
         }
 
         public void AddPointToScores() {

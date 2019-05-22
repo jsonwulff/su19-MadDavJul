@@ -23,8 +23,7 @@ namespace SpaceTaxi.States {
                 new Image(Path.Combine( "Assets",  "Images", "SpaceBackground.png")));
             player = Player.GetInstance();
             score = new Score();
-            customer = new Customer();
-            
+
             InitializeGameState();   
         }
         /// <summary>
@@ -73,8 +72,6 @@ namespace SpaceTaxi.States {
             player.RenderPlayer();
             score.RenderScore();
             player.explosion.RenderAnimations();
-            customer.RenderCustomer();
-            
         }
 
         /// <summary>
