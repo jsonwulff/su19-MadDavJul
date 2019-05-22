@@ -63,7 +63,12 @@ namespace SpaceTaxi.States {
         /// </summary>
         public void UpdateGameLogic() {
             player.Move();
-            map.CollisionLogic();
+            
+            if (player.alive) {
+                map.CollisionLogic();
+            }
+
+            map.isGameOver();
             map.MoveToNextLevel();
         }
         
