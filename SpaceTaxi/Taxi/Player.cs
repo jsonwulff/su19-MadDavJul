@@ -20,7 +20,7 @@ namespace SpaceTaxi {
         private readonly ImageStride taxiBoosterOnBottomOnRight;
         private readonly ImageStride taxiBoosterOnBottomRight;
 
-        private readonly ImageStride explsionStrides;
+        private readonly List<Image> explsionStrides;
         private int explosionLength = 500;
         public AnimationContainer explosion;
         
@@ -55,9 +55,8 @@ namespace SpaceTaxi {
             taxiBoosterOnBottomRight = 
                 new ImageStride(4, ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom_Right.png")));
 
-            explsionStrides = 
-                new ImageStride(explosionLength / 8,ImageStride.CreateStrides(8,Path.Combine("Assets", "Images", "Explosion.png")));
-            explosion = new AnimationContainer(4);
+            explsionStrides = ImageStride.CreateStrides(8,Path.Combine("Assets", "Images", "Explosion.png"));
+            explosion = new AnimationContainer(1);
             
             Entity = new Entity(shape, taxiBoosterOffImageLeft);
             Velocity = new Vec2F(0,0);
@@ -118,12 +117,13 @@ namespace SpaceTaxi {
         /// <summary>
         /// Plays an animation on the player position.
         /// </summary>
-        /// TODO Change this to killPlayer
-        public void AddExplosion() {
+        public void KillPlayer() {
             alive = false;
+            StaticTimer.RestartTimer();
             explosion.AddAnimation(
                 new StationaryShape(shape.Position, 
-                    new Vec2F(shape.Extent.X, shape.Extent.X)), explosionLength, explsionStrides);
+                    new Vec2F(shape.Extent.X, shape.Extent.X)), explosionLength, 
+                new ImageStride(explosionLength / 8, explsionStrides));
         }
         
         /// <summary>
@@ -157,7 +157,7 @@ namespace SpaceTaxi {
         /// </summary>
         public void Move() {
             shape.Move();
-            if (onPlatform) {
+            if (onPlatform || !alive) {
                 shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
             } else {
                 ManagePhysics();
