@@ -67,7 +67,6 @@ namespace SpaceTaxi {
                             player.pickedUpCustomer = null;
                         }
                     }
-                    
                 }
             }
         }

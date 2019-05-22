@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using DIKUArcade;
-using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
-using DIKUArcade.Graphics;
-using DIKUArcade.Math;
 using DIKUArcade.Timers;
 
 
@@ -17,6 +12,7 @@ namespace SpaceTaxi {
         private StateMachine stateMachine;
         
         private GameEventBus<object> eventBus;
+        
         
         public Game() {
             // window
