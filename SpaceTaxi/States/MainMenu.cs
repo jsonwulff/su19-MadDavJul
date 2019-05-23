@@ -85,6 +85,9 @@ namespace Galaga_Exercise_3.GalagaStates {
             case 0:
                 SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.GameStateEvent, this, "RESET_SCORE","", ""));
+                SpaceTaxiBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.GameStateEvent, this, "CHANGE_LEVEL",
                         MapCreator.GetInstance().levelsInFolder[0], ""));
                 Player.GetInstance().ResetPlayer();

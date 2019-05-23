@@ -77,6 +77,9 @@ namespace SpaceTaxi.States {
             Player.GetInstance().ResetPlayer();
             SpaceTaxiBus.GetBus().RegisterEvent(
                 GameEventFactory<object>.CreateGameEventForAllProcessors(
+                    GameEventType.GameStateEvent, this, "RESET_SCORE","", ""));
+            SpaceTaxiBus.GetBus().RegisterEvent(
+                GameEventFactory<object>.CreateGameEventForAllProcessors(
                     GameEventType.GameStateEvent, this, "CHANGE_LEVEL",
                     MapCreator.GetInstance().levelsInFolder[Math.Abs(activeMenuButton % menuButtons.Length)], ""));
         }
