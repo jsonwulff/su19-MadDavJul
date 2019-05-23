@@ -26,9 +26,9 @@ namespace SpaceTaxi.Customers {
         public char destinationPlatform;
         private int deliveryTime;
         public int dropOffPoints;
-
+        private bool customerSpawned = false;
         private bool pickedUp = false;
-        
+
         public Entity Entity { get; }
 
         public Customer() {
@@ -66,9 +66,8 @@ namespace SpaceTaxi.Customers {
         }
 
         public void RenderCustomer() {
-            // TODO: Move Render entity and other stuff when spawn time is met
-            Entity.RenderEntity();
-            if (StaticTimer.GetElapsedSeconds() > spawnTime) {
+            if (StaticTimer.GetElapsedSeconds() > spawnTime && !pickedUp) {
+                Entity.RenderEntity();
             }
         }
 
@@ -86,13 +85,17 @@ namespace SpaceTaxi.Customers {
 
         private void pickUpCustomer() {
             Player.GetInstance().pickedUpCustomer = this;
+            pickedUp = true;
+            TimedEvents.getTimedEvents().AddTimedEvent(
+                TimeSpanType.Seconds,deliveryTime,"DELIVERY_TIME_EXCEEDED","","");
         }
 
         public void pickUpCollision() {
-            var collision = CollisionDetection.Aabb(Player.GetInstance().Entity.Shape.AsDynamicShape(), shape);
-            if (collision.Collision) {
-                Console.WriteLine("{0} has been picked up",customerName);
-                pickUpCustomer();
+            if (StaticTimer.GetElapsedSeconds() > spawnTime && !pickedUp) {
+                var collision = CollisionDetection.Aabb(Player.GetInstance().Entity.Shape.AsDynamicShape(), shape);
+                if (collision.Collision) {
+                    pickUpCustomer();
+                }
             }
         }
     }
