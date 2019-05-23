@@ -60,18 +60,29 @@ namespace SpaceTaxi.Customers {
             
             Entity = new Entity(shape, customerStandRight);
         }
-
+        /// <summary>
+        /// Sets customer position
+        /// </summary>
+        /// <param name="x">x position</param>
+        /// <param name="y">y position</param>
         public void SetPosition(float x, float y) {
             shape.Position.X = x;
             shape.Position.Y = y;
         }
 
+        /// <summary>
+        /// Renders customer
+        /// </summary>
         public void RenderCustomer() {
             if (StaticTimer.GetElapsedSeconds() > spawnTime && !pickedUp) {
                 Entity.RenderEntity();
             }
         }
 
+        /// <summary>
+        /// Determines the dropoff point for customer.
+        /// </summary>
+        /// <param name="destinationCode">The string that determines dropoff point </param>
         private void setDestination(string destinationCode) {
             if (destinationCode == "^") {
                 destinationLevel = originLevel + 1;
@@ -83,7 +94,10 @@ namespace SpaceTaxi.Customers {
                 destinationPlatform = destinationCode[1];
             }
         }
-
+        
+        /// <summary>
+        /// Update method to check for collisions and delivery time
+        /// </summary>
         private void pickUpCustomer() {
             Player.GetInstance().pickedUpCustomer = this;
             pickedUp = true;
@@ -94,6 +108,9 @@ namespace SpaceTaxi.Customers {
                 TimeSpanType.Seconds, deliveryTime,"DELIVERY_TIME_EXCEEDED","","");
         }
 
+        /// <summary>
+        /// Checks for collision with player
+        /// </summary>
         public void pickUpCollision() {
             if (StaticTimer.GetElapsedSeconds() > spawnTime && !pickedUp) {
                 var collision = CollisionDetection.Aabb(Player.GetInstance().Entity.Shape.AsDynamicShape(), shape);
