@@ -1,10 +1,10 @@
 CTTTTTTTTTTTTTTTTD^^^^^^CTTTTTTTTTTTTttt
 A                                    stt
 A                                      B
+A                                      B
 A HJJJJJJJJG                           B
 HIIIIIIIIIG                            B
-A  HIIIG                               B
-A                     prrrrrq          B
+A  HIIIG              prrrrrq          B
 A                      poooooqbc       B
 A                       poooooad       B
 A                        poooooq       B
