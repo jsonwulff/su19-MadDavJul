@@ -16,11 +16,11 @@ namespace SpaceTaxi {
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.StatusEvent, this);
         }
         
-        public void ResetScore() {
+        private void ResetScore() {
             score = 0;
         }
         
-        public void AddPoints(int points) {
+        private void AddPoints(int points) {
             score += points;
         }
         
@@ -39,6 +39,9 @@ namespace SpaceTaxi {
             switch (gameEvent.Message) {
                 case "AWARD_POINTS":
                     AddPoints(Convert.ToInt32(gameEvent.Parameter1));
+                    break;
+                case "RESET_SCORE":
+                    ResetScore();
                     break;
             }
         }
