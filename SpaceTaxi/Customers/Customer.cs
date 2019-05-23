@@ -28,6 +28,7 @@ namespace SpaceTaxi.Customers {
         public int dropOffPoints;
         private bool customerSpawned = false;
         private bool pickedUp = false;
+        
 
         public Entity Entity { get; }
 
@@ -86,8 +87,11 @@ namespace SpaceTaxi.Customers {
         private void pickUpCustomer() {
             Player.GetInstance().pickedUpCustomer = this;
             pickedUp = true;
+            SpaceTaxiBus.GetBus().RegisterEvent(
+                GameEventFactory<object>.CreateGameEventForAllProcessors(
+                    GameEventType.PlayerEvent, this, "CUSTOMER_PICKED_UP", "", ""));
             TimedEvents.getTimedEvents().AddTimedEvent(
-                TimeSpanType.Seconds,deliveryTime,"DELIVERY_TIME_EXCEEDED","","");
+                TimeSpanType.Seconds, deliveryTime,"DELIVERY_TIME_EXCEEDED","","");
         }
 
         public void pickUpCollision() {

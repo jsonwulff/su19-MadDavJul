@@ -37,14 +37,12 @@ namespace SpaceTaxi {
             
             // event delegation
             eventBus.Subscribe(GameEventType.WindowEvent, this);
-            eventBus.Subscribe(GameEventType.TimedEvent, this);
             stateMachine = new StateMachine();
         }
 
         public void GameLoop() {
             while (win.IsRunning()) {
                 gameTimer.MeasureTime();
-
                 while (gameTimer.ShouldUpdate()) {
                     win.PollEvents();
                     eventBus.ProcessEvents();
@@ -76,8 +74,6 @@ namespace SpaceTaxi {
                     win.CloseWindow();
                     break;
                 }
-            } else if (eventType == GameEventType.TimedEvent) {
-                Console.WriteLine(gameEvent.Message);
             }
         }
     }

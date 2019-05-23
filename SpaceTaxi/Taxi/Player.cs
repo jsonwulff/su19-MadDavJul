@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
@@ -34,13 +35,14 @@ namespace SpaceTaxi {
         public double deathTime { get; private set; }
 
         public Customer pickedUpCustomer;
+        public bool DeliveryOnTime;
         
         private Vec2F gravity = new Vec2F(0f,-0.004f);
         private Vec2F acceleration;
         private Vec2F velocity;
         private double time;
         public double Speed;
-        
+
         public Player() {
             shape = new DynamicShape(new Vec2F(), new Vec2F(0.0575f, 0.03f));
             taxiBoosterOffImageLeft =
@@ -173,31 +175,40 @@ namespace SpaceTaxi {
         /// <param name="eventType">Type of event received</param>
         /// <param name="gameEvent">The Event</param>
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
-            if (eventType != GameEventType.PlayerEvent) {
-                return;
-            }
-            switch (gameEvent.Message) {
-            case "BOOSTER_UPWARDS":
-                if (onPlatform) {
-                    onPlatform = false;
-                    velocity = new Vec2F(0.0f,0.0f);
-                    acceleration = new Vec2F(0,0.015f);
-                    time = StaticTimer.GetElapsedSeconds();
+            if (eventType == GameEventType.PlayerEvent) {
+                switch (gameEvent.Message) {
+                case "BOOSTER_UPWARDS":
+                    if (onPlatform) {
+                        onPlatform = false;
+                        velocity = new Vec2F(0.0f, 0.0f);
+                        acceleration = new Vec2F(0, 0.015f);
+                        time = StaticTimer.GetElapsedSeconds();
+                    }
+
+                    acceleration = acceleration + new Vec2F(0, 0.015f);
+                    break;
+                case "BOOSTER_TO_RIGHT":
+                    acceleration = acceleration + new Vec2F(0.01f, 0);
+                    break;
+                case "BOOSTER_TO_LEFT":
+                    acceleration = acceleration + new Vec2F(-0.01f, 0);
+                    break;
+                case "STOP_ACCELERATE_SIDEWAYS":
+                    acceleration = new Vec2F(0, acceleration.Y);
+                    break;
+                case "STOP_ACCELERATE_UP":
+                    acceleration = new Vec2F(acceleration.X, 0);
+                    break;
+                case "CUSTOMER_PICKED_UP":
+                    DeliveryOnTime = true;
+                    break;
                 }
-                acceleration = acceleration + new Vec2F(0, 0.015f);
-                break;
-            case "BOOSTER_TO_RIGHT":
-                acceleration = acceleration + new Vec2F(0.01f, 0);
-                break;
-            case "BOOSTER_TO_LEFT":
-                acceleration = acceleration + new Vec2F(-0.01f, 0);
-                break;
-            case "STOP_ACCELERATE_SIDEWAYS":
-                acceleration = new Vec2F(0, acceleration.Y);
-                break;
-            case "STOP_ACCELERATE_UP":
-                acceleration = new Vec2F(acceleration.X, 0);
-                break;
+            } else if (eventType == GameEventType.TimedEvent) {
+                switch (gameEvent.Message) {
+                case "DELIVERY_TIME_EXCEEDED":
+                    DeliveryOnTime = false;
+                    break;
+                }
             }
         }
     }

@@ -59,11 +59,17 @@ namespace SpaceTaxi {
                         player.KillPlayer();
                     } else if (player.pickedUpCustomer != null) {
                         if (player.pickedUpCustomer.destinationPlatform == PlatformChar && player.pickedUpCustomer.destinationLevel == inLevel) {
-                            Console.WriteLine("Customer delivered at the right platform");
-                            SpaceTaxiBus.GetBus().RegisterEvent(
-                                GameEventFactory<object>.CreateGameEventForAllProcessors(
-                                    GameEventType.StatusEvent, this,"AWARD_POINTS",
-                                    player.pickedUpCustomer.dropOffPoints.ToString(), ""));
+                            if (player.DeliveryOnTime) {
+                                SpaceTaxiBus.GetBus().RegisterEvent(
+                                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                                        GameEventType.StatusEvent, this,"AWARD_POINTS",
+                                        player.pickedUpCustomer.dropOffPoints.ToString(), ""));
+                            } else {
+                                SpaceTaxiBus.GetBus().RegisterEvent(
+                                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                                        GameEventType.StatusEvent, this,"AWARD_POINTS",
+                                        (player.pickedUpCustomer.dropOffPoints/2).ToString(), ""));
+                            }
                             player.pickedUpCustomer = null;
                         }
                     }
