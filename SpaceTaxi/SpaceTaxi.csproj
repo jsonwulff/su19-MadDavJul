@@ -42,8 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="Customers\Customer.cs" />
     <Compile Include="Customers\CustomerCreator.cs" />
+    <Compile Include="Events\SpaceTaxiBus.cs" />
+    <Compile Include="Events\TimedEvents.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="LevelParser\ASCIIReader.cs" />
     <Compile Include="LevelParser\MapCreator.cs" />
@@ -51,7 +54,6 @@
     <Compile Include="LevelParser\Platform.cs" />
     <Compile Include="LevelParser\Translator.cs" />
     <Compile Include="Score.cs" />
-    <Compile Include="SpaceTaxiBus.cs" />
     <Compile Include="States\GameOver.cs" />
     <Compile Include="States\GamePaused.cs" />
     <Compile Include="States\GameRunning.cs" />
