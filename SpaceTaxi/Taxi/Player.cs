@@ -34,7 +34,8 @@ namespace SpaceTaxi {
         public double deathTime { get; private set; }
 
         public Customer pickedUpCustomer;
-
+        
+        private Vec2F gravity = new Vec2F(0f,-0.004f);
         private Vec2F acceleration;
         private Vec2F velocity;
         private double time;
@@ -67,6 +68,7 @@ namespace SpaceTaxi {
             acceleration = new Vec2F(0,0);
             
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
+            SpaceTaxiBus.GetBus().Subscribe(GameEventType.TimedEvent, this);
         }
 
         /// <summary>
@@ -135,11 +137,8 @@ namespace SpaceTaxi {
         /// </summary>
         public void ManagePhysics() {
             Speed = Math.Abs(velocity.Length());
-            Vec2F gravity = new Vec2F(0f,-0.004f);
-            
             velocity += (gravity + acceleration) * (float) (StaticTimer.GetElapsedSeconds() - time);
             time = StaticTimer.GetElapsedSeconds();
-            
             shape.Direction = velocity;
         }
         
@@ -168,34 +167,6 @@ namespace SpaceTaxi {
             }
         }
 
-        private void boosterUp() {
-            if (onPlatform) {
-                onPlatform = false;
-                time = 0;
-                velocity = new Vec2F(0.0f,0.0f);
-                acceleration = new Vec2F(0,0);
-                StaticTimer.RestartTimer();
-            }
-            acceleration = acceleration + new Vec2F(0, 0.015f);
-        }
-        
-        private void bosterLeft() {
-            acceleration = acceleration + new Vec2F(-0.01f, 0);
-        }
- 
-        private void boosterRight() {
-            acceleration = acceleration + new Vec2F(0.01f, 0);
-        }
-
-        private void stopAccelerateUp() {
-            acceleration = new Vec2F(acceleration.X, 0);
-        }
-        
-        private void stopAccelerateSideways() {
-            acceleration = new Vec2F(0, acceleration.Y);
-        }
-
-
         /// <summary>
         /// Listens to events from the gameBus
         /// </summary>
@@ -207,19 +178,25 @@ namespace SpaceTaxi {
             }
             switch (gameEvent.Message) {
             case "BOOSTER_UPWARDS":
-                boosterUp();
+                if (onPlatform) {
+                    onPlatform = false;
+                    velocity = new Vec2F(0.0f,0.0f);
+                    acceleration = new Vec2F(0,0.015f);
+                    time = StaticTimer.GetElapsedSeconds();
+                }
+                acceleration = acceleration + new Vec2F(0, 0.015f);
                 break;
             case "BOOSTER_TO_RIGHT":
-                boosterRight();
+                acceleration = acceleration + new Vec2F(0.01f, 0);
                 break;
             case "BOOSTER_TO_LEFT":
-                bosterLeft();
+                acceleration = acceleration + new Vec2F(-0.01f, 0);
                 break;
             case "STOP_ACCELERATE_SIDEWAYS":
-                stopAccelerateSideways();
+                acceleration = new Vec2F(0, acceleration.Y);
                 break;
             case "STOP_ACCELERATE_UP":
-                stopAccelerateUp();
+                acceleration = new Vec2F(acceleration.X, 0);
                 break;
             }
         }
