@@ -15,11 +15,18 @@ namespace SpaceTaxi {
             
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.StatusEvent, this);
         }
-        
+
+        /// <summary>
+        /// Resets the score of the game
+        /// </summary>
         private void ResetScore() {
             score = 0;
         }
         
+        /// <summary>
+        /// Adds points
+        /// </summary>
+        /// <param name="points"> Amount of points to add</param>
         private void AddPoints(int points) {
             score += points;
         }

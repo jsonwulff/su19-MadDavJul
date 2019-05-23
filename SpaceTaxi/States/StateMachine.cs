@@ -15,6 +15,10 @@ namespace SpaceTaxi {
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.InputEvent, this);
         }
 
+        /// <summary>
+        /// Switches the activeState in between the different gameStates
+        /// </summary>
+        /// <param name="stateType"> Which state to change to</param>
         private void SwitchState(GameStateType stateType) {
             switch (stateType) {
             case (GameStateType.GameRunning):
