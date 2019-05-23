@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DIKUArcade;
 using DIKUArcade.EventBus;
 using DIKUArcade.Timers;
@@ -8,11 +9,9 @@ namespace SpaceTaxi {
     public class Game : IGameEventProcessor<object> {
         private Window win;
         private GameTimer gameTimer;
-
         private StateMachine stateMachine;
-        
         private GameEventBus<object> eventBus;
-        
+        private TimedEventContainer timedEvents;
         
         public Game() {
             // window
@@ -28,12 +27,17 @@ namespace SpaceTaxi {
                 GameEventType.WindowEvent, // messages to the window, e.g. CloseWindow()
                 GameEventType.PlayerEvent, // commands issued to the player object, e.g. move,
                 GameEventType.GameStateEvent,
-                GameEventType.StatusEvent
+                GameEventType.StatusEvent,
+                GameEventType.TimedEvent
             });
             win.RegisterEventBus(eventBus);
 
+            timedEvents = TimedEvents.getTimedEvents();
+            timedEvents.AttachEventBus(eventBus);
+            
             // event delegation
             eventBus.Subscribe(GameEventType.WindowEvent, this);
+            eventBus.Subscribe(GameEventType.TimedEvent, this);
             stateMachine = new StateMachine();
         }
 
@@ -44,6 +48,7 @@ namespace SpaceTaxi {
                 while (gameTimer.ShouldUpdate()) {
                     win.PollEvents();
                     eventBus.ProcessEvents();
+                    timedEvents.ProcessTimedEvents();
                     stateMachine.ActiveState.UpdateGameLogic();
                 }
 
@@ -71,6 +76,8 @@ namespace SpaceTaxi {
                     win.CloseWindow();
                     break;
                 }
+            } else if (eventType == GameEventType.TimedEvent) {
+                Console.WriteLine(gameEvent.Message);
             }
         }
     }
