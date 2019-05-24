@@ -14,7 +14,6 @@ namespace SpaceTaxi.States {
         private Entity backGroundImage;
         private Player player;
         private Score score;
-        private Customer customer;
         private Map map;
         
         private GameRunning() {
