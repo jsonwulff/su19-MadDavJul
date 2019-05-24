@@ -148,7 +148,7 @@ namespace SpaceTaxi {
         /// Resets players properties
         /// </summary>
         public void ResetPlayer() {
-            pickedUpCustomer = null;
+            //pickedUpCustomer = null;
             alive = true;
             velocity = new Vec2F(0,0);
             acceleration = new Vec2F(0,0);

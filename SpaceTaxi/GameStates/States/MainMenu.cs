@@ -90,7 +90,7 @@ namespace Galaga_Exercise_3.GalagaStates {
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.GameStateEvent, this, "CHANGE_LEVEL",
                         MapCreator.GetInstance().levelsInFolder[0], ""));
-                Player.GetInstance().ResetPlayer();
+                Player.GetInstance().pickedUpCustomer = null;
                 break;
 
             case 1:

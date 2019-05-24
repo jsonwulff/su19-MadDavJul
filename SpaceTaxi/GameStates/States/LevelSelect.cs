@@ -40,12 +40,13 @@ namespace SpaceTaxi.States {
         public void InitializeGameState() {
             var retval = new List<Text>();           
             var i = 0;
-            foreach(KeyValuePair<string, Map> entry in MapCreator.GetInstance().mapDictionary)
-            {
-                retval.Add(new Text(entry.Value.LevelName,
-                    new Vec2F(0.35f, 0.4f - i * 0.1f), 
-                    new Vec2F(0.5f, 0.5f)));
-                    i++;
+            foreach(KeyValuePair<string, Map> entry in MapCreator.GetInstance().mapDictionary) {
+                var menubotton = new Text(entry.Value.LevelName,
+                    new Vec2F(0.35f, 0.4f - i * 0.1f),
+                    new Vec2F(0.5f, 0.5f));
+                menubotton.SetFontSize(30);
+                retval.Add(menubotton);
+                i++;
             }
             menuButtons = retval.ToArray();
             
@@ -82,6 +83,7 @@ namespace SpaceTaxi.States {
                 GameEventFactory<object>.CreateGameEventForAllProcessors(
                     GameEventType.GameStateEvent, this, "CHANGE_LEVEL",
                     MapCreator.GetInstance().levelsInFolder[Math.Abs(activeMenuButton % menuButtons.Length)], ""));
+            Player.GetInstance().pickedUpCustomer = null;
         }
         
         public void KeyPress(string key) {
