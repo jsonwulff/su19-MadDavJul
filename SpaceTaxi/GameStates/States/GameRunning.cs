@@ -80,7 +80,7 @@ namespace SpaceTaxi.States {
         public void SetMap(string levelFileName) {
             map = MapCreator.GetInstance().mapDictionary[levelFileName];
             player.ResetPlayer();
-            player.SetPosition(map.PlayerPosition.x, map.PlayerPosition.y);
+            player.SetPosition(map.PlayerPosition);
             map.GetCustomers();
         }
         

@@ -15,7 +15,7 @@ namespace SpaceTaxi {
         public EntityContainer<Entity> MapContainer;
         public Dictionary<char, Platform> PlatformContainer;
         public string LevelName;
-        public (float x, float y) PlayerPosition;
+        public Vec2F PlayerPosition;
         public string[] CustomerData;
         private Player player;
         public char[] Platforms;
@@ -25,7 +25,7 @@ namespace SpaceTaxi {
         private CustomerCreator customerCreator;
 
         public Map(EntityContainer<Entity> mapContainer, string levelName, String fileName, int levelNumber,
-            (float x, float y) playerPosition, string[] customerData, Dictionary<char, Platform> platformContainer, CustomerCreator customercreator) {
+            Vec2F playerPosition, string[] customerData, Dictionary<char, Platform> platformContainer, CustomerCreator customercreator) {
             MapContainer = mapContainer;
             LevelName = levelName;
             PlayerPosition = playerPosition;

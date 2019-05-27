@@ -11,7 +11,7 @@ namespace SpaceTaxi {
     public class Translator {
         private Dictionary<char, Image> imageDictionary;
         private Vec2F entitySize;
-        public (float x, float y) PlayerPostiotion;
+        public Vec2F PlayerPostiotion;
         
         public Translator() {
             entitySize = new Vec2F(0.025f,0.025f);
@@ -69,7 +69,7 @@ namespace SpaceTaxi {
                 var line = mapContainer[y];
                 for (int x = 0; x < 40; x++) {
                     if (line[x] == '>') {
-                        PlayerPostiotion = (x * 0.025f, 0.975f - y * 0.025f);
+                        PlayerPostiotion = new Vec2F(x * 0.025f, 0.975f - y * 0.025f);
                     } else if (imageDictionary.ContainsKey(line[x]) && !platforms.Contains(line[x])) {
                         mapEntities.AddStationaryEntity(TranslateToEntity(x,y,line[x]));    
                     }

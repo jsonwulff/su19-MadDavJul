@@ -55,7 +55,8 @@ namespace SpaceTaxi {
                     CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
                 if (collsion.Collision) {
                     player.onPlatform = true;
-                    if (player.Speed > 0.004) {
+                    var speed = player.Entity.Shape.AsDynamicShape().Direction;
+                    if (Math.Abs(speed.X) > 0.004f || Math.Abs(speed.Y) > 0.004f) {
                         player.KillPlayer();
                     } else if (player.pickedUpCustomer != null) {
                         if (player.pickedUpCustomer.destinationPlatform == PlatformChar && player.pickedUpCustomer.destinationLevel == inLevel) {

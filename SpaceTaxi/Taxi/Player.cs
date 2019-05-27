@@ -37,11 +37,8 @@ namespace SpaceTaxi {
         public Customer pickedUpCustomer;
         public bool DeliveryOnTime;
         
-        private Vec2F gravity = new Vec2F(0f,-0.004f);
-        private Vec2F acceleration;
-        private Vec2F velocity;
-        private double time;
-        public double Speed;
+        private Physics physics = new Physics();
+        public Vec2F Acceleration;
 
         public Player() {
             shape = new DynamicShape(new Vec2F(), new Vec2F(0.0575f, 0.03f));
@@ -66,8 +63,7 @@ namespace SpaceTaxi {
             explosion = new AnimationContainer(1);
             
             Entity = new Entity(shape, taxiBoosterOffImageLeft);
-            velocity = new Vec2F(0,0);
-            acceleration = new Vec2F(0,0);
+            Acceleration = new Vec2F(0,0);
             
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.TimedEvent, this);
@@ -86,29 +82,28 @@ namespace SpaceTaxi {
         /// </summary>
         /// <param name="x">X Position</param>
         /// <param name="y">Y Position</param>
-        public void SetPosition(float x, float y) {
-            shape.Position.X = x;
-            shape.Position.Y = y;
+        public void SetPosition(Vec2F position) {
+            shape.Position = position;
         }
         
         /// <summary>
         /// Render the player according to the acceleration/velocity
         /// </summary>
         public void RenderPlayer() {
-            if (acceleration.Y > 0 && acceleration.X < 0) { //Flyver op og venstre
+            if (Acceleration.Y > 0 && Acceleration.X < 0) { //Flyver op og venstre
                 taxiOrientation = Orientation.Left;
                 Entity.Image = taxiBoosterOnBottomOnLeft; 
-            } else if (acceleration.Y > 0 && acceleration.X > 0) { //Flyver op og højre
+            } else if (Acceleration.Y > 0 && Acceleration.X > 0) { //Flyver op og højre
                 taxiOrientation = Orientation.Right;
                 Entity.Image = taxiBoosterOnBottomOnRight;
-            } else if (acceleration.X < 0) { //Flyver venstre
+            } else if (Acceleration.X < 0) { //Flyver venstre
                 taxiOrientation = Orientation.Left;
                 Entity.Image = taxiBoosterOnLeft;
-            } else if (acceleration.Y > 0) { //Flyver op
+            } else if (Acceleration.Y > 0) { //Flyver op
                 Entity.Image = taxiOrientation == Orientation.Left
                     ? taxiBoosterOnBottomLeft
                     : taxiBoosterOnBottomRight;
-            }  else if (acceleration.X > 0) { //Flyver højre
+            }  else if (Acceleration.X > 0) { //Flyver højre
                 taxiOrientation = Orientation.Right;
                 Entity.Image = taxiBoosterOnRight;
             }  else { // Flyver ikke
@@ -127,35 +122,31 @@ namespace SpaceTaxi {
         /// </summary>
         public void KillPlayer() {
             alive = false;
-            deathTime = StaticTimer.GetElapsedSeconds() + 1.0;
+            TimedEvents.getTimedEvents().AddTimedEvent(TimeSpanType.Seconds, 1, 
+                "GAME_OVER", "", "");
             explosion.AddAnimation(
                 new StationaryShape(shape.Position, 
                     new Vec2F(shape.Extent.X, shape.Extent.X)), explosionLength, 
                 new ImageStride(explosionLength / 8, explsionStrides));
         }
         
-        /// <summary>
-        /// Simulates pseudo-physics for the Player object
-        /// </summary>
-        public void ManagePhysics() {
-            Speed = Math.Abs(velocity.Length());
-            velocity += (gravity + acceleration) * (float) (StaticTimer.GetElapsedSeconds() - time);
-            time = StaticTimer.GetElapsedSeconds();
-            shape.Direction = velocity;
+
+        public void UpdateVelocity(Vec2F force) {
+            shape.Direction += force;
         }
         
+        public void SetDirection(Vec2F direction) {
+            shape.Direction = direction;
+        }
+
         /// <summary>
         /// Resets players properties
         /// </summary>
         public void ResetPlayer() {
-            //pickedUpCustomer = null;
             alive = true;
-            velocity = new Vec2F(0,0);
-            acceleration = new Vec2F(0,0);
-            time = 0;
+            Acceleration = new Vec2F(0,0);
             onPlatform = false;
-            shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
-            StaticTimer.RestartTimer();
+            SetDirection( new Vec2F(0.0f, 0.0f));
         }
         
         /// <summary>
@@ -166,7 +157,7 @@ namespace SpaceTaxi {
             if (onPlatform || !alive) {
                 shape.AsDynamicShape().Direction = new Vec2F(0.0f, 0.0f);
             } else {
-                ManagePhysics();
+                physics.ManagePhysics();
             }
         }
 
@@ -181,24 +172,20 @@ namespace SpaceTaxi {
                 case "BOOSTER_UPWARDS":
                     if (onPlatform) {
                         onPlatform = false;
-                        velocity = new Vec2F(0.0f, 0.0f);
-                        acceleration = new Vec2F(0, 0.015f);
-                        time = StaticTimer.GetElapsedSeconds();
                     }
-
-                    acceleration = acceleration + new Vec2F(0, 0.015f);
+                    Acceleration = Acceleration + new Vec2F(0.0f, 0.0001f);
                     break;
                 case "BOOSTER_TO_RIGHT":
-                    acceleration = acceleration + new Vec2F(0.01f, 0);
+                    Acceleration = Acceleration + new Vec2F(0.0001f, 0);
                     break;
                 case "BOOSTER_TO_LEFT":
-                    acceleration = acceleration + new Vec2F(-0.01f, 0);
+                    Acceleration = Acceleration + new Vec2F(-0.0001f, 0);
                     break;
                 case "STOP_ACCELERATE_SIDEWAYS":
-                    acceleration = new Vec2F(0, acceleration.Y);
+                    Acceleration = new Vec2F(0, Acceleration.Y);
                     break;
                 case "STOP_ACCELERATE_UP":
-                    acceleration = new Vec2F(acceleration.X, 0);
+                    Acceleration = new Vec2F(Acceleration.X, 0);
                     break;
                 case "CUSTOMER_PICKED_UP":
                     DeliveryOnTime = true;

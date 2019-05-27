@@ -3,7 +3,6 @@ using DIKUArcade;
 using DIKUArcade.EventBus;
 using DIKUArcade.Timers;
 
-
 namespace SpaceTaxi {
     public class Game : IGameEventProcessor<object> {
         private Window win;
@@ -70,7 +69,6 @@ namespace SpaceTaxi {
                 }
             }
         }
-
 
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
             if (eventType == GameEventType.WindowEvent) {
