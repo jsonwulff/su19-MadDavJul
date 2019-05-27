@@ -37,16 +37,7 @@ namespace SpaceTaxi {
             customers = new List<Customer>();
             customerCreator = customercreator;
         }
-
-//        public void isGameOver() {
-//            if (!player.alive && StaticTimer.GetElapsedSeconds() > player.deathTime) {
-//                SpaceTaxiBus.GetBus().RegisterEvent(
-//                    GameEventFactory<object>.CreateGameEventForAllProcessors(
-//                        GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_OVER", ""));
-//            }
-//            
-//        }
-
+        
         /// <summary>
         /// CollisionLogic checks for collisions with MapContainer and PlatformContainer. Kills if obstacle
         /// collision, sets player.onPlatform false if platform collision.
@@ -59,7 +50,7 @@ namespace SpaceTaxi {
             }
 
             foreach (var customer in customers) {
-                customer.pickUpCollision();
+                customer.PickUpCollision();
             }
             
             // Logic for collision with obstacles
@@ -98,7 +89,7 @@ namespace SpaceTaxi {
             customers = customerCreator.CreateCustomers(CustomerData, LevelNumber);
             foreach (var customer in customers) {
                 var spawnPlatform = customer.spawnPlatform;
-                var platoformExtent = PlatformContainer[spawnPlatform].platformExtent();
+                var platoformExtent = PlatformContainer[spawnPlatform].GetPlatformExtent();
                 customer.SetPosition((platoformExtent.x1 + platoformExtent.x2) / 2, platoformExtent.y);
             }
         }

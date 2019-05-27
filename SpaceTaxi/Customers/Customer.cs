@@ -52,7 +52,7 @@ namespace SpaceTaxi.Customers {
             deliveryTime = Convert.ToInt32(deliverytime);
             dropOffPoints = Convert.ToInt32(dropoffpoints);
             originLevel = originlevel;
-            setDestination(destinationcode);
+            SetDestination(destinationcode);
             
             shape = new DynamicShape(new Vec2F(0.0f,0.0f), new Vec2F(0.018f,0.03f));
             customerStandRight = 
@@ -85,7 +85,7 @@ namespace SpaceTaxi.Customers {
         /// Determines the dropoff point for customer.
         /// </summary>
         /// <param name="destinationCode">The string that determines dropoff point </param>
-        private void setDestination(string destinationCode) {
+        private void SetDestination(string destinationCode) {
             if (destinationCode == "^") {
                 destinationLevel = originLevel + 1;
             } else if (destinationCode.Length == 1) {
@@ -100,7 +100,7 @@ namespace SpaceTaxi.Customers {
         /// <summary>
         /// Update method to check for collisions and delivery time
         /// </summary>
-        private void pickUpCustomer() {
+        private void PickUpCustomer() {
             Player.GetInstance().pickedUpCustomer = this;
             pickedUp = true;
             SpaceTaxiBus.GetBus().RegisterEvent(
@@ -113,11 +113,11 @@ namespace SpaceTaxi.Customers {
         /// <summary>
         /// Checks for collision with player
         /// </summary>
-        public void pickUpCollision() {
+        public void PickUpCollision() {
             if (StaticTimer.GetElapsedSeconds() > spawnTime && !pickedUp) {
                 var collision = CollisionDetection.Aabb(Player.GetInstance().Entity.Shape.AsDynamicShape(), shape);
                 if (collision.Collision && Player.GetInstance().pickedUpCustomer == null) {
-                    pickUpCustomer();
+                    PickUpCustomer();
                 }
             }
         }
