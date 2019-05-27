@@ -70,7 +70,6 @@ namespace SpaceTaxi.States {
             map.RenderMap();
             player.RenderPlayer();
             score.RenderScore();
-            player.explosion.RenderAnimations();
         }
 
         /// <summary>

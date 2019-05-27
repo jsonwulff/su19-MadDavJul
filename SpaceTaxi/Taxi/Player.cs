@@ -13,6 +13,10 @@ namespace SpaceTaxi {
     public class Player : IGameEventProcessor<object> {
         private static Player instance = null;
         
+        public Entity Entity { get; }
+        
+        public Customer pickedUpCustomer;
+        
         private readonly Image taxiBoosterOffImageLeft;
         private readonly Image taxiBoosterOffImageRight;
         private readonly ImageStride taxiBoosterOnLeft;
@@ -24,17 +28,14 @@ namespace SpaceTaxi {
 
         private readonly List<Image> explsionStrides;
         private int explosionLength = 500;
-        public AnimationContainer explosion;
+        private AnimationContainer explosion;
         
         private readonly DynamicShape shape;
         private Orientation taxiOrientation;
-        public Entity Entity { get; }
 
         public bool onPlatform;
         public bool alive = true;
-        public double deathTime { get; private set; }
 
-        public Customer pickedUpCustomer;
         public bool DeliveryOnTime;
         
         private Physics physics = new Physics();
@@ -42,6 +43,8 @@ namespace SpaceTaxi {
 
         public Player() {
             shape = new DynamicShape(new Vec2F(), new Vec2F(0.0575f, 0.03f));
+            Entity = new Entity(shape, taxiBoosterOffImageLeft);
+            
             taxiBoosterOffImageLeft =
                 new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None.png"));
             taxiBoosterOffImageRight =
@@ -62,7 +65,6 @@ namespace SpaceTaxi {
             explsionStrides = ImageStride.CreateStrides(8,Path.Combine("Assets", "Images", "Explosion.png"));
             explosion = new AnimationContainer(1);
             
-            Entity = new Entity(shape, taxiBoosterOffImageLeft);
             Acceleration = new Vec2F(0,0);
             
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
@@ -80,8 +82,7 @@ namespace SpaceTaxi {
         /// <summary>
         /// Set the players position
         /// </summary>
-        /// <param name="x">X Position</param>
-        /// <param name="y">Y Position</param>
+        /// <param name="position">Vec2F Position</param>
         public void SetPosition(Vec2F position) {
             shape.Position = position;
         }
@@ -115,6 +116,7 @@ namespace SpaceTaxi {
             if (alive) {
                 Entity.RenderEntity();
             }
+            explosion.RenderAnimations();
         }
 
         /// <summary>
