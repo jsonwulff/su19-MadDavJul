@@ -90,23 +90,23 @@ namespace SpaceTaxi {
         /// Render the player according to the acceleration/velocity
         /// </summary>
         public void RenderPlayer() {
-            if (Acceleration.Y > 0 && Acceleration.X < 0) { //Flyver op og venstre
+            if (Acceleration.Y > 0 && Acceleration.X < 0) {            //Flyver op og venstre
                 taxiOrientation = Orientation.Left;
                 Entity.Image = taxiBoosterOnBottomOnLeft; 
-            } else if (Acceleration.Y > 0 && Acceleration.X > 0) { //Flyver op og højre
+            } else if (Acceleration.Y > 0 && Acceleration.X > 0) {     //Flyver op og højre
                 taxiOrientation = Orientation.Right;
                 Entity.Image = taxiBoosterOnBottomOnRight;
-            } else if (Acceleration.X < 0) { //Flyver venstre
+            } else if (Acceleration.X < 0) {                           //Flyver venstre
                 taxiOrientation = Orientation.Left;
                 Entity.Image = taxiBoosterOnLeft;
-            } else if (Acceleration.Y > 0) { //Flyver op
+            } else if (Acceleration.Y > 0) {                           //Flyver op
                 Entity.Image = taxiOrientation == Orientation.Left
                     ? taxiBoosterOnBottomLeft
                     : taxiBoosterOnBottomRight;
-            }  else if (Acceleration.X > 0) { //Flyver højre
+            }  else if (Acceleration.X > 0) {                          //Flyver højre
                 taxiOrientation = Orientation.Right;
                 Entity.Image = taxiBoosterOnRight;
-            }  else { // Flyver ikke
+            }  else {                                                  // Flyver ikke
                 Entity.Image = taxiOrientation == Orientation.Left
                     ? taxiBoosterOffImageLeft
                     : taxiBoosterOffImageRight; 

@@ -38,14 +38,14 @@ namespace SpaceTaxi {
             customerCreator = customercreator;
         }
 
-        public void isGameOver() {
-            if (!player.alive && StaticTimer.GetElapsedSeconds() > player.deathTime) {
-                SpaceTaxiBus.GetBus().RegisterEvent(
-                    GameEventFactory<object>.CreateGameEventForAllProcessors(
-                        GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_OVER", ""));
-            }
-            
-        }
+//        public void isGameOver() {
+//            if (!player.alive && StaticTimer.GetElapsedSeconds() > player.deathTime) {
+//                SpaceTaxiBus.GetBus().RegisterEvent(
+//                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+//                        GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_OVER", ""));
+//            }
+//            
+//        }
 
         /// <summary>
         /// CollisionLogic checks for collisions with MapContainer and PlatformContainer. Kills if obstacle
