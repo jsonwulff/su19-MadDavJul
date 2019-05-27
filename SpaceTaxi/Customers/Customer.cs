@@ -30,6 +30,7 @@ namespace SpaceTaxi.Customers {
         private bool pickedUp = false;
         
 
+
         public Entity Entity { get; }
 
         public Customer() {
@@ -40,6 +41,7 @@ namespace SpaceTaxi.Customers {
                 new Image(Path.Combine("Assets", "Images","CustomerStandLeft.png"));
             
             Entity = new Entity(shape, customerStandRight);
+            
         }
 
         public Customer(string customername, string spawntime, char spawnplatform, 
@@ -114,7 +116,7 @@ namespace SpaceTaxi.Customers {
         public void pickUpCollision() {
             if (StaticTimer.GetElapsedSeconds() > spawnTime && !pickedUp) {
                 var collision = CollisionDetection.Aabb(Player.GetInstance().Entity.Shape.AsDynamicShape(), shape);
-                if (collision.Collision) {
+                if (collision.Collision && Player.GetInstance().pickedUpCustomer == null) {
                     pickUpCustomer();
                 }
             }

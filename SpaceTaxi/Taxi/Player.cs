@@ -66,6 +66,8 @@ namespace SpaceTaxi {
             explosion = new AnimationContainer(1);
             
             Acceleration = new Vec2F(0,0);
+
+            pickedUpCustomer = null;
             
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.TimedEvent, this);

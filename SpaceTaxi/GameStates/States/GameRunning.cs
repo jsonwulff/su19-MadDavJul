@@ -58,7 +58,6 @@ namespace SpaceTaxi.States {
                 map.CollisionLogic();
             }
 
-           //map.isGameOver();
             map.MoveToNextLevel();
         }
         
