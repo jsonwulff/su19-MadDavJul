@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DIKUArcade;
 using DIKUArcade.EventBus;
 using DIKUArcade.Timers;
@@ -9,19 +8,18 @@ namespace SpaceTaxi {
     public class Game : IGameEventProcessor<object> {
         private Window win;
         private GameTimer gameTimer;
+        
         private StateMachine stateMachine;
+        
         private GameEventBus<object> eventBus;
         private TimedEventContainer timedEvents;
         
         public Game() {
-            // window
             win = new Window("Space Taxi Game v0.1", 500, AspectRatio.R1X1);
-
-            // game timer
             gameTimer = new GameTimer(60); // 60 UPS, no FPS limit
             
-            // event bus
             eventBus = SpaceTaxiBus.GetBus();
+            
             eventBus.InitializeEventBus(new List<GameEventType> {
                 GameEventType.InputEvent, // key press / key release
                 GameEventType.WindowEvent, // messages to the window, e.g. CloseWindow()
@@ -30,28 +28,35 @@ namespace SpaceTaxi {
                 GameEventType.StatusEvent,
                 GameEventType.TimedEvent
             });
+            
             win.RegisterEventBus(eventBus);
 
             timedEvents = TimedEvents.getTimedEvents();
             timedEvents.AttachEventBus(eventBus);
             
-            // event delegation
             eventBus.Subscribe(GameEventType.WindowEvent, this);
+            
             stateMachine = new StateMachine();
         }
 
         public void GameLoop() {
             while (win.IsRunning()) {
+                
                 gameTimer.MeasureTime();
+                
                 while (gameTimer.ShouldUpdate()) {
+                    
                     win.PollEvents();
-                    eventBus.ProcessEvents();
                     timedEvents.ProcessTimedEvents();
+                    eventBus.ProcessEvents();
+                    
                     stateMachine.ActiveState.UpdateGameLogic();
                 }
 
                 if (gameTimer.ShouldRender()) {
+                    
                     win.Clear();
+                    
                     stateMachine.ActiveState.RenderState();
                       
 
