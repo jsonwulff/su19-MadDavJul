@@ -45,7 +45,7 @@ namespace SpaceTaxi.Customers {
         public Customer(string customername, string spawntime, char spawnplatform, 
             string destinationcode, string deliverytime, string dropoffpoints, int originlevel) {
             customerName = customername;
-            spawnTime = Convert.ToDouble(spawntime);
+            spawnTime = Convert.ToDouble(spawntime) + StaticTimer.GetElapsedSeconds();
             spawnPlatform = spawnplatform;
             deliveryTime = Convert.ToInt32(deliverytime);
             dropOffPoints = Convert.ToInt32(dropoffpoints);
