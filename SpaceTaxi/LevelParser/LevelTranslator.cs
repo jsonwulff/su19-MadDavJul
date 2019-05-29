@@ -8,12 +8,12 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
 namespace SpaceTaxi {
-    public class Translator {
+    public class LevelTranslator {
         private Dictionary<char, Image> imageDictionary;
         private Vec2F entitySize;
         public Vec2F PlayerPostiotion;
         
-        public Translator() {
+        public LevelTranslator() {
             entitySize = new Vec2F(0.025f,0.025f);
         }
 
@@ -59,14 +59,14 @@ namespace SpaceTaxi {
         }
 
         /// <summary>
-        /// Iterates through mapContainer and creates entities for each character in the textfile.
+        /// Iterates through levelMapContainer and creates entities for each character in the textfile.
         /// </summary>
-        /// <param name="mapContainer"> string array of the map-text</param>
+        /// <param name="levelMapContainer"> string array of the map-text</param>
         /// <returns>EntityContainer of all the 'blocks' on the map.</returns>
-        public EntityContainer<Entity> CreateMapEntities(string[] mapContainer, char[] platforms) {
+        public EntityContainer<Entity> CreateLevelEntities(string[] levelMapContainer, char[] platforms) {
             var mapEntities = new EntityContainer<Entity>();
             for (int y = 0; y < 23; y++) {
-                var line = mapContainer[y];
+                var line = levelMapContainer[y];
                 for (int x = 0; x < 40; x++) {
                     if (line[x] == '>') {
                         PlayerPostiotion = new Vec2F(x * 0.025f, 0.975f - y * 0.025f);
@@ -81,10 +81,10 @@ namespace SpaceTaxi {
         /// <summary>
         /// Creates the seperate Platform container, for making seperate collisions
         /// </summary>
-        /// <param name="mapContainer"> Container of all characters in the map</param>
+        /// <param name="levelMapContainer"> Container of all characters in the map</param>
         /// <param name="platforms">Container of platform characters in the legend</param>
         /// <returns></returns>
-        public Dictionary<char, Platform> CreatePlatformEntities(string[] mapContainer, char[] platforms, int levelNumber) {
+        public Dictionary<char, Platform> CreatePlatformEntities(string[] levelMapContainer, char[] platforms, int levelNumber) {
             var platformDictionary = new Dictionary<char, Platform>();
             
             foreach (var character in platforms) {
@@ -93,7 +93,7 @@ namespace SpaceTaxi {
             }
                             
             for (int y = 0; y < 23; y++) {
-                var line = mapContainer[y];
+                var line = levelMapContainer[y];
                 for (int x = 0; x < 40; x++) {
                     if (platforms.Contains(line[x])) {
                         

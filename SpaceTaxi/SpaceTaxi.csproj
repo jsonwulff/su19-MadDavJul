@@ -57,7 +57,7 @@
     <Compile Include="LevelParser\LevelReader.cs" />
     <Compile Include="LevelParser\LevelCreator.cs" />
     <Compile Include="LevelParser\Level.cs" />
-    <Compile Include="LevelParser\LevelPlatform.cs" />
+    <Compile Include="LevelParser\Platform.cs" />
     <Compile Include="LevelParser\LevelTranslator.cs" />
     <Compile Include="Score.cs" />
     <Compile Include="Taxi\Orientation.cs" />

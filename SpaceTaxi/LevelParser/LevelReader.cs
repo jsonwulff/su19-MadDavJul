@@ -6,10 +6,10 @@ using System.Text.RegularExpressions;
 using DIKUArcade.Math;
 
 namespace SpaceTaxi {
-    public class ASCIIReader {
+    public class LevelReader {
         private string[] levelData;
 
-        public string[] MapContainer;
+        public string[] LevelMapContainer;
         public string[] MetaContainer;
         public string[] KeyContainer;
         public string[] CustomerContainer;
@@ -45,12 +45,12 @@ namespace SpaceTaxi {
 
         /// <summary>
         /// Initializes the parsing process, by getting the file path and splitting the
-        /// data into MapContainer, MetaContainer, keyContainer and customerContainer
+        /// data into LevelMapContainer, MetaContainer, keyContainer and customerContainer
         /// </summary>
         /// <param name="filename"> filename is the name of the text file to parse</param>
         public void ReadFile(string filename) {
             var path = GetLevelFilePath(filename);
-            MapContainer = GetMap(path);
+            LevelMapContainer = GetLevelMap(path);
             levelData = GetLevelData(path);
             MetaContainer = GetMetaData(levelData);
             KeyContainer = GetKeyLegendData(levelData);
@@ -62,7 +62,7 @@ namespace SpaceTaxi {
         /// Sets MapContainer to the text representation of the map
         /// </summary>
         /// <param name="path"> file path of the textfile</param>
-        private string[] GetMap(string path) {
+        private string[] GetLevelMap(string path) {
             return File.ReadLines(path).Take(23).ToArray();
         }
 

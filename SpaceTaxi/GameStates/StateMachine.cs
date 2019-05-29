@@ -54,7 +54,7 @@ namespace SpaceTaxi {
                         break;
                     case "CHANGE_LEVEL":
                         var gameRunning = GameRunning.GetInstance();
-                        gameRunning.SetMap(gameEvent.Parameter1);
+                        gameRunning.SetLevel(gameEvent.Parameter1);
                         ActiveState = gameRunning;
                         break;
                     }

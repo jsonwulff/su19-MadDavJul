@@ -8,11 +8,11 @@ namespace SpaceTaxiTests {
     [TestFixture]
     public class TestLevelParser {
         
-        private ASCIIReader asciiReader;
+        private LevelReader levelReader;
         
         [SetUp]
         public void CreateObjects() {
-            asciiReader = new ASCIIReader();
+            levelReader = new LevelReader();
         }
 
 
@@ -32,9 +32,9 @@ namespace SpaceTaxiTests {
         [TestCase("the-beach.txt")]
         [TestCase("short-n-sweet.txt")]
         public void TestMapContainer(string filename) {
-            asciiReader.ReadFile(filename);
+            levelReader.ReadFile(filename);
             string[] file = GetLevelFile(filename);
-            foreach (var line in asciiReader.MapContainer) {
+            foreach (var line in levelReader.LevelMapContainer) {
                 Assert.IsTrue(Array.Exists(file, element => element == line));
             }
         }
@@ -42,9 +42,9 @@ namespace SpaceTaxiTests {
         [TestCase("the-beach.txt")]
         [TestCase("short-n-sweet.txt")]
         public void TestMetaContainer(string filename) {
-            asciiReader.ReadFile(filename);
+            levelReader.ReadFile(filename);
             string[] file = GetLevelFile(filename);
-            foreach (var line in asciiReader.MetaContainer) {
+            foreach (var line in levelReader.MetaContainer) {
                 Assert.IsTrue(Array.Exists(file, element => element == line));
             }
         }
@@ -52,9 +52,9 @@ namespace SpaceTaxiTests {
         [TestCase("the-beach.txt")]
         [TestCase("short-n-sweet.txt")]
         public void TestKeyContainer(string filename) {
-            asciiReader.ReadFile(filename);
+            levelReader.ReadFile(filename);
             string[] file = GetLevelFile(filename);
-            foreach (var line in asciiReader.KeyContainer) {
+            foreach (var line in levelReader.KeyContainer) {
                 Assert.IsTrue(Array.Exists(file, element => element == line));
             }
         }
@@ -62,9 +62,9 @@ namespace SpaceTaxiTests {
         [TestCase("the-beach.txt")]
         [TestCase("short-n-sweet.txt")]
         public void TestCustomerContainer(string filename) {
-            asciiReader.ReadFile(filename);
+            levelReader.ReadFile(filename);
             string[] file = GetLevelFile(filename);
-            foreach (var line in asciiReader.CustomerContainer) {
+            foreach (var line in levelReader.CustomerContainer) {
                 Assert.IsTrue(Array.Exists(file, line.EndsWith));
             }
         }

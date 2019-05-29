@@ -14,7 +14,7 @@ namespace SpaceTaxi.States {
         private Entity backGroundImage;
         private Player player;
         private Score score;
-        private Map map;
+        private Level level;
         
         private GameRunning() {
             backGroundImage = new Entity(
@@ -55,10 +55,10 @@ namespace SpaceTaxi.States {
             player.Move();
             
             if (player.alive) {
-                map.CollisionLogic();
+                level.CollisionLogic();
             }
 
-            map.MoveToNextLevel();
+            level.MoveToNextLevel();
         }
         
         /// <summary>
@@ -66,20 +66,20 @@ namespace SpaceTaxi.States {
         /// </summary>
         public void RenderState() {
             backGroundImage.RenderEntity();
-            map.RenderMap();
+            level.RenderLevel();
             player.RenderPlayer();
             score.RenderScore();
         }
 
         /// <summary>
-        /// Set the map of the current level
+        /// Set the the current level
         /// </summary>
-        /// <param name="levelFileName">Filename of the map</param>
-        public void SetMap(string levelFileName) {
-            map = MapCreator.GetInstance().mapDictionary[levelFileName];
+        /// <param name="levelFileName">Filename of the level</param>
+        public void SetLevel(string levelFileName) {
+            level = LevelCreator.GetInstance().llevelDictionary[levelFileName];
             player.ResetPlayer();
-            player.SetPosition(map.PlayerPosition);
-            map.GetCustomers();
+            player.SetPosition(level.PlayerPosition);
+            level.GetCustomers();
         }
         
         /// <summary>

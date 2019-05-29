@@ -5,31 +5,31 @@ using System.Text.RegularExpressions;
 using SpaceTaxi.Customers;
 
 namespace SpaceTaxi {
-    public class MapCreator {
-        private static MapCreator instance = null;
+    public class LevelCreator {
+        private static LevelCreator instance = null;
         
         public string[] levelsInFolder; // As filenames
-        public Dictionary<string, Map> mapDictionary;
+        public Dictionary<string, Level> llevelDictionary;
 
-        private ASCIIReader asciiReader;
-        private Translator translator;
+        private LevelReader levelReader;
+        private LevelTranslator levelTranslator;
         private string[] levelNames;
         private CustomerCreator customerCreator;
 
-        public MapCreator() {
-            asciiReader = new ASCIIReader();
-            translator = new Translator();
+        public LevelCreator() {
+            levelReader = new LevelReader();
+            levelTranslator = new LevelTranslator();
             customerCreator = new CustomerCreator();
             levelsInFolder = GetLevels(); // Levels as filenames
-            mapDictionary = makeLevels();         
+            llevelDictionary = makeLevels();         
         }
 
         /// <summary>
         /// Singleton pattern
         /// </summary>
-        /// <returns>Instance of MapCreator</returns>
-        public static MapCreator GetInstance() {
-            return MapCreator.instance ?? (MapCreator.instance = new MapCreator());
+        /// <returns>Instance of LevelCreator</returns>
+        public static LevelCreator GetInstance() {
+            return LevelCreator.instance ?? (LevelCreator.instance = new LevelCreator());
         }
         /// <summary>
         /// Get all levels in the Levels folder
@@ -56,7 +56,7 @@ namespace SpaceTaxi {
         /// </summary>
         /// <param name="metaContainer">string array containing meta data from level file</param>
         /// <returns>String with name of game</returns>
-        private string GetMapName(string[] metaContainer) {
+        private string GetLevelName(string[] metaContainer) {
             Regex levelNameRegex = new Regex(@"Name:");
             foreach (string line in metaContainer) {
                 if (levelNameRegex.IsMatch(line)) {
@@ -68,23 +68,23 @@ namespace SpaceTaxi {
         }
         
         /// <summary>
-        /// Populates the mapDictionary, for all the maps.
+        /// Populates the levelDictionary, for all the levels.
         /// </summary>
-        /// <returns>Dictionary of all map objects.</returns>
-        private Dictionary<string, Map> makeLevels() {
-            var retval =  new Dictionary<string, Map>();
+        /// <returns>Dictionary of all level objects.</returns>
+        private Dictionary<string, Level> makeLevels() {
+            var retval =  new Dictionary<string, Level>();
             int levelNumber = 0;
             foreach (var levelFile in levelsInFolder) {
-                asciiReader.ReadFile(levelFile);
-                translator.CreateImageDictionary(asciiReader.KeyContainer);
-                retval.Add(levelFile, new Map(
-                    translator.CreateMapEntities(asciiReader.MapContainer, asciiReader.Platforms),
-                    GetMapName(asciiReader.MetaContainer), 
+                levelReader.ReadFile(levelFile);
+                levelTranslator.CreateImageDictionary(levelReader.KeyContainer);
+                retval.Add(levelFile, new Level(
+                    levelTranslator.CreateLevelEntities(levelReader.LevelMapContainer, levelReader.Platforms),
+                    GetLevelName(levelReader.MetaContainer), 
                     levelFile, 
                     levelNumber,
-                    translator.PlayerPostiotion,
-                    asciiReader.CustomerContainer,
-                    translator.CreatePlatformEntities(asciiReader.MapContainer, asciiReader.Platforms, levelNumber),
+                    levelTranslator.PlayerPostiotion,
+                    levelReader.CustomerContainer,
+                    levelTranslator.CreatePlatformEntities(levelReader.LevelMapContainer, levelReader.Platforms, levelNumber),
                     customerCreator));
                 levelNumber++;
             }

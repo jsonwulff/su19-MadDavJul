@@ -11,8 +11,8 @@ using SpaceTaxi.Customers;
 using SpaceTaxi.States;
 
 namespace SpaceTaxi {
-    public class Map {
-        public EntityContainer<Entity> MapContainer;
+    public class Level {
+        public EntityContainer<Entity> LevelMapContainer;
         public Dictionary<char, Platform> PlatformContainer;
         public string LevelName;
         public Vec2F PlayerPosition;
@@ -24,9 +24,9 @@ namespace SpaceTaxi {
         private List<Customer> customers;
         private CustomerCreator customerCreator;
 
-        public Map(EntityContainer<Entity> mapContainer, string levelName, String fileName, int levelNumber,
+        public Level(EntityContainer<Entity> levelMapContainer, string levelName, String fileName, int levelNumber,
             Vec2F playerPosition, string[] customerData, Dictionary<char, Platform> platformContainer, CustomerCreator customercreator) {
-            MapContainer = mapContainer;
+            LevelMapContainer = levelMapContainer;
             LevelName = levelName;
             PlayerPosition = playerPosition;
             CustomerData = customerData;
@@ -39,7 +39,7 @@ namespace SpaceTaxi {
         }
         
         /// <summary>
-        /// CollisionLogic checks for collisions with MapContainer and PlatformContainer. Kills if obstacle
+        /// CollisionLogic checks for collisions with LevelMapContainer and PlatformContainer. Kills if obstacle
         /// collision, sets player.onPlatform false if platform collision.
         /// </summary>
         public void CollisionLogic() {
@@ -54,7 +54,7 @@ namespace SpaceTaxi {
             }
             
             // Logic for collision with obstacles
-            foreach (Entity entity in MapContainer) {
+            foreach (Entity entity in LevelMapContainer) {
                 var collsion =
                     CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), entity.Shape);
                 if (collsion.Collision) {
@@ -65,17 +65,17 @@ namespace SpaceTaxi {
 
         public void MoveToNextLevel() {
             if (player.Entity.Shape.Position.Y > 1.0f) {
-                if (LevelNumber == MapCreator.GetInstance().levelsInFolder.Length - 1) {
-                    GameRunning.GetInstance().SetMap(MapCreator.GetInstance().levelsInFolder[0]);
+                if (LevelNumber == LevelCreator.GetInstance().levelsInFolder.Length - 1) {
+                    GameRunning.GetInstance().SetLevel(LevelCreator.GetInstance().levelsInFolder[0]);
                 } else {
                     GameRunning.GetInstance()
-                        .SetMap(MapCreator.GetInstance().levelsInFolder[LevelNumber + 1]);
+                        .SetLevel(LevelCreator.GetInstance().levelsInFolder[LevelNumber + 1]);
                 }
             }
         }
 
-        public void RenderMap() {
-            MapContainer.Iterate(entity => entity.RenderEntity());
+        public void RenderLevel() {
+            LevelMapContainer.Iterate(entity => entity.RenderEntity());
             foreach (var elem in PlatformContainer) {
                 elem.Value.RenderPlatform();
             }

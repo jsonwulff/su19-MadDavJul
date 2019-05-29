@@ -90,7 +90,7 @@ namespace Galaga_Exercise_3.GalagaStates {
                 SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.GameStateEvent, this, "CHANGE_LEVEL",
-                        MapCreator.GetInstance().levelsInFolder[0], ""));
+                        LevelCreator.GetInstance().levelsInFolder[0], ""));
                 Player.GetInstance().pickedUpCustomer = null;
                 StaticTimer.RestartTimer();
                 break;
