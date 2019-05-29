@@ -5,6 +5,7 @@ using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.State;
+using DIKUArcade.Timers;
 using SpaceTaxi;
 using SpaceTaxi.States;
 using Image = DIKUArcade.Graphics.Image;
@@ -91,6 +92,7 @@ namespace Galaga_Exercise_3.GalagaStates {
                         GameEventType.GameStateEvent, this, "CHANGE_LEVEL",
                         MapCreator.GetInstance().levelsInFolder[0], ""));
                 Player.GetInstance().pickedUpCustomer = null;
+                StaticTimer.RestartTimer();
                 break;
 
             case 1:

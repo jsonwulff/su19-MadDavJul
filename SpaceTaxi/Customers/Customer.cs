@@ -11,57 +11,42 @@ using DIKUArcade.Timers;
 namespace SpaceTaxi.Customers {
     public class Customer {
         private readonly Image customerStandRight;
-        private readonly Image customerStandLeft;
-        private readonly ImageStride customerWalkRight;
-        private readonly ImageStride customerWalkLeft;
 
         private DynamicShape shape;
-        private Orientation customerOrientation;
 
         private string customerName;
         private double spawnTime;
         private int originLevel;
-        public char spawnPlatform;
-        public int destinationLevel;
-        public char destinationPlatform;
+        public char SpawnPlatform;
+        public int DestinationLevel;
+        public char DestinationPlatform;
         private int deliveryTime;
-        public int dropOffPoints;
-        private bool customerSpawned = false;
+        public int DropOffPoints;
+        private bool CustomerSpawned = false;
         private bool pickedUp = false;
         
 
 
         public Entity Entity { get; }
-
-        public Customer() {
-            shape = new DynamicShape(new Vec2F(0.0f,0.0f), new Vec2F(0.018f,0.03f));
-            customerStandRight = 
-                new Image(Path.Combine("Assets", "Images","CustomerStandRight.png"));
-            customerStandLeft = 
-                new Image(Path.Combine("Assets", "Images","CustomerStandLeft.png"));
-            
-            Entity = new Entity(shape, customerStandRight);
-            
-        }
+        
 
         public Customer(string customername, string spawntime, char spawnplatform, 
             string destinationcode, string deliverytime, string dropoffpoints, int originlevel) {
             customerName = customername;
             spawnTime = Convert.ToDouble(spawntime) + StaticTimer.GetElapsedSeconds();
-            spawnPlatform = spawnplatform;
+            SpawnPlatform = spawnplatform;
             deliveryTime = Convert.ToInt32(deliverytime);
-            dropOffPoints = Convert.ToInt32(dropoffpoints);
+            DropOffPoints = Convert.ToInt32(dropoffpoints);
             originLevel = originlevel;
             SetDestination(destinationcode);
             
             shape = new DynamicShape(new Vec2F(0.0f,0.0f), new Vec2F(0.018f,0.03f));
             customerStandRight = 
                 new Image(Path.Combine("Assets", "Images","CustomerStandRight.png"));
-            customerStandLeft = 
-                new Image(Path.Combine("Assets", "Images","CustomerStandLeft.png"));
-            
+
             Entity = new Entity(shape, customerStandRight);
         }
+        
         /// <summary>
         /// Sets customer position
         /// </summary>
@@ -87,13 +72,13 @@ namespace SpaceTaxi.Customers {
         /// <param name="destinationCode">The string that determines dropoff point </param>
         private void SetDestination(string destinationCode) {
             if (destinationCode == "^") {
-                destinationLevel = originLevel + 1;
+                DestinationLevel = originLevel + 1;
             } else if (destinationCode.Length == 1) {
-                destinationLevel = originLevel;
-                destinationPlatform = destinationCode[0];
+                DestinationLevel = originLevel;
+                DestinationPlatform = destinationCode[0];
             } else {
-                destinationLevel = originLevel + 1;
-                destinationPlatform = destinationCode[1];
+                DestinationLevel = originLevel + 1;
+                DestinationPlatform = destinationCode[1];
             }
         }
         

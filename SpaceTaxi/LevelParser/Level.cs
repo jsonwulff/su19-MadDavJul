@@ -88,7 +88,7 @@ namespace SpaceTaxi {
         public void GetCustomers() {
             customers = customerCreator.CreateCustomers(CustomerData, LevelNumber);
             foreach (var customer in customers) {
-                var spawnPlatform = customer.spawnPlatform;
+                var spawnPlatform = customer.SpawnPlatform;
                 var platoformExtent = PlatformContainer[spawnPlatform].GetPlatformExtent();
                 customer.SetPosition((platoformExtent.x1 + platoformExtent.x2) / 2, platoformExtent.y);
             }

@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
     <Compile Include="Customers\Customer.cs" />
     <Compile Include="Customers\CustomerCreator.cs" />
     <Compile Include="Events\SpaceTaxiBus.cs" />
@@ -55,11 +54,11 @@
     <Compile Include="GameStates\States\GameStateType.cs" />
     <Compile Include="GameStates\States\LevelSelect.cs" />
     <Compile Include="GameStates\States\MainMenu.cs" />
-    <Compile Include="LevelParser\ASCIIReader.cs" />
-    <Compile Include="LevelParser\MapCreator.cs" />
-    <Compile Include="LevelParser\Map.cs" />
-    <Compile Include="LevelParser\Platform.cs" />
-    <Compile Include="LevelParser\Translator.cs" />
+    <Compile Include="LevelParser\LevelReader.cs" />
+    <Compile Include="LevelParser\LevelCreator.cs" />
+    <Compile Include="LevelParser\Level.cs" />
+    <Compile Include="LevelParser\LevelPlatform.cs" />
+    <Compile Include="LevelParser\LevelTranslator.cs" />
     <Compile Include="Score.cs" />
     <Compile Include="Taxi\Orientation.cs" />
     <Compile Include="Taxi\Player.cs" />

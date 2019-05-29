@@ -7,6 +7,7 @@ using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.State;
+using DIKUArcade.Timers;
 
 namespace SpaceTaxi.States {
     public class LevelSelect : IGameState {
@@ -75,7 +76,7 @@ namespace SpaceTaxi.States {
         }
         
         public void ActivateButton() {
-            Player.GetInstance().ResetPlayer();
+            //Player.GetInstance().ResetPlayer();
             SpaceTaxiBus.GetBus().RegisterEvent(
                 GameEventFactory<object>.CreateGameEventForAllProcessors(
                     GameEventType.GameStateEvent, this, "RESET_SCORE","", ""));
@@ -84,6 +85,7 @@ namespace SpaceTaxi.States {
                     GameEventType.GameStateEvent, this, "CHANGE_LEVEL",
                     MapCreator.GetInstance().levelsInFolder[Math.Abs(activeMenuButton % menuButtons.Length)], ""));
             Player.GetInstance().pickedUpCustomer = null;
+            StaticTimer.RestartTimer();
         }
         
         public void KeyPress(string key) {
