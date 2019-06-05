@@ -62,6 +62,9 @@ namespace SpaceTaxi {
             inLevel = levelNumber;
         }
 
+        /// <summary>
+        /// Updates for collision with player object
+        /// </summary>
         public void PlatformCollision() {
             // Logic for collision with platforms
             foreach (Entity entity in platformEntities) {
