@@ -48,7 +48,7 @@ namespace SpaceTaxi {
             foreach (var platform in PlatformContainer) {
                 platform.Value.PlatformCollision();
             }
-
+            // Logic for collision with customers
             foreach (var customer in customers) {
                 customer.PickUpCollision();
             }
@@ -62,7 +62,10 @@ namespace SpaceTaxi {
                 }
             }
         }
-
+        
+        /// <summary>
+        /// Sets the current level to the next level
+        /// </summary>
         public void MoveToNextLevel() {
             if (player.Entity.Shape.Position.Y > 1.0f) {
                 if (LevelNumber == LevelCreator.GetInstance().levelsInFolder.Length - 1) {
@@ -74,7 +77,12 @@ namespace SpaceTaxi {
             }
         }
 
+        /// <summary>
+        /// Renders the objects in the level
+        /// </summary>
         public void RenderLevel() {
+            
+            
             LevelMapContainer.Iterate(entity => entity.RenderEntity());
             foreach (var elem in PlatformContainer) {
                 elem.Value.RenderPlatform();
@@ -85,6 +93,9 @@ namespace SpaceTaxi {
             }
         }
 
+        /// <summary>
+        /// Creates and gets all the customers for the current level
+        /// </summary>
         public void GetCustomers() {
             customers = customerCreator.CreateCustomers(CustomerData, LevelNumber);
             foreach (var customer in customers) {

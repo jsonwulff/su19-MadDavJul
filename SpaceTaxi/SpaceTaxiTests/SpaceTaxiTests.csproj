@@ -42,11 +42,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomerTests.cs" />
+    <Compile Include="PhysicsTests.cs" />
+    <Compile Include="PlayerTests.cs" />
     <Compile Include="StateTypeTests.cs" />
-    <Compile Include="TestLevelParser.cs" />
+    <Compile Include="LevelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DIKUArcade\DIKUArcade\DIKUArcade.csproj">
+      <Project>{a1e4e4df-0967-4096-9e3c-fbc29b7d07dd}</Project>
+      <Name>DIKUArcade</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SpaceTaxi.csproj">
       <Project>{6b6b73fe-d105-4f0e-9b51-069b6fd6328f}</Project>
       <Name>SpaceTaxi</Name>

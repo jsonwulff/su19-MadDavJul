@@ -66,10 +66,20 @@ namespace SpaceTaxi {
             return File.ReadLines(path).Take(23).ToArray();
         }
 
+        /// <summary>
+        /// Gets the raw level data excluding the map itself
+        /// </summary>
+        /// <param name="path">Path to the level file</param>
+        /// <returns>The level data</returns>
         private string[] GetLevelData(string path) {
             return File.ReadLines(path).Skip(24).Where(line => line != "").ToArray();
         }
         
+        /// <summary>
+        /// Returns the Keylegend in a string array
+        /// </summary>
+        /// <param name="leveldata">Level data from GetLevelData() method</param>
+        /// <returns>The key legend</returns>
         private string[] GetKeyLegendData(string[] leveldata) {
             var retval = new List<string>();
             Regex keyLegendRegex = new Regex(@"\S\)\s");
@@ -81,6 +91,11 @@ namespace SpaceTaxi {
             return retval.ToArray();
         }
 
+        /// <summary>
+        /// Returns the customer data in a string array
+        /// </summary>
+        /// <param name="leveldata">Level data from GetLeveldata() method</param>
+        /// <returns>The customer data</returns>
         private string[] GetCustomerData(string[] leveldata) {
             var retval = new List<string>();
             Regex customerRegex = new Regex(@"Customer");
@@ -92,6 +107,11 @@ namespace SpaceTaxi {
             return retval.ToArray();
         }
         
+        /// <summary>
+        /// Returns the meta data in a string array
+        /// </summary>
+        /// <param name="leveldata">Level data from GetLevelData() method</param>
+        /// <returns>The meta data</returns>
         private string[] GetMetaData(string[] leveldata) {
             var retval = new List<string>();
             Regex keyLegendRegex = new Regex(@"\S\)\s");
@@ -104,7 +124,11 @@ namespace SpaceTaxi {
             return retval.ToArray();
         }
 
-        
+        /// <summary>
+        /// Gets the data for the platforms of the level
+        /// </summary>
+        /// <param name="metaContent"> the Meta data from Level data</param>
+        /// <returns>A char array of the platforms in the current level</returns>
         private char[] GetPlatform(string[] metaContent) {
             var retval = "";
             var platformRegx = new Regex(@"Platforms:");

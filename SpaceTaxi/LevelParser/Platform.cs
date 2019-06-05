@@ -16,7 +16,11 @@ namespace SpaceTaxi {
             platformEntities = new EntityContainer<Entity>();
             player = Player.GetInstance();
         }
-
+            
+        /// <summary>
+        /// Gets the extent of the whole platform
+        /// </summary>
+        /// <returns>floats according to the extent of the platform</returns>
         public (float x1, float x2, float y) GetPlatformExtent() {
             var left = -1.0f;
             var right = -1.0f;
@@ -35,14 +39,25 @@ namespace SpaceTaxi {
             return (left, right, top);
         }
 
+        /// <summary>
+        /// Renders platform entities
+        /// </summary>
         public void RenderPlatform() {
             platformEntities.Iterate(entity => entity.RenderEntity());
         }
 
+        /// <summary>
+        /// Adds an entity to the platform
+        /// </summary>
+        /// <param name="entity"> entity to be added</param>
         public void AddEntity(Entity entity) {
             platformEntities.AddStationaryEntity(entity);
         }
 
+        /// <summary>
+        /// Increments the level number
+        /// </summary>
+        /// <param name="levelNumber"> the Level Number</param>
         public void AddLevelNumber(int levelNumber) {
             inLevel = levelNumber;
         }
